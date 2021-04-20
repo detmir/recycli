@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_rounded_white_16"
+        android:clickable="true"
+        android:elevation="8dp"
+        android:foreground="@drawable/ripple_rounded_16dp"
+        android:padding="8dp">
+
+        <FrameLayout
+            android:id="@+id/user_view_status"
+            android:layout_width="16dp"
+            android:layout_height="84dp"
+            android:background="@drawable/background_rounded_white_8"
+            android:backgroundTint="@color/recycliGreen" />
+
+        <TextView
+            android:id="@+id/user_view_first_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:textColor="#000"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            tools:text="User 1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:textColor="#4A4A4A"
+            android:textSize="14dp"
+            android:text="First line support operator"
+            tools:text="User 1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:orientation="horizontal"
+
+            android:layout_gravity="bottom|end">
+
+            <TextView
+                android:id="@+id/user_view_to_online"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:gravity="center"
+                android:background="@drawable/background_rounded_green_8"
+                android:foreground="@drawable/ripple_rounded_16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="TO ONLINE"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/user_view_to_offline"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:gravity="center"
+                android:foreground="@drawable/ripple_rounded_16dp"
+                android:background="@drawable/background_rounded_red_8"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginStart="8dp"
+                android:text="TO OFFLINE"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </FrameLayout>
+
+
+
+</merge>

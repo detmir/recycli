@@ -1,0 +1,7 @@
+include ':shapes'
+include ':ui'
+include ':recycliprocessor'
+include ':recycliannotation'
+include ':recycli'
+include ':app'
+rootProject.name = "KKppt3"
