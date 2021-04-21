@@ -22,9 +22,12 @@
 
 
         <activity
+            android:name=".Case00Demo"/>
+        <activity
             android:name=".Case01SimpleActivity"/>
         <activity
             android:name=".Case02ClickAndStateActivity"/>
+
     </application>
 
 </manifest>

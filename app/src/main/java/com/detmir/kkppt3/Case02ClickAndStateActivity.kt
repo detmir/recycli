@@ -44,31 +44,9 @@ class Case02ClickAndStateActivity : AppCompatActivity() {
         )
         setContentView(R.layout.activity_case_02)
 
-
         // Common recycler initialization
         recyclerView = findViewById(R.id.activity_case_02_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-        recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(
-                outRect: Rect,
-                view: View,
-                parent: RecyclerView,
-                state: RecyclerView.State
-            ) {
-                when (view) {
-                    is HeaderView -> outRect.set(24.toPx, 32.toPx, 24.toPx, 8.toPx)
-                    is UserView -> outRect.set(
-                        0.toPx,
-                        0.toPx,
-                        0.toPx,
-                        0.toPx
-                    ) //we have paddings inside view
-                }
-            }
-        })
-
-
         recyclerAdapterRegular = RecyclerAdapterRegular()
         recyclerView.adapter = recyclerAdapterRegular
 
@@ -141,11 +119,6 @@ class Case02ClickAndStateActivity : AppCompatActivity() {
             )
         }
 
-
-        val recyclerState = RecyclerStateRegular(
-            items = recyclerItems
-        )
-
-        recyclerAdapterRegular.bindState(recyclerState)
+        recyclerAdapterRegular.bindState(recyclerItems)
     }
 }

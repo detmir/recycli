@@ -26,6 +26,12 @@
             android:orientation="vertical"
             android:gravity="center_horizontal">
             <Button
+                android:id="@+id/activity_main_00"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Case: 00 - Demo"/>
+
+            <Button
                 android:id="@+id/activity_main_01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

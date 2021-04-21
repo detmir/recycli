@@ -13,19 +13,19 @@ import com.detmir.recycli.adapters.RecyclerItem
 import com.detmir.recycli.adapters.RecyclerStateRegular
 import toPx
 
-class Case01SimpleActivity : AppCompatActivity() {
+class Case00Demo : AppCompatActivity() {
 
     lateinit var recyclerAdapterRegular: RecyclerAdapterRegular
     lateinit var recyclerView: RecyclerView
 
-    private val onlineUserNames = mutableSetOf(
+    private val onlineUserNames = mutableListOf(
         "James",
         "Mary",
         "Robert",
         "Patricia"
     )
 
-    private val offlineUserNames = mutableSetOf(
+    private val offlineUserNames = mutableListOf(
         "Michael",
         "Linda",
         "William",
@@ -42,11 +42,11 @@ class Case01SimpleActivity : AppCompatActivity() {
             com.detmir.shapes.RecyclerBinderImpl(),
             com.detmir.RecyclerBinderImpl()
         )
-        setContentView(R.layout.activity_case_01)
+        setContentView(R.layout.activity_case_02)
 
 
         // Common recycler initialization
-        recyclerView = findViewById(R.id.activity_case_01_recycler)
+        recyclerView = findViewById(R.id.activity_case_02_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerAdapterRegular = RecyclerAdapterRegular()
         recyclerView.adapter = recyclerAdapterRegular
@@ -76,9 +76,42 @@ class Case01SimpleActivity : AppCompatActivity() {
 
 
         recyclerItems.add(
+            BigTask(
+                id = "TASK",
+                title = "The second task title",
+                description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
+            )
+        )
+
+
+        recyclerItems.add(
+            Header(
+                id = "HEADER_SUBSTASKS",
+                title = "Subtasks"
+            )
+        )
+
+
+        recyclerItems.add(
+            RecyclerContainer(
+                id = "SUBTASKS_CONTAINER",
+                recyclerState = RecyclerStateRegular(
+                    items = (0..100).map {
+                        SubTask(
+                            id = "SUBTASK_$it",
+                            title = "Sub task $it",
+                            description = "It is a long established fact that a reader will be distracted by the readable content"
+                        )
+                    }
+                )
+            )
+        )
+
+
+        recyclerItems.add(
             Header(
                 id = "HEADER_ONLINE_OPERATORS",
-                title = "Online operators"
+                title = "Online operators ${onlineUserNames.size}"
             )
         )
 
@@ -87,7 +120,12 @@ class Case01SimpleActivity : AppCompatActivity() {
                 User(
                     id = it,
                     firstName = it,
-                    online = true
+                    online = true,
+                    onMoveToOffline = {
+                        onlineUserNames.remove(it)
+                        offlineUserNames.add(0, it)
+                        updateRecycler()
+                    }
                 )
             )
         }
@@ -95,7 +133,7 @@ class Case01SimpleActivity : AppCompatActivity() {
         recyclerItems.add(
             Header(
                 id = "HEADER_OFFLINE_OPERATORS",
-                title = "QA"
+                title = "Offline operators ${offlineUserNames.size}"
             )
         )
 
@@ -104,11 +142,15 @@ class Case01SimpleActivity : AppCompatActivity() {
                 User(
                     id = it,
                     firstName = it,
-                    online = false
+                    online = false,
+                    onMoveToOnline = {
+                        offlineUserNames.remove(it)
+                        onlineUserNames.add(it)
+                        updateRecycler()
+                    }
                 )
             )
         }
-
 
         recyclerAdapterRegular.bindState(recyclerItems)
     }

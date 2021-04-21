@@ -57,14 +57,21 @@ abstract class RecyclerAdapter(
     open fun postProcess() {}
 
     protected fun bindState(state: RecyclerStateBase) {
-        val oldCombined = mutableListOf<RecyclerItem>().apply { addAll(combinedItems) }
+        bindRecyclerItems(
+            items = state.items,
+            itemsAtTop = state.itemsAtTop,
+            itemsAtBottom = state.itemsAtBottom
+        )
+    }
 
+    protected fun bindRecyclerItems(items: List<RecyclerItem>, itemsAtTop: List<RecyclerItem>, itemsAtBottom: List<RecyclerItem>) {
+        val oldCombined = mutableListOf<RecyclerItem>().apply { addAll(combinedItems) }
         this.itemsAtBottom.clear()
-        this.itemsAtBottom.addAll(state.itemsAtBottom)
+        this.itemsAtBottom.addAll(itemsAtBottom)
         this.itemsAtTop.clear()
-        this.itemsAtTop.addAll(state.itemsAtTop)
+        this.itemsAtTop.addAll(itemsAtTop)
         this.items.clear()
-        this.items.addAll(state.items)
+        this.items.addAll(items)
 
         postProcess()
 
@@ -77,7 +84,6 @@ abstract class RecyclerAdapter(
             recyclerView?.adapter = this
         }
     }
-
 
     @Suppress("unused")
     fun addFirstAppearanceListeners(firstAppearanceListeners: Map<String, FirstAppearanceListener>) {

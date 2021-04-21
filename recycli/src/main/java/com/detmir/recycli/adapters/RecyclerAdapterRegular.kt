@@ -10,4 +10,21 @@ class RecyclerAdapterRegular(
     fun bindState(stateRegular: RecyclerStateRegular) {
         super.bindState(stateRegular)
     }
+
+    fun bindState(items: List<RecyclerItem>) {
+        super.bindRecyclerItems(
+            items = items,
+            itemsAtBottom = emptyList(),
+            itemsAtTop = emptyList()
+        )
+    }
+
+
+    fun bindState(items: List<RecyclerItem>, itemsAtTop: List<RecyclerItem>, itemsAtBottom: List<RecyclerItem>) {
+        super.bindRecyclerItems(
+            items = items,
+            itemsAtTop = emptyList(),
+            itemsAtBottom = emptyList()
+        )
+    }
 }

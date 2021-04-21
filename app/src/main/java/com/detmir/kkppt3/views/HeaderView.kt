@@ -8,6 +8,7 @@ import android.widget.TextView
 import com.detmir.kkppt3.R
 import com.detmir.recycli.annotations.RecyclerStateBinder
 import com.detmir.recycli.annotations.RecyclerStateView
+import toPx
 
 @RecyclerStateView
 class HeaderView @JvmOverloads constructor(
@@ -18,6 +19,7 @@ class HeaderView @JvmOverloads constructor(
 
     init {
         LayoutInflater.from(context).inflate(R.layout.header_view, this)
+        setPadding(24.toPx, 32.toPx, 24.toPx, 8.toPx)
         title = findViewById(R.id.header_view_title)
     }
 
