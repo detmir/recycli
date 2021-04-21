@@ -2,7 +2,7 @@
 
 Recycli is a Kotlin library for Android RecyclerView that simplifies complex multiple view types lists creation. With DiffUtils inside, annotation based adapter generator and MVI pattern as philosophy it provides both simple and powerful tool for fast RecyclerView based screens development.
 
-![demo02](https://user-images.githubusercontent.com/1109620/115421675-d14d3900-a204-11eb-8448-597bb1d56435.gif)
+![ezgif-6-e9d7bd416187](https://user-images.githubusercontent.com/1109620/115579256-a7f8df80-a2ce-11eb-9bc2-ac79d3905b89.gif)
 
 ## Installation
 Add Maven Central to you repositories at project or module level build.gradle:
@@ -30,4 +30,19 @@ dependencies {
 
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+
+```
+Copyright 2021 Detsky Mir Group
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
