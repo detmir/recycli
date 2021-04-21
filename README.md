@@ -30,4 +30,4 @@ dependencies {
 
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[Apache-2.0 License](https://github.com/detmir/recycli/blob/master/LICENSE)
