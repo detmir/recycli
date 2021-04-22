@@ -1,21 +1,16 @@
 package com.detmir.kkppt3
 
-import android.graphics.Rect
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.detmir.kkppt3.views.*
 import com.detmir.recycli.adapters.RecyclerAdapter
-import com.detmir.recycli.adapters.RecyclerAdapterRegular
 import com.detmir.recycli.adapters.RecyclerItem
-import com.detmir.recycli.adapters.RecyclerStateRegular
-import toPx
 
 class Case0200ClickAndStateActivity : AppCompatActivity() {
 
-    lateinit var recyclerAdapterRegular: RecyclerAdapterRegular
+    lateinit var recyclerAdapterRegular: RecyclerAdapter
     lateinit var recyclerView: RecyclerView
 
     private val onlineUserNames = mutableListOf(
@@ -47,7 +42,7 @@ class Case0200ClickAndStateActivity : AppCompatActivity() {
         // Common recycler initialization
         recyclerView = findViewById(R.id.activity_case_0200_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerAdapterRegular = RecyclerAdapterRegular()
+        recyclerAdapterRegular = RecyclerAdapter()
         recyclerView.adapter = recyclerAdapterRegular
 
 

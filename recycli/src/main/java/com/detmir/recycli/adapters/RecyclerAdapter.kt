@@ -2,27 +2,36 @@ package com.detmir.recycli.adapters
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 
-abstract class RecyclerAdapter(
-    binders: Set<RecyclerBinder>? = null
+open class RecyclerAdapter(
+    binders: Set<RecyclerBinder>? = null,
+    private val infinityCallbacks: Callbacks? = null,
+    private val bottomLoading: RecyclerBottomLoading? = null,
+    private val infinityType: InfinityType = InfinityType.SCROLL
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    protected var recyclerView: RecyclerView? = null
-    protected val itemsAtBottom = mutableListOf<RecyclerItem>()
+    var recyclerView: RecyclerView? = null
 
-    private val attachListeners: Map<String, AttachListener>? = null
-    private val itemsAtTop = mutableListOf<RecyclerItem>()
+    val attachListeners: Map<String, AttachListener>? = null
+    var firstAppearanceListeners: Map<String, FirstAppearanceListener>? = null
+
     private val items = mutableListOf<RecyclerItem>()
+    private val itemsAtTop = mutableListOf<RecyclerItem>()
+    private val itemsAtBottom = mutableListOf<RecyclerItem>()
     private val combinedItems = mutableListOf<RecyclerItem>()
+
     private val stateToBindersWrapped: HashMap<String, BinderWrapped> = HashMap()
     private val bindersToStateWrapped: HashMap<Int, BinderWrapped> = HashMap()
-    private var firstAppearanceListeners: Map<String, FirstAppearanceListener>? = null
+
+    private var scrollChecker: Runnable = Runnable { checkNeedLoad() }
+    private var infinityState: InfinityState? = null
 
     init {
-        val realBinders = binders ?:  staticBinders
+        val realBinders = binders ?: staticBinders
         ?: throw Exception("No binder found. Please pass Recylii binder to the constructor or via staticBinders")
 
         var i = 1
@@ -41,6 +50,18 @@ abstract class RecyclerAdapter(
         }
     }
 
+
+    fun bindState(items: List<RecyclerItem>) {
+        bindRecyclerItems(
+            items = items
+        )
+    }
+
+    fun bindState(infinityState: InfinityState) {
+        this.infinityState = infinityState
+        bindRecyclerItems(infinityState.items)
+    }
+
     @Suppress("unused")
     fun bindAction(action: RecyclerAction?) {
         when (action) {
@@ -54,22 +75,11 @@ abstract class RecyclerAdapter(
         }
     }
 
-    open fun postProcess() {}
 
-    protected fun bindState(state: RecyclerStateBase) {
-        bindRecyclerItems(
-            items = state.items,
-            itemsAtTop = state.itemsAtTop,
-            itemsAtBottom = state.itemsAtBottom
-        )
-    }
-
-    protected fun bindRecyclerItems(items: List<RecyclerItem>, itemsAtTop: List<RecyclerItem>, itemsAtBottom: List<RecyclerItem>) {
+    private fun bindRecyclerItems(items: List<RecyclerItem>) {
         val oldCombined = mutableListOf<RecyclerItem>().apply { addAll(combinedItems) }
         this.itemsAtBottom.clear()
-        this.itemsAtBottom.addAll(itemsAtBottom)
         this.itemsAtTop.clear()
-        this.itemsAtTop.addAll(itemsAtTop)
         this.items.clear()
         this.items.addAll(items)
 
@@ -90,10 +100,6 @@ abstract class RecyclerAdapter(
         this.firstAppearanceListeners = firstAppearanceListeners.toMap()
     }
 
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        this.recyclerView = recyclerView
-    }
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -110,8 +116,6 @@ abstract class RecyclerAdapter(
         val recyclerItem = getItem(position)
         val state = provideStateWithView(recyclerItem)
         val binderWrapped = stateToBindersWrapped[state]
-        //if (binderWrapped == null) throw Exception("No view found for state=$state")
-        //val binderWrapped = stateToBindersWrapped[state]!!
         return binderWrapped?.wrappedBinderType ?: throw Exception("No view found for state=$state")
     }
 
@@ -125,7 +129,6 @@ abstract class RecyclerAdapter(
         position: Int,
         payloads: MutableList<Any>
     ) {
-
         onBindViewHolder(holder, position)
     }
 
@@ -233,6 +236,127 @@ abstract class RecyclerAdapter(
     }
 
 
+    private fun postProcess() {
+        val recyclerStateInfinity = this.infinityState
+        if (recyclerStateInfinity != null) {
+            when (recyclerStateInfinity.requestState) {
+                //LOADING
+                InfinityState.Request.LOADING -> {
+                    if (recyclerStateInfinity.page > 0 && recyclerStateInfinity.items.isNotEmpty()) {
+                        bottomLoading?.provideProgress()?.let {
+                            this.itemsAtBottom.add(it)
+                        }
+                    }
+
+                }
+
+                //ERRORS
+                InfinityState.Request.ERROR -> {
+                    if (recyclerStateInfinity.page > 0 && recyclerStateInfinity.items.isNotEmpty()) {
+                        bottomLoading?.provideError(reload = {
+                            infinityCallbacks?.loadRange((recyclerStateInfinity.page))
+                        })?.let {
+                            itemsAtBottom.add(it)
+                        }
+                    }
+                }
+
+                //Idle
+                InfinityState.Request.IDLE -> {
+                    when {
+                        isInfiniteByButton() && recyclerStateInfinity.items.isNotEmpty() && !recyclerStateInfinity.endReached -> {
+                            bottomLoading?.provideButton(next = {
+                                infinityCallbacks?.loadRange((recyclerStateInfinity.page) + 1)
+                            })?.let {
+                                this.itemsAtBottom.add(it)
+                            }
+                        }
+
+                        isInfiniteByScroll() && recyclerStateInfinity.items.isNotEmpty() && !recyclerStateInfinity.endReached -> {
+                            bottomLoading?.provideDummy()?.let {
+                                this.itemsAtBottom.add(it)
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        this.recyclerView = recyclerView
+
+        if (isInfinity()) {
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    if (!isLoadingError() && !isLoading()) {
+                        tryInfinity()
+                    }
+                }
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (!isLoadingError() && !isLoading()) {
+                        tryInfinity()
+                    }
+                }
+            })
+        }
+    }
+
+
+    private fun tryInfinity() {
+        recyclerView?.removeCallbacks { scrollChecker }
+        recyclerView?.post(scrollChecker)
+    }
+
+    private fun checkNeedLoad() {
+        if (!isLoading() && !isEndReached()) {
+            val lm = recyclerView?.layoutManager as LinearLayoutManager
+            val visibleItemCount = lm.childCount
+            val totalItemCount = lm.itemCount
+            val firstVisibleItemPosition = lm.findFirstVisibleItemPosition()
+            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount - 5) {
+                rangeLoading()
+            }
+        }
+    }
+
+    private fun rangeLoading() {
+        var nextPage = getCurrentPage()
+        if (!isLoading()) {
+            if (!isLoadingError()) {
+                nextPage++
+            }
+            infinityCallbacks?.loadRange(nextPage)
+        }
+    }
+
+    private fun getCurrentPage(): Int {
+        return infinityState?.page ?: 0
+    }
+
+    private fun isLoading(): Boolean {
+        return infinityState?.requestState == InfinityState.Request.LOADING
+    }
+
+    private fun isEndReached(): Boolean {
+        return infinityState?.endReached == true
+    }
+
+    private fun isLoadingError(): Boolean {
+        return infinityState?.requestState == InfinityState.Request.ERROR
+    }
+
+
+    private fun isInfiniteByButton() = isInfinity() && infinityType == InfinityType.BUTTON
+
+    private fun isInfiniteByScroll() = isInfinity() && infinityType == InfinityType.SCROLL
+
+    private fun isInfinity() = infinityCallbacks != null
+
+
     interface AttachListener {
         fun onViewAttachedToWindow()
         fun onViewDetachedFromWindow()
@@ -242,7 +366,7 @@ abstract class RecyclerAdapter(
         fun onFirstAppearance(recyclerItem: RecyclerItem)
     }
 
-    protected data class BinderWrapped(
+    data class BinderWrapped(
         val wrappedBinderType: Int,
         val bindersPosition: Int,
         val binder: RecyclerBinder,
@@ -251,5 +375,14 @@ abstract class RecyclerAdapter(
 
     companion object {
         var staticBinders: Set<RecyclerBinder>? = null
+    }
+
+    interface Callbacks {
+        fun loadRange(curPage: Int)
+    }
+
+
+    enum class InfinityType {
+        SCROLL, BUTTON
     }
 }

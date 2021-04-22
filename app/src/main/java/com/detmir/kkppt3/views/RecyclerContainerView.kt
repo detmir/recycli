@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.detmir.kkppt3.R
-import com.detmir.recycli.adapters.RecyclerAdapterRegular
+import com.detmir.recycli.adapters.RecyclerAdapter
 import com.detmir.recycli.annotations.RecyclerItemStateBinder
 import com.detmir.recycli.annotations.RecyclerItemView
 
@@ -18,7 +18,7 @@ class RecyclerContainerView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
     private val recycler: RecyclerView
-    private val recyclerPagedAdapter: RecyclerAdapterRegular
+    private val recyclerPagedAdapter: RecyclerAdapter
     private var llm: LinearLayoutManager? = null
     private var state: RecyclerContainer? = null
 
@@ -30,7 +30,7 @@ class RecyclerContainerView @JvmOverloads constructor(
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
-        recyclerPagedAdapter = RecyclerAdapterRegular()
+        recyclerPagedAdapter = RecyclerAdapter()
         recycler = view.findViewById(R.id.recycler_container_recycler)
 
         recycler.run {

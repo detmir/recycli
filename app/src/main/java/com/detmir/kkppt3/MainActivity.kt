@@ -35,8 +35,8 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var adapterRegular: RecyclerAdapterRegular
-    lateinit var adapterInfinity: RecyclerAdapterInfinity
+    lateinit var recyclerAdapter: RecyclerAdapter
+    //lateinit var adapterInfinity: RecyclerAdapterInfinity
     lateinit var recyclerView: RecyclerView
 
 
@@ -75,51 +75,48 @@ class MainActivity : AppCompatActivity() {
 
 //        val kClass: com.detmir.recycli.RecyclerBinder = Class.forName("com.detmir.ui.RecyclerBinder")
 //            .newInstance() as com.detmir.recycli.RecyclerBinder
-        adapterRegular = RecyclerAdapterRegular()
-        recyclerView.adapter = adapterRegular
-        val recyclerState = RecyclerStateRegular(
-            items = listOf(
-                AvatarItem.State(
-                    view = AvatarItem.VIEWS.ROUNDED,
-                    id = "AvatarItem.AvatarItemRoundedCornersView",
-                    text = "me Avatar Rounded"
-                ),
-                AvatarItem.State(
-                    view = AvatarItem.VIEWS.SQAURED,
-                    id = "AvatarItem.AvatarItemSquaredCornersView",
-                    text = "me Avatar Squared"
-                )
+        recyclerAdapter = RecyclerAdapter()
+        recyclerView.adapter = recyclerAdapter
+
+        recyclerAdapter.bindState(listOf(
+            AvatarItem.State(
+                view = AvatarItem.VIEWS.ROUNDED,
+                id = "AvatarItem.AvatarItemRoundedCornersView",
+                text = "me Avatar Rounded"
+            ),
+            AvatarItem.State(
+                view = AvatarItem.VIEWS.SQAURED,
+                id = "AvatarItem.AvatarItemSquaredCornersView",
+                text = "me Avatar Squared"
             )
-        )
-        adapterRegular.bindState(recyclerState)
+        ))
     }
 
 
     //BINDING SEALED VIEWS STYLE
     fun bindingSealedViewsStyle() {
-        adapterRegular = RecyclerAdapterRegular()
-        recyclerView.adapter = adapterRegular
-        val recyclerState = RecyclerStateRegular(
-            items = listOf(
-                LabelItem.State.Big(
-                    id = "LabelItem.State.Big",
-                    text = "me Big Label"
-                ),
-                LabelItem.State.Small(
-                    id = "LabelItem.State.Small",
-                    text = "me Big Small"
-                )
+        recyclerAdapter = RecyclerAdapter()
+        recyclerView.adapter = recyclerAdapter
+
+        recyclerAdapter.bindState(listOf(
+            LabelItem.State.Big(
+                id = "LabelItem.State.Big",
+                text = "me Big Label"
+            ),
+            LabelItem.State.Small(
+                id = "LabelItem.State.Small",
+                text = "me Big Small"
             )
-        )
-        adapterRegular.bindState(recyclerState)
+        ))
     }
 
 
     //BINDING SEALED STYLE
     fun bindingSealedStyle() {
-        adapterRegular = RecyclerAdapterRegular()
-        recyclerView.adapter = adapterRegular
-        val recyclerState = RecyclerStateRegular(
+        recyclerAdapter = RecyclerAdapter()
+        recyclerView.adapter = recyclerAdapter
+
+        recyclerAdapter.bindState(
             items = listOf(
                 ButtonItem.State.Loading(
                     id = "ButtonItem.State.Loading",
@@ -139,51 +136,45 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         )
-        adapterRegular.bindState(recyclerState)
     }
 
     //SEVERAL MODULES
     fun bindingSeveralModules() {
-        adapterRegular = RecyclerAdapterRegular()
-        recyclerView.adapter = adapterRegular
-        val recyclerState = RecyclerStateRegular(
-            items = listOf(
-                SquareItem.State(
-                    id = "SquareItem.State",
-                    text = "me Square"
-                ),
-                CircleItem.State(
-                    id = "CircleItem.State",
-                    text = "me Circle"
-                ),
-                RadioItem.State(
-                    id = "RadioItem.State",
-                    text = "me Radio"
-                )
+        recyclerAdapter = RecyclerAdapter()
+        recyclerView.adapter = recyclerAdapter
 
+        recyclerAdapter.bindState(listOf(
+            SquareItem.State(
+                id = "SquareItem.State",
+                text = "me Square"
+            ),
+            CircleItem.State(
+                id = "CircleItem.State",
+                text = "me Circle"
+            ),
+            RadioItem.State(
+                id = "RadioItem.State",
+                text = "me Radio"
             )
-        )
-        adapterRegular.bindState(recyclerState)
+
+        ))
     }
 
 
     //BINDING WHEN STYLE (CANONICAL)
     fun bindingWhenStyle() {
-        adapterRegular = RecyclerAdapterRegular()
-        recyclerView.adapter = adapterRegular
-        val recyclerState = RecyclerStateRegular(
-            items = listOf(
-                LineItem.State.Bezier(
-                    id = "LineItem.State.Bezier",
-                    text = "me Line Bezier"
-                ),
-                LineItem.State.Arc(
-                    id = "LineItem.State.Arc",
-                    text = "me Line Arc"
-                )
+        recyclerAdapter = RecyclerAdapter()
+        recyclerView.adapter = recyclerAdapter
+        recyclerAdapter.bindState(items = listOf(
+            LineItem.State.Bezier(
+                id = "LineItem.State.Bezier",
+                text = "me Line Bezier"
+            ),
+            LineItem.State.Arc(
+                id = "LineItem.State.Arc",
+                text = "me Line Arc"
             )
-        )
-        adapterRegular.bindState(recyclerState)
+        ))
     }
 
 
@@ -192,7 +183,7 @@ class MainActivity : AppCompatActivity() {
     var infiniteItemsErrorThrown = false
     fun bindingInfinite() {
 
-        val callbacks = object : RecyclerAdapterInfinity.Callbacks {
+        val callbacks = object : RecyclerAdapter.Callbacks {
             override fun loadRange(curPage: Int) {
                 Log.d("mmmmd", "loadRange curPage=$curPage")
                 Single.timer(2000, TimeUnit.MILLISECONDS)
@@ -206,22 +197,22 @@ class MainActivity : AppCompatActivity() {
                         it
                     }
                     .doOnSubscribe {
-                        val recyclerState = RecyclerStateInfinity(
-                            requestState = RecyclerStateInfinity.Request.LOADING,
+                        val recyclerState = InfinityState(
+                            requestState = InfinityState.Request.LOADING,
                             items = infiniteItems,
                             page = curPage,
                             endReached = curPage == 10
                         )
-                        adapterInfinity.bindState(recyclerState)
+                        recyclerAdapter.bindState(recyclerState)
                     }
                     .doOnError {
-                        val recyclerState = RecyclerStateInfinity(
-                            requestState = RecyclerStateInfinity.Request.ERROR,
+                        val recyclerState = InfinityState(
+                            requestState = InfinityState.Request.ERROR,
                             items = infiniteItems,
                             page = curPage,
                             endReached = curPage == 10
                         )
-                        adapterInfinity.bindState(recyclerState)
+                        recyclerAdapter.bindState(recyclerState)
                     }
                     .doOnSuccess {
                         if (curPage == 0) infiniteItems.clear()
@@ -236,13 +227,13 @@ class MainActivity : AppCompatActivity() {
                         infiniteItems.addAll(newItems)
 
 
-                        val recyclerState = RecyclerStateInfinity(
-                            requestState = RecyclerStateInfinity.Request.IDLE,
+                        val recyclerState = InfinityState(
+                            requestState = InfinityState.Request.IDLE,
                             items = infiniteItems,
                             page = curPage,
                             endReached = curPage == 10
                         )
-                        adapterInfinity.bindState(recyclerState)
+                        recyclerAdapter.bindState(recyclerState)
                     }
                     .subscribe(
                         {},
@@ -251,12 +242,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        adapterInfinity = RecyclerAdapterInfinity(
+        recyclerAdapter = RecyclerAdapter(
             //binders = setOf(com.detmir.ui.RecyclerBinder(), com.detmir.shapes.RecyclerBinder()),
-            callbacks = callbacks,
+            infinityCallbacks = callbacks,
             bottomLoading = BottomLoading()
         )
-        recyclerView.adapter = adapterInfinity
+        recyclerView.adapter = recyclerAdapter
         callbacks.loadRange(0)
 
     }
@@ -264,66 +255,62 @@ class MainActivity : AppCompatActivity() {
 
     //BINDING WHEN STYLE (CANONICAL)
     fun bindingWhenTestSealed() {
-        adapterRegular = RecyclerAdapterRegular()
-        recyclerView.adapter = adapterRegular
-        val recyclerState = RecyclerStateRegular(
-            items = listOf(
-                Test02Item.State.One(
-                    id = "Test02Item.State.One",
-                    text = "me Test02Item.State.One"
-                ),
-                Test02Item.State.Two.Two_1(
-                    id = "Test02Item.State.Two.Two_1",
-                    text = "me Test02Item.State.Two.Two_1\""
-                ),
-                Test02Item.State.Two.Two_2(
-                    id = "Test02Item.State.Two.Two_2",
-                    text = "me Test02Item.State.Two.Two_2"
-                ),
-                Test02Item.State.Two.Two_3(
-                    id = "Test02Item.State.Two.Two_3",
-                    text = "me Test02Item.State.Two.Two_3"
-                ),
-                Test02Item.State.Three(
-                    id = "Test02Item.State.Three",
-                    text = "Test02Item.State.Three"
-                )
+        recyclerAdapter = RecyclerAdapter()
+        recyclerView.adapter = recyclerAdapter
+
+        recyclerAdapter.bindState(listOf(
+            Test02Item.State.One(
+                id = "Test02Item.State.One",
+                text = "me Test02Item.State.One"
+            ),
+            Test02Item.State.Two.Two_1(
+                id = "Test02Item.State.Two.Two_1",
+                text = "me Test02Item.State.Two.Two_1"
+            ),
+            Test02Item.State.Two.Two_2(
+                id = "Test02Item.State.Two.Two_2",
+                text = "me Test02Item.State.Two.Two_2"
+            ),
+            Test02Item.State.Two.Two_3(
+                id = "Test02Item.State.Two.Two_3",
+                text = "me Test02Item.State.Two.Two_3"
+            ),
+            Test02Item.State.Three(
+                id = "Test02Item.State.Three",
+                text = "Test02Item.State.Three"
             )
-        )
-        adapterRegular.bindState(recyclerState)
+        ))
     }
 
 
     //BINDING VIEW HOLDERS
     fun bindingVH() {
-        adapterRegular = RecyclerAdapterRegular()
+        recyclerAdapter = RecyclerAdapter()
 
-        recyclerView.adapter = adapterRegular
-        val recyclerState = RecyclerStateRegular(
-            items = listOf(
-                Footballer.Messi(
-                    id = "Messi111",
-                    name = "Messi1111",
-                    view = MessiVH::class.java
-                ),
-                Footballer.Messi(
-                    id = "Messi222",
-                    name = "Messi2222",
-                    view = MessiVH::class.java
-                ),
-                Footballer.Messi(
-                    id = "Messi333",
-                    name = "Messi333",
-                    view = MessiDMVH::class.java
-                ),
-                Footballer.Ronaldu(
-                    id = "Ronaldu",
-                    name = "Ronaldu"
-                ),
-                Footballer.Zidan
-            )
-        )
-        adapterRegular.bindState(recyclerState)
+        recyclerView.adapter = recyclerAdapter
+
+        recyclerAdapter.bindState(listOf(
+            Footballer.Messi(
+                id = "Messi111",
+                name = "Messi1111",
+                view = MessiVH::class.java
+            ),
+            Footballer.Messi(
+                id = "Messi222",
+                name = "Messi2222",
+                view = MessiVH::class.java
+            ),
+            Footballer.Messi(
+                id = "Messi333",
+                name = "Messi333",
+                view = MessiDMVH::class.java
+            ),
+            Footballer.Ronaldu(
+                id = "Ronaldu",
+                name = "Ronaldu"
+            ),
+            Footballer.Zidan
+        ))
     }
 
 

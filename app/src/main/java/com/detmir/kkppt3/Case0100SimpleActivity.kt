@@ -1,22 +1,16 @@
 package com.detmir.kkppt3
 
-import android.graphics.Rect
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.detmir.RecyclerBinderImpl
 import com.detmir.kkppt3.views.*
 import com.detmir.recycli.adapters.RecyclerAdapter
-import com.detmir.recycli.adapters.RecyclerAdapterRegular
-import com.detmir.recycli.adapters.RecyclerItem
-import com.detmir.recycli.adapters.RecyclerStateRegular
-import toPx
 
 class Case0100SimpleActivity : AppCompatActivity() {
 
-    private val recyclerAdapterRegular = RecyclerAdapterRegular(setOf(RecyclerBinderImpl()))
+    private val recyclerAdapterRegular = RecyclerAdapter(setOf(RecyclerBinderImpl()))
     private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {

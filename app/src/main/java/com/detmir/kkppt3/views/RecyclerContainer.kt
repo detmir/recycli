@@ -1,7 +1,6 @@
 package com.detmir.kkppt3.views
 
 import com.detmir.recycli.adapters.RecyclerItem
-import com.detmir.recycli.adapters.RecyclerStateRegular
 import com.detmir.recycli.adapters.ScrollKeeper
 import com.detmir.recycli.annotations.RecyclerItemState
 
@@ -9,7 +8,7 @@ import com.detmir.recycli.annotations.RecyclerItemState
 data class RecyclerContainer(
     val id: String,
     val scrollKeeper: ScrollKeeper = ScrollKeeper(),
-    val recyclerState: RecyclerStateRegular
+    val recyclerState: List<RecyclerItem>
 ): RecyclerItem {
     override fun provideId(): String {
         return id
