@@ -4,6 +4,13 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies complex mul
 
 ![ezgif-6-e9d7bd416187](https://user-images.githubusercontent.com/1109620/115579256-a7f8df80-a2ce-11eb-9bc2-ac79d3905b89.gif)
 
+## Table of Contents  
+[Installation](#installation)  
+[First steps](#first_steps)  
+[License](#license)  
+
+<a name="installation"/>
+
 ## Installation
 Add Maven Central to you repositories at project or module level build.gradle:
 
@@ -28,6 +35,27 @@ dependencies {
 
 ```
 
+<a name="first_steps"/>
+
+## First steps
+First create kotlin data class with recycler item state:
+```kotlin
+@RecyclerState
+data class UserItem(
+    val id: String,
+    val firstName: String,
+    val online: Boolean,
+    val onCardClick: (() -> Unit)? = null, //Optional
+    val onMoveToOnline: (() -> Unit)? = null,
+    val onMoveToOffline: (() -> Unit)? = null
+) : RecyclerItem {
+    override fun provideId() = id
+}
+```
+The state must be annotated with @RecyclerState 
+
+
+<a name="license"/>
 
 ## License
 
