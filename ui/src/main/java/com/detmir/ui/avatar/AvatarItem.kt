@@ -1,12 +1,12 @@
 package com.detmir.ui.avatar
 
 import com.detmir.recycli.adapters.RecyclerItem
-import com.detmir.recycli.annotations.RecyclerState
+import com.detmir.recycli.annotations.RecyclerItemState
 
 class AvatarItem {
 
 
-    @RecyclerState
+    @RecyclerItemState
     data class State(
         val view: VIEWS,
         val id: String,

@@ -1,9 +1,5 @@
 package com.detmir.recycli.annotations
 
-@Retention(AnnotationRetention.RUNTIME)
+@Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.CLASS)
-annotation class RecyclerItem {
-    interface Provider {
-
-    }
-}
+annotation class RecyclerItemState

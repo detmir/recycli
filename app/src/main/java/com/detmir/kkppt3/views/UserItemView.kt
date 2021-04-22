@@ -11,10 +11,10 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.detmir.kkppt3.R
-import com.detmir.recycli.annotations.RecyclerStateBinder
-import com.detmir.recycli.annotations.RecyclerStateView
+import com.detmir.recycli.annotations.RecyclerItemStateBinder
+import com.detmir.recycli.annotations.RecyclerItemView
 
-@RecyclerStateView
+@RecyclerItemView
 class UserItemView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
@@ -51,7 +51,7 @@ class UserItemView @JvmOverloads constructor(
         }
     }
 
-    @RecyclerStateBinder
+    @RecyclerItemStateBinder
     fun bindState(userItem: UserItem) {
         this.userItem = userItem
         firstName.text = userItem.firstName

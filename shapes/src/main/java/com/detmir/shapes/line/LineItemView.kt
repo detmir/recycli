@@ -4,18 +4,18 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.TextView
-import com.detmir.recycli.annotations.RecyclerStateBinder
-import com.detmir.recycli.annotations.RecyclerStateView
+import com.detmir.recycli.annotations.RecyclerItemStateBinder
+import com.detmir.recycli.annotations.RecyclerItemView
 
 
 @SuppressLint("AppCompatCustomView")
-@RecyclerStateView
+@RecyclerItemView
 class LineItemView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : TextView(context, attrs, defStyleAttr), LineItem.View {
 
 
-    @RecyclerStateBinder
+    @RecyclerItemStateBinder
     override fun bindState(state: LineItem.State) {
         when (state) {
             is LineItem.State.Arc -> text = "LINE ITEM ARC ${state.text}"

@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.detmir.kkppt3.R
-import com.detmir.recycli.annotations.RecyclerStateBinder
-import com.detmir.recycli.annotations.RecyclerStateView
+import com.detmir.recycli.annotations.RecyclerItemStateBinder
+import com.detmir.recycli.annotations.RecyclerItemView
 
-@RecyclerStateView
+@RecyclerItemView
 class BigTaskItemView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
@@ -23,7 +23,7 @@ class BigTaskItemView @JvmOverloads constructor(
         taskDescription = findViewById(R.id.big_task_description)
     }
 
-    @RecyclerStateBinder
+    @RecyclerItemStateBinder
     fun bindState(bigTaskItem: BigTaskItem) {
         taskTitle.text = bigTaskItem.title
         taskDescription.text = bigTaskItem.description

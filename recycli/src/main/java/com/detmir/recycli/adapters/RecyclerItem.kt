@@ -1,7 +1,7 @@
 package com.detmir.recycli.adapters
 
-interface RItem {
-    fun areContentsTheSame(other: RItem) = this == other
+interface RecyclerItem {
+    fun areContentsTheSame(other: RecyclerItem) = this == other
     fun withView(): Class<out Any>? = null
     fun provideId(): String
 }

@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.detmir.kkppt3.R
-import com.detmir.recycli.annotations.RecyclerStateBinder
-import com.detmir.recycli.annotations.RecyclerStateView
+import com.detmir.recycli.annotations.RecyclerItemStateBinder
+import com.detmir.recycli.annotations.RecyclerItemView
 import toPx
 
-@RecyclerStateView
+@RecyclerItemView
 class HeaderItemView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
@@ -23,7 +23,7 @@ class HeaderItemView @JvmOverloads constructor(
         title = findViewById(R.id.header_view_title)
     }
 
-    @RecyclerStateBinder
+    @RecyclerItemStateBinder
     fun bindState(headerItem: HeaderItem) {
         title.text = headerItem.title
     }

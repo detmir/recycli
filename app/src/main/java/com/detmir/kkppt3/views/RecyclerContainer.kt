@@ -1,12 +1,11 @@
 package com.detmir.kkppt3.views
 
-import androidx.annotation.ColorInt
 import com.detmir.recycli.adapters.RecyclerItem
 import com.detmir.recycli.adapters.RecyclerStateRegular
 import com.detmir.recycli.adapters.ScrollKeeper
-import com.detmir.recycli.annotations.RecyclerState
+import com.detmir.recycli.annotations.RecyclerItemState
 
-@RecyclerState
+@RecyclerItemState
 data class RecyclerContainer(
     val id: String,
     val scrollKeeper: ScrollKeeper = ScrollKeeper(),

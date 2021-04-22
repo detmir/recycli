@@ -2,4 +2,4 @@ package com.detmir.recycli.annotations
 
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.FUNCTION)
-annotation class RecyclerItemStateViewHolderCreator
+annotation class RecyclerItemViewHolderCreator

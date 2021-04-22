@@ -4,16 +4,16 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.TextView
-import com.detmir.recycli.annotations.RecyclerStateBinder
-import com.detmir.recycli.annotations.RecyclerStateView
+import com.detmir.recycli.annotations.RecyclerItemStateBinder
+import com.detmir.recycli.annotations.RecyclerItemView
 
 @SuppressLint("AppCompatCustomView")
-@RecyclerStateView
+@RecyclerItemView
 class Test02ItemView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : TextView(context, attrs, defStyleAttr) {
 
-    @RecyclerStateBinder
+    @RecyclerItemStateBinder
     fun doIt(state: Test02Item.State) {
          when (state) {
              is Test02Item.State.One,
@@ -27,7 +27,7 @@ class Test02ItemView @JvmOverloads constructor(
     }
 
 
-    @RecyclerStateBinder
+    @RecyclerItemStateBinder
     fun doIt2(state: Test02Item.State.Two) {
         when (state) {
             is Test02Item.State.Two.Two_1,

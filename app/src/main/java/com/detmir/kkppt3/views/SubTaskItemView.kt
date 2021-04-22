@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.detmir.kkppt3.R
-import com.detmir.recycli.annotations.RecyclerStateBinder
-import com.detmir.recycli.annotations.RecyclerStateView
+import com.detmir.recycli.annotations.RecyclerItemStateBinder
+import com.detmir.recycli.annotations.RecyclerItemView
 import toPx
 
-@RecyclerStateView
+@RecyclerItemView
 class SubTaskItemView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
@@ -26,7 +26,7 @@ class SubTaskItemView @JvmOverloads constructor(
         taskDescription = findViewById(R.id.sub_task_description)
     }
 
-    @RecyclerStateBinder
+    @RecyclerItemStateBinder
     fun bindState(subTaskItem: SubTaskItem) {
         taskTitle.text = subTaskItem.title
         taskDescription.text = subTaskItem.description

@@ -23,11 +23,11 @@ class RecyclerProcessor : AbstractProcessor() {
 
     override fun getSupportedAnnotationTypes(): Set<String?> {
         return setOf(
-            RecyclerState::class.java.canonicalName,
-            RecyclerStateBinder::class.java.canonicalName,
-            RecyclerStateView::class.java.canonicalName,
-            RecyclerStateViewHolder::class.java.canonicalName,
-            RecyclerStateViewHolderCreator::class.java.canonicalName
+            RecyclerItemState::class.java.canonicalName,
+            RecyclerItemStateBinder::class.java.canonicalName,
+            RecyclerItemView::class.java.canonicalName,
+            RecyclerItemViewHolder::class.java.canonicalName,
+            RecyclerItemViewHolderCreator::class.java.canonicalName
         )
     }
 
@@ -46,7 +46,7 @@ class RecyclerProcessor : AbstractProcessor() {
 
         //STATES
         roundEnvironment?.getElementsAnnotatedWith(
-            RecyclerState::class.java
+            RecyclerItemState::class.java
         )?.forEach { element ->
             getTopPackageOnce(element)
             indexToStateMap[iWrap.i] = element.toString()
@@ -68,7 +68,7 @@ class RecyclerProcessor : AbstractProcessor() {
 
         //VIEWS
         roundEnvironment?.getElementsAnnotatedWith(
-            RecyclerStateView::class.java
+            RecyclerItemView::class.java
         )?.forEach { viewElement ->
             fillViewProps(
                 viewElement = viewElement,
@@ -81,7 +81,7 @@ class RecyclerProcessor : AbstractProcessor() {
 
         //VIEW HOLDERS
         roundEnvironment?.getElementsAnnotatedWith(
-            RecyclerStateViewHolder::class.java
+            RecyclerItemViewHolder::class.java
         )?.forEach { viewElement ->
             fillViewProps(
                 viewElement = viewElement,
@@ -165,7 +165,7 @@ class RecyclerProcessor : AbstractProcessor() {
                     enclosedElementCreatorClass.enclosedElements.forEach { enclosedElementCreatorFunc ->
                         if (enclosedElementCreatorFunc.enclosingElement == viewElement
                             && enclosedElementCreatorFunc.kind == ElementKind.METHOD ||
-                            enclosedElementCreatorFunc.getAnnotation(RecyclerStateViewHolderCreator::class.java) != null
+                            enclosedElementCreatorFunc.getAnnotation(RecyclerItemViewHolderCreator::class.java) != null
                         ) {
                             viewCreatorClassName =
                                 "$enclosedElementCreatorClass.${enclosedElementCreatorFunc.simpleName}"
@@ -180,7 +180,7 @@ class RecyclerProcessor : AbstractProcessor() {
         viewElement.enclosedElements.forEach { enclosedElement ->
             if (enclosedElement.enclosingElement == viewElement
                 && enclosedElement.kind == ElementKind.METHOD
-                && enclosedElement.getAnnotation(RecyclerStateBinder::class.java) != null
+                && enclosedElement.getAnnotation(RecyclerItemStateBinder::class.java) != null
             ) {
                 val executableElement = enclosedElement as ExecutableElement
                 if (executableElement.parameters.size == 1) {

@@ -2,14 +2,14 @@ package com.detmir.ui.test01
 
 import androidx.annotation.ColorRes
 import com.detmir.recycli.adapters.RecyclerItem
-import com.detmir.recycli.annotations.RecyclerState
+import com.detmir.recycli.annotations.RecyclerItemState
 
 class Test01Item {
     interface View {
         fun bindState(state: State)
     }
 
-    @RecyclerState
+    @RecyclerItemState
     data class State(
         val intoView: Class<out android.view.View>? = null,// = Test01RedItemView::class.java,
         val id: String,

@@ -2,12 +2,12 @@ package com.detmir.ui.test02
 
 import androidx.annotation.ColorRes
 import com.detmir.recycli.adapters.RecyclerItem
-import com.detmir.recycli.annotations.RecyclerState
+import com.detmir.recycli.annotations.RecyclerItemState
 
 class Test02Item {
 
 
-    @RecyclerState
+    @RecyclerItemState
     sealed class State(open val text: String) : RecyclerItem
     {
         data class One(

@@ -1,14 +1,14 @@
 package com.detmir.shapes.line
 
 import com.detmir.recycli.adapters.RecyclerItem
-import com.detmir.recycli.annotations.RecyclerState
+import com.detmir.recycli.annotations.RecyclerItemState
 
 class LineItem {
     interface View {
         fun bindState(state: State)
     }
 
-    @RecyclerState
+    @RecyclerItemState
     sealed class State: RecyclerItem {
         data class Bezier(
             val id: String,

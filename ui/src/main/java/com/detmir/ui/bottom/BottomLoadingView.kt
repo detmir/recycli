@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ProgressBar
-import com.detmir.recycli.annotations.RecyclerStateBinder
-import com.detmir.recycli.annotations.RecyclerStateView
+import com.detmir.recycli.annotations.RecyclerItemStateBinder
+import com.detmir.recycli.annotations.RecyclerItemView
 import com.detmir.ui.R
 
-@RecyclerStateView
+@RecyclerItemView
 class BottomLoadingView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
@@ -49,7 +49,7 @@ class BottomLoadingView @JvmOverloads constructor(
         }
     }
 
-    @RecyclerStateBinder
+    @RecyclerItemStateBinder
     fun bindState(state: BottomLoading.State) {
         this.state = state
         when (state) {

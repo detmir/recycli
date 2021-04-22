@@ -1,14 +1,14 @@
 package com.detmir.ui.stone
 
 import com.detmir.recycli.adapters.RecyclerItem
-import com.detmir.recycli.annotations.RecyclerState
+import com.detmir.recycli.annotations.RecyclerItemState
 
 class StoneItem {
     interface View {
         fun bindState(state: State)
     }
 
-    @RecyclerState
+    @RecyclerItemState
     data class State(
         val id: String,
         val text: String

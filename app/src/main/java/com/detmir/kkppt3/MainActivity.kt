@@ -17,10 +17,10 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import com.detmir.recycli.adapters.*
-import com.detmir.recycli.annotations.RecyclerState
-import com.detmir.recycli.annotations.RecyclerStateBinder
-import com.detmir.recycli.annotations.RecyclerStateViewHolder
-import com.detmir.recycli.annotations.RecyclerStateViewHolderCreator
+import com.detmir.recycli.annotations.RecyclerItemState
+import com.detmir.recycli.annotations.RecyclerItemStateBinder
+import com.detmir.recycli.annotations.RecyclerItemViewHolder
+import com.detmir.recycli.annotations.RecyclerItemViewHolderCreator
 import com.detmir.shapes.circle.CircleItem
 import com.detmir.shapes.line.LineItem
 import com.detmir.shapes.square.SquareItem
@@ -327,7 +327,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    @RecyclerState
+    @RecyclerItemState
     sealed class Footballer: RecyclerItem {
 
 
@@ -355,20 +355,20 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    @RecyclerStateViewHolder
+    @RecyclerItemViewHolder
     class MessiVH(view: View): RecyclerView.ViewHolder(view) {
         var tv: TextView
         init {
             tv = itemView as TextView
         }
 
-        @RecyclerStateBinder
+        @RecyclerItemStateBinder
         fun bindView(messi: Footballer.Messi) {
             tv.text = messi.name
         }
 
         companion object {
-            @RecyclerStateViewHolderCreator
+            @RecyclerItemViewHolderCreator
             fun provideViewHolder(context: Context): MessiVH {
                 val view = TextView(context)
                 view.setBackgroundColor(Color.parseColor("#ff00ff00"))
@@ -379,20 +379,20 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    @RecyclerStateViewHolder
+    @RecyclerItemViewHolder
     class MessiDMVH(view: View): RecyclerView.ViewHolder(view) {
         var tv: TextView
         init {
             tv = itemView as TextView
         }
 
-        @RecyclerStateBinder
+        @RecyclerItemStateBinder
         fun bindView(messi: Footballer.Messi) {
             tv.text = messi.name
         }
 
         companion object {
-            @RecyclerStateViewHolderCreator
+            @RecyclerItemViewHolderCreator
             fun provideViewHolder(context: Context): MessiDMVH {
                 val view = TextView(context)
                 view.setBackgroundColor(Color.parseColor("#ff000000"))
@@ -402,20 +402,20 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    @RecyclerStateViewHolder
+    @RecyclerItemViewHolder
     class RonalduVH(view: View): RecyclerView.ViewHolder(view) {
         var tv: TextView
         init {
             tv = itemView as TextView
         }
 
-        @RecyclerStateBinder
+        @RecyclerItemStateBinder
         fun bindView(ronaldu: Footballer.Ronaldu) {
             tv.text = ronaldu.name
         }
 
         companion object {
-            @RecyclerStateViewHolderCreator
+            @RecyclerItemViewHolderCreator
             fun provideViewHolder(context: Context): RonalduVH {
                 val view = TextView(context)
                 view.setBackgroundColor(Color.parseColor("#ffff0000"))
@@ -426,20 +426,20 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    @RecyclerStateViewHolder
+    @RecyclerItemViewHolder
     class TitleItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
         var tv: TextView
         init {
             tv = itemView as TextView
         }
 
-        @RecyclerStateBinder
+        @RecyclerItemStateBinder
         fun bindView(ronaldu: Footballer.Ronaldu) {
             tv.text = ronaldu.name
         }
 
         companion object {
-            @RecyclerStateViewHolderCreator
+            @RecyclerItemViewHolderCreator
             fun provideViewHolder(context: Context): TitleItemViewHolder {
                 val view = TextView(context)
                 view.setBackgroundColor(Color.parseColor("#ffff0000"))
@@ -448,20 +448,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @RecyclerStateViewHolder
+    @RecyclerItemViewHolder
     class ZidanVH(view: View): RecyclerView.ViewHolder(view) {
         var tv: TextView
         init {
             tv = itemView as TextView
         }
 
-        @RecyclerStateBinder
+        @RecyclerItemStateBinder
         fun bindView(zidan: Footballer.Zidan) {
             tv.text = "zidan"
         }
 
         companion object {
-            @RecyclerStateViewHolderCreator
+            @RecyclerItemViewHolderCreator
             fun provideViewHolder(context: Context): ZidanVH {
                 val view = TextView(context)
                 view.setBackgroundColor(Color.parseColor("#ff0000FF"))

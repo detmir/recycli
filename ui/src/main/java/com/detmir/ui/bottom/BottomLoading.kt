@@ -2,12 +2,12 @@ package com.detmir.ui.bottom
 
 import com.detmir.recycli.adapters.RecyclerBottomLoading
 import com.detmir.recycli.adapters.RecyclerItem
-import com.detmir.recycli.annotations.RecyclerState
+import com.detmir.recycli.annotations.RecyclerItemState
 
 
 class BottomLoading : RecyclerBottomLoading {
 
-    @RecyclerState
+    @RecyclerItemState
     sealed class State : RecyclerItem {
         override fun provideId(): String {
             return "bottom"

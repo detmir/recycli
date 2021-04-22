@@ -1,12 +1,12 @@
 package com.detmir.ui.label
 
 import com.detmir.recycli.adapters.RecyclerItem
-import com.detmir.recycli.annotations.RecyclerState
+import com.detmir.recycli.annotations.RecyclerItemState
 
 class LabelItem {
 
 
-    @RecyclerState
+    @RecyclerItemState
     sealed class State(open val text: String) : RecyclerItem
     {
         data class Big(

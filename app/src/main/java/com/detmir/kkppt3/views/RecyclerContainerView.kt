@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.detmir.kkppt3.R
 import com.detmir.recycli.adapters.RecyclerAdapterRegular
-import com.detmir.recycli.annotations.RecyclerStateBinder
-import com.detmir.recycli.annotations.RecyclerStateView
+import com.detmir.recycli.annotations.RecyclerItemStateBinder
+import com.detmir.recycli.annotations.RecyclerItemView
 
-@RecyclerStateView
+@RecyclerItemView
 class RecyclerContainerView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
@@ -49,7 +49,7 @@ class RecyclerContainerView @JvmOverloads constructor(
         }
     }
 
-    @RecyclerStateBinder
+    @RecyclerItemStateBinder
     fun bindState(state: RecyclerContainer) {
 
 

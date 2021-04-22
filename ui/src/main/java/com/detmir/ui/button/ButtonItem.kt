@@ -1,13 +1,13 @@
 package com.detmir.ui.button
 
 import com.detmir.recycli.adapters.RecyclerItem
-import com.detmir.recycli.annotations.RecyclerState
+import com.detmir.recycli.annotations.RecyclerItemState
 
 
 class ButtonItem {
 
 
-    @RecyclerState
+    @RecyclerItemState
     sealed class State(open val text: String) : RecyclerItem
     {
         data class Error(

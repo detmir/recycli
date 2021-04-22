@@ -1,10 +1,9 @@
 package com.detmir.kkppt3.views
 
-import androidx.annotation.ColorRes
 import com.detmir.recycli.adapters.RecyclerItem
-import com.detmir.recycli.annotations.RecyclerState
+import com.detmir.recycli.annotations.RecyclerItemState
 
-@RecyclerState
+@RecyclerItemState
 data class BigTaskItem(
     val id: String,
     val title: String,
