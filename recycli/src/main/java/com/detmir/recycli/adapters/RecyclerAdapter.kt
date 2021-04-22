@@ -52,12 +52,18 @@ open class RecyclerAdapter(
 
 
     fun bindState(items: List<RecyclerItem>) {
+        if (infinityCallbacks != null) {
+            throw Exception("You are trying to bind non infinity state on infinity adapter")
+        }
         bindRecyclerItems(
             items = items
         )
     }
 
     fun bindState(infinityState: InfinityState) {
+        if (infinityCallbacks == null) {
+            throw Exception("You are trying to bind infinity state on non infinity adapter")
+        }
         this.infinityState = infinityState
         bindRecyclerItems(infinityState.items)
     }
