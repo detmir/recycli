@@ -38,6 +38,22 @@ dependencies {
 <a name="first_steps"/>
 
 ## First steps
+First create kotlin data class with recycler item state:
+```kotlin
+@RecyclerState
+data class UserItem(
+    val id: String,
+    val firstName: String,
+    val online: Boolean,
+    val onCardClick: (() -> Unit)? = null, //Optional
+    val onMoveToOnline: (() -> Unit)? = null,
+    val onMoveToOffline: (() -> Unit)? = null
+) : RecyclerItem {
+    override fun provideId() = id
+}
+```
+The state must be annotated with @RecyclerState 
+
 
 <a name="license"/>
 
