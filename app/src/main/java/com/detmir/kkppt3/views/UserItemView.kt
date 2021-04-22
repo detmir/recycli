@@ -13,10 +13,9 @@ import androidx.core.view.isVisible
 import com.detmir.kkppt3.R
 import com.detmir.recycli.annotations.RecyclerStateBinder
 import com.detmir.recycli.annotations.RecyclerStateView
-import toPx
 
 @RecyclerStateView
-class UserView @JvmOverloads constructor(
+class UserItemView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
@@ -25,7 +24,7 @@ class UserView @JvmOverloads constructor(
     private val toOfflineButton: TextView
     private val status: FrameLayout
 
-    private var user: User? = null
+    private var userItem: UserItem? = null
 
     init {
         LayoutInflater.from(context).inflate(R.layout.user_view, this)
@@ -40,27 +39,27 @@ class UserView @JvmOverloads constructor(
         toOfflineButton = findViewById(R.id.user_view_to_offline)
 
         toOnlineButton.setOnClickListener {
-            this.user?.onMoveToOnline?.invoke()
+            this.userItem?.onMoveToOnline?.invoke()
         }
 
         toOfflineButton.setOnClickListener {
-            this.user?.onMoveToOffline?.invoke()
+            this.userItem?.onMoveToOffline?.invoke()
         }
 
         setOnClickListener {
-            this.user?.onCardClick?.invoke()
+            this.userItem?.onCardClick?.invoke()
         }
     }
 
     @RecyclerStateBinder
-    fun bindState(user: User) {
-        this.user = user
-        firstName.text = user.firstName
-        @ColorRes val color = if (user.online) R.color.recycliGreen else R.color.recycliRed
+    fun bindState(userItem: UserItem) {
+        this.userItem = userItem
+        firstName.text = userItem.firstName
+        @ColorRes val color = if (userItem.online) R.color.recycliGreen else R.color.recycliRed
         status.backgroundTintList =
             ColorStateList.valueOf(ContextCompat.getColor(context, color))
 
-        toOfflineButton.isVisible = user.onMoveToOffline != null && user.online
-        toOnlineButton.isVisible = user.onMoveToOnline != null && !user.online
+        toOfflineButton.isVisible = userItem.onMoveToOffline != null && userItem.online
+        toOnlineButton.isVisible = userItem.onMoveToOnline != null && !userItem.online
     }
 }

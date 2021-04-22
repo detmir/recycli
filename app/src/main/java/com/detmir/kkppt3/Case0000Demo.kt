@@ -13,7 +13,7 @@ import com.detmir.recycli.adapters.RecyclerItem
 import com.detmir.recycli.adapters.RecyclerStateRegular
 import toPx
 
-class Case00Demo : AppCompatActivity() {
+class Case0000Demo : AppCompatActivity() {
 
     lateinit var recyclerAdapterRegular: RecyclerAdapterRegular
     lateinit var recyclerView: RecyclerView
@@ -42,11 +42,11 @@ class Case00Demo : AppCompatActivity() {
             com.detmir.shapes.RecyclerBinderImpl(),
             com.detmir.RecyclerBinderImpl()
         )
-        setContentView(R.layout.activity_case_02)
+        setContentView(R.layout.activity_case_0000)
 
 
         // Common recycler initialization
-        recyclerView = findViewById(R.id.activity_case_02_recycler)
+        recyclerView = findViewById(R.id.activity_case_0000_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerAdapterRegular = RecyclerAdapterRegular()
         recyclerView.adapter = recyclerAdapterRegular
@@ -60,14 +60,14 @@ class Case00Demo : AppCompatActivity() {
         val recyclerItems = mutableListOf<RecyclerItem>()
 
         recyclerItems.add(
-            Header(
+            HeaderItem(
                 id = "HEADER_TASKS",
                 title = "Tasks"
             )
         )
 
         recyclerItems.add(
-            BigTask(
+            BigTaskItem(
                 id = "TASK",
                 title = "This is task title",
                 description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
@@ -76,7 +76,7 @@ class Case00Demo : AppCompatActivity() {
 
 
         recyclerItems.add(
-            BigTask(
+            BigTaskItem(
                 id = "TASK",
                 title = "The second task title",
                 description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
@@ -85,7 +85,7 @@ class Case00Demo : AppCompatActivity() {
 
 
         recyclerItems.add(
-            Header(
+            HeaderItem(
                 id = "HEADER_SUBSTASKS",
                 title = "Subtasks"
             )
@@ -97,7 +97,7 @@ class Case00Demo : AppCompatActivity() {
                 id = "SUBTASKS_CONTAINER",
                 recyclerState = RecyclerStateRegular(
                     items = (0..100).map {
-                        SubTask(
+                        SubTaskItem(
                             id = "SUBTASK_$it",
                             title = "Sub task $it",
                             description = "It is a long established fact that a reader will be distracted by the readable content"
@@ -109,7 +109,7 @@ class Case00Demo : AppCompatActivity() {
 
 
         recyclerItems.add(
-            Header(
+            HeaderItem(
                 id = "HEADER_ONLINE_OPERATORS",
                 title = "Online operators ${onlineUserNames.size}"
             )
@@ -117,7 +117,7 @@ class Case00Demo : AppCompatActivity() {
 
         onlineUserNames.forEach {
             recyclerItems.add(
-                User(
+                UserItem(
                     id = it,
                     firstName = it,
                     online = true,
@@ -131,7 +131,7 @@ class Case00Demo : AppCompatActivity() {
         }
 
         recyclerItems.add(
-            Header(
+            HeaderItem(
                 id = "HEADER_OFFLINE_OPERATORS",
                 title = "Offline operators ${offlineUserNames.size}"
             )
@@ -139,7 +139,7 @@ class Case00Demo : AppCompatActivity() {
 
         offlineUserNames.forEach {
             recyclerItems.add(
-                User(
+                UserItem(
                     id = it,
                     firstName = it,
                     online = false,

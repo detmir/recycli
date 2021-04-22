@@ -11,7 +11,7 @@ import com.detmir.recycli.annotations.RecyclerStateView
 import toPx
 
 @RecyclerStateView
-class HeaderView @JvmOverloads constructor(
+class HeaderItemView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
@@ -24,7 +24,7 @@ class HeaderView @JvmOverloads constructor(
     }
 
     @RecyclerStateBinder
-    fun bindState(header: Header) {
-        title.text = header.title
+    fun bindState(headerItem: HeaderItem) {
+        title.text = headerItem.title
     }
 }

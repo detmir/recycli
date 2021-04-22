@@ -4,7 +4,7 @@ import com.detmir.recycli.adapters.RecyclerItem
 import com.detmir.recycli.annotations.RecyclerState
 
 @RecyclerState
-data class Header(
+data class HeaderItem(
     val id: String,
     val title: String
 ) : RecyclerItem {

@@ -5,7 +5,7 @@ import com.detmir.recycli.adapters.RecyclerItem
 import com.detmir.recycli.annotations.RecyclerState
 
 @RecyclerState
-data class SubTask(
+data class BigTaskItem(
     val id: String,
     val title: String,
     val description: String,

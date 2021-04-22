@@ -13,19 +13,19 @@ import com.detmir.recycli.adapters.RecyclerItem
 import com.detmir.recycli.adapters.RecyclerStateRegular
 import toPx
 
-class Case01SimpleActivity : AppCompatActivity() {
+class Case0200ClickAndStateActivity : AppCompatActivity() {
 
     lateinit var recyclerAdapterRegular: RecyclerAdapterRegular
     lateinit var recyclerView: RecyclerView
 
-    private val onlineUserNames = mutableSetOf(
+    private val onlineUserNames = mutableListOf(
         "James",
         "Mary",
         "Robert",
         "Patricia"
     )
 
-    private val offlineUserNames = mutableSetOf(
+    private val offlineUserNames = mutableListOf(
         "Michael",
         "Linda",
         "William",
@@ -42,14 +42,14 @@ class Case01SimpleActivity : AppCompatActivity() {
             com.detmir.shapes.RecyclerBinderImpl(),
             com.detmir.RecyclerBinderImpl()
         )
-        setContentView(R.layout.activity_case_01)
-
+        setContentView(R.layout.activity_case_0200)
 
         // Common recycler initialization
-        recyclerView = findViewById(R.id.activity_case_01_recycler)
+        recyclerView = findViewById(R.id.activity_case_0200_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerAdapterRegular = RecyclerAdapterRegular()
         recyclerView.adapter = recyclerAdapterRegular
+
 
         //Create Recycli state and populate RecyclerView
         updateRecycler()
@@ -60,14 +60,14 @@ class Case01SimpleActivity : AppCompatActivity() {
         val recyclerItems = mutableListOf<RecyclerItem>()
 
         recyclerItems.add(
-            Header(
+            HeaderItem(
                 id = "HEADER_TASKS",
                 title = "Tasks"
             )
         )
 
         recyclerItems.add(
-            BigTask(
+            BigTaskItem(
                 id = "TASK",
                 title = "This is task title",
                 description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
@@ -76,39 +76,48 @@ class Case01SimpleActivity : AppCompatActivity() {
 
 
         recyclerItems.add(
-            Header(
+            HeaderItem(
                 id = "HEADER_ONLINE_OPERATORS",
-                title = "Online operators"
+                title = "Online operators ${onlineUserNames.size}"
             )
         )
 
         onlineUserNames.forEach {
             recyclerItems.add(
-                User(
+                UserItem(
                     id = it,
                     firstName = it,
-                    online = true
+                    online = true,
+                    onMoveToOffline = {
+                        onlineUserNames.remove(it)
+                        offlineUserNames.add(0, it)
+                        updateRecycler()
+                    }
                 )
             )
         }
 
         recyclerItems.add(
-            Header(
+            HeaderItem(
                 id = "HEADER_OFFLINE_OPERATORS",
-                title = "QA"
+                title = "Offline operators ${offlineUserNames.size}"
             )
         )
 
         offlineUserNames.forEach {
             recyclerItems.add(
-                User(
+                UserItem(
                     id = it,
                     firstName = it,
-                    online = false
+                    online = false,
+                    onMoveToOnline = {
+                        offlineUserNames.remove(it)
+                        onlineUserNames.add(it)
+                        updateRecycler()
+                    }
                 )
             )
         }
-
 
         recyclerAdapterRegular.bindState(recyclerItems)
     }

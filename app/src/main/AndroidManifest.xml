@@ -22,11 +22,11 @@
 
 
         <activity
-            android:name=".Case00Demo"/>
+            android:name=".Case0000Demo"/>
         <activity
-            android:name=".Case01SimpleActivity"/>
+            android:name=".Case0100SimpleActivity"/>
         <activity
-            android:name=".Case02ClickAndStateActivity"/>
+            android:name=".Case0200ClickAndStateActivity"/>
 
     </application>
 

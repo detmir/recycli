@@ -52,20 +52,20 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById<RecyclerView>(R.id.recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val case00Button = findViewById<Button>(R.id.activity_main_00)
-        val case01Button = findViewById<Button>(R.id.activity_main_01)
-        val case02Button = findViewById<Button>(R.id.activity_main_02)
+        val case0000Button = findViewById<Button>(R.id.activity_main_0000)
+        val case0100Button = findViewById<Button>(R.id.activity_main_0100)
+        val case0200Button = findViewById<Button>(R.id.activity_main_0200)
 
-        case00Button.setOnClickListener {
-            startActivity(Intent(this, Case00Demo::class.java))
+        case0000Button.setOnClickListener {
+            startActivity(Intent(this, Case0000Demo::class.java))
         }
 
-        case01Button.setOnClickListener {
-            startActivity(Intent(this, Case01SimpleActivity::class.java))
+        case0100Button.setOnClickListener {
+            startActivity(Intent(this, Case0100SimpleActivity::class.java))
         }
 
-        case02Button.setOnClickListener {
-            startActivity(Intent(this, Case02ClickAndStateActivity::class.java))
+        case0200Button.setOnClickListener {
+            startActivity(Intent(this, Case0200ClickAndStateActivity::class.java))
         }
     }
 

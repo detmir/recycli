@@ -5,7 +5,7 @@ import com.detmir.recycli.adapters.RecyclerItem
 import com.detmir.recycli.annotations.RecyclerState
 
 @RecyclerState
-data class User(
+data class UserItem(
     val id: String,
     val firstName: String,
     val online: Boolean,
