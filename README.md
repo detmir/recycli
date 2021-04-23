@@ -235,7 +235,7 @@ the result:
 
 ![Screenshot_20210423-150530_KKppt3](https://user-images.githubusercontent.com/1109620/115868740-938b2300-a445-11eb-850e-8404e52dab90.png)
 
-
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0101SimpleVHActivity.kt)
 
 
 <a name="license"/>
