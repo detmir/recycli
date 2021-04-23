@@ -21,7 +21,7 @@ class Case0100SimpleActivity : AppCompatActivity() {
             listOf(
                 HeaderItem(
                     id = "HEADER_USERS",
-                    title = "Tasks"
+                    title = "Users"
                 ),
                 UserItem(
                     id = "USER_ANDREW",
