@@ -8,6 +8,7 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies complex mul
 [Installation](#installation)  
 [First steps](#first_steps)  
 [Use Views or ViewHolders](#view_holders)  
+[Reaction on clicks and state changes](#clicks_and_state)  
 [License](#license)  
 
 <a name="installation"/>
@@ -62,7 +63,7 @@ data class UserItem(
 }
 ```
 
-And add two view classes `HeaderItemView` and `UserItemView` that extends any `View` or `ViewGroup` container. Annotate those classes with `@RecyclerItemView` annotation. Also add method with `RecyclerItem` state as parameter and annotate it with `@RecyclerItemStateBinder`.
+And add two view classes `HeaderItemView` and `UserItemView` that extends any `View` or `ViewGroup` container. Annotate those classes with `@RecyclerItemView` annotation. Also add method with recycler item state as parameter and annotate it with `@RecyclerItemStateBinder`.
 
 ```java
 @RecyclerItemView
@@ -128,7 +129,7 @@ class Case0100SimpleActivity : AppCompatActivity() {
             listOf(
                 HeaderItem(
                     id = "HEADER_USERS",
-                    title = "Tasks"
+                    title = "Users"
                 ),
                 UserItem(
                     id = "USER_ANDREW",
@@ -147,7 +148,7 @@ class Case0100SimpleActivity : AppCompatActivity() {
 ```
 And `RecyclerView` will display:
 
-![Screenshot_20210423-135440_KKppt3](https://user-images.githubusercontent.com/1109620/115862192-80278a00-a43c-11eb-8a06-4552ea95001b.png)
+![Screenshot_20210423-151457_KKppt3](https://user-images.githubusercontent.com/1109620/115869752-03e67400-a447-11eb-9d63-0c78e98bb4f7.png)
 
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0100SimpleActivity.kt)
 
@@ -157,7 +158,7 @@ And `RecyclerView` will display:
 
 ## Use Views or ViewHolders
 
-In the example earlier we used classes that extends `ViewGroup` or `View` to provide `RecyclerView` with the corresponding view. In case of you prefer inflate views directly in `RecyclerView.ViewHolder` your can do it with `@RecyclerItemViewHolder` and `@RecyclerItemViewHolderCreator` annotations. See the complete example below.
+In the example earlier we used classes that extends `ViewGroup` or `View` to provide `RecyclerView` with the corresponding view. In case of you prefer inflate views directly in `RecyclerView.ViewHolder` your can do it with `@RecyclerItemViewHolder` and `@RecyclerItemViewHolderCreator` annotations. Note that `@RecyclerItemViewHolderCreator` must be a function located in companion class of `ViewHolder` See the complete example below.
 
 Recycler item state:
 
@@ -237,6 +238,146 @@ the result:
 
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0101SimpleVHActivity.kt)
 
+
+<a name="clicks_and_state"/>
+
+## Reaction on clicks and state changes
+
+Click reaction is handled in MVI manner. Recycler item provides intent via its state function invocation. ViewModel handles the intent, recalculates the state and binds it to adapter. 
+
+Firstly provide recycler item state with click reaction functions:
+
+```java
+@RecyclerItemState
+data class UserItem(
+    val id: String,
+    val firstName: String,
+    val online: Boolean,
+    val onCardClick: ((String) -> Unit)? = null, //Optional
+    val onMoveToOnline: ((String) -> Unit)? = null,
+    val onMoveToOffline: ((String) -> Unit)? = null
+) : RecyclerItem {
+    override fun provideId() = id
+}
+```
+
+Add on click listeners at view:
+
+```java
+@RecyclerItemView
+class UserItemView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+
+    private var userItem: UserItem? = null
+
+    init {
+        LayoutInflater.from(context).inflate(R.layout.user_view, this)
+        layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        clipToPadding = false
+        holder = findViewById(R.id.user_view_status_holder)
+        toOnlineButton = findViewById(R.id.user_view_to_online)
+        toOfflineButton = findViewById(R.id.user_view_to_offline)
+
+        toOnlineButton.setOnClickListener {
+            this.userItem?.let { safeUserItems ->
+                safeUserItems.onMoveToOnline?.invoke(safeUserItems.firstName)
+            }
+        }
+
+        toOfflineButton.setOnClickListener {
+            this.userItem?.let { safeUserItems ->
+                safeUserItems.onMoveToOffline?.invoke(safeUserItems.firstName)
+            }
+        }
+
+        holder.setOnClickListener {
+            this.userItem?.let { safeUserItems ->
+                safeUserItems.onCardClick?.invoke(safeUserItems.firstName)
+            }
+        }
+    }
+
+    @RecyclerItemStateBinder
+    fun bindState(userItem: UserItem) {
+        this.userItem = userItem
+        firstName.text = userItem.firstName
+        toOfflineButton.isVisible = userItem.onMoveToOffline != null && userItem.online
+        toOnlineButton.isVisible = userItem.onMoveToOnline != null && !userItem.online
+    }
+}
+```
+
+At you ViewModel handle the clicks and recreate state if needed:
+
+```java
+private fun updateRecycler() {
+        val recyclerItems = mutableListOf<RecyclerItem>()
+
+        recyclerItems.add(
+            HeaderItem(
+                id = "HEADER_ONLINE_OPERATORS",
+                title = "Online operators ${onlineUserNames.size}"
+            )
+        )
+
+        onlineUserNames.forEach { name ->
+            recyclerItems.add(
+                UserItem(
+                    id = name,
+                    firstName = name,
+                    online = true,
+                    onCardClick = ::cardClicked,
+                    onMoveToOffline = ::moveToOffline
+                )
+            )
+        }
+
+        recyclerItems.add(
+            HeaderItem(
+                id = "HEADER_OFFLINE_OPERATORS",
+                title = "Offline operators ${offlineUserNames.size}"
+            )
+        )
+
+        offlineUserNames.forEach {
+            recyclerItems.add(
+                UserItem(
+                    id = it,
+                    firstName = it,
+                    online = false,
+                    onCardClick = ::cardClicked,
+                    onMoveToOnline = ::moveToOnline
+                )
+            )
+        }
+
+        recyclerAdapter.bindState(recyclerItems)
+    }
+
+    private fun cardClicked(name: String) {
+        Toast.makeText(this, name, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun moveToOffline(name: String) {
+        onlineUserNames.remove(name)
+        offlineUserNames.add(0, name)
+        updateRecycler()
+    }
+
+    private fun moveToOnline(name: String) {
+        offlineUserNames.remove(name)
+        onlineUserNames.add(name)
+        updateRecycler()
+    }
+```
+
+Note, we do all logic inside Activity for simplification purposes
+
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0200ClickAndStateActivity.kt)
 
 <a name="license"/>
 
