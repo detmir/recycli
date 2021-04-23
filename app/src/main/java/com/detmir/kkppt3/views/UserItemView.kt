@@ -42,21 +42,15 @@ class UserItemView @JvmOverloads constructor(
         toOfflineButton = findViewById(R.id.user_view_to_offline)
 
         toOnlineButton.setOnClickListener {
-            this.userItem?.let { safeUserItems ->
-                safeUserItems.onMoveToOnline?.invoke(safeUserItems.firstName)
-            }
+            userItem?.onMoveToOnline?.invoke(userItem?.firstName ?: "")
         }
 
         toOfflineButton.setOnClickListener {
-            this.userItem?.let { safeUserItems ->
-                safeUserItems.onMoveToOffline?.invoke(safeUserItems.firstName)
-            }
+            userItem?.onMoveToOffline?.invoke(userItem?.firstName ?: "")
         }
 
         holder.setOnClickListener {
-            this.userItem?.let { safeUserItems ->
-                safeUserItems.onCardClick?.invoke(safeUserItems.firstName)
-            }
+            userItem?.onCardClick?.invoke(userItem?.firstName ?: "")
         }
     }
 

@@ -12,25 +12,12 @@ import com.detmir.recycli.adapters.RecyclerItem
 
 class Case0200ClickAndStateActivity : AppCompatActivity() {
 
-    lateinit var recyclerAdapter: RecyclerAdapter
+
     lateinit var recyclerView: RecyclerView
 
-    private val onlineUserNames = mutableListOf(
-        "James",
-        "Mary",
-        "Robert",
-        "Patricia"
-    )
-
-    private val offlineUserNames = mutableListOf(
-        "Michael",
-        "Linda",
-        "William",
-        "Elizabeth",
-        "David",
-        "Barbara",
-        "Richard"
-    )
+    lateinit var recyclerAdapter: RecyclerAdapter
+    private val onlineUserNames = mutableListOf("James","Mary","Robert","Patricia")
+    private val offlineUserNames = mutableListOf("Michael","Linda","William","Elizabeth","David")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
