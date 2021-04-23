@@ -56,8 +56,7 @@ data class HeaderItem(
 @RecyclerItemState
 data class UserItem(
     val id: String,
-    val firstName: String,
-    val online: Boolean
+    val firstName: String
 ) : RecyclerItem {
     override fun provideId() = id
 }
@@ -92,20 +91,15 @@ class UserItemView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private val firstName: TextView
-    private val status: FrameLayout
 
     init {
         LayoutInflater.from(context).inflate(R.layout.user_view, this)
         firstName = findViewById(R.id.user_view_first_name)
-        status = findViewById(R.id.user_view_status)
     }
 
     @RecyclerItemStateBinder
     fun bindState(userItem: UserItem) {
         firstName.text = userItem.firstName
-        @ColorRes val color = if (userItem.online) R.color.recycliGreen else R.color.recycliRed
-        status.backgroundTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(context, color))
     }
 }
 ```
@@ -119,7 +113,6 @@ Note that RecyclerBinderImpl is passed as parameter to RecyclerAdapter - this cl
 class Case0100SimpleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_case_0100)
         val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0100_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
@@ -188,12 +181,6 @@ class ServerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         @RecyclerItemViewHolderCreator
         fun provideViewHolder(context: Context): ServerItemViewHolder {
             val view = LayoutInflater.from(context).inflate(R.layout.server_item_view, null)
-                .apply {
-                    layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    )
-                }
             return ServerItemViewHolder(view)
         }
     }
@@ -206,7 +193,6 @@ Bind items to `RecyclerView`:
 class Case0101SimpleVHActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_case_0101)
         val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0101_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
@@ -252,7 +238,6 @@ Firstly provide recycler item state with click reaction functions:
 data class UserItem(
     val id: String,
     val firstName: String,
-    val online: Boolean,
     val onCardClick: ((String) -> Unit)? = null, //Optional
     val onMoveToOnline: ((String) -> Unit)? = null,
     val onMoveToOffline: ((String) -> Unit)? = null
@@ -273,31 +258,20 @@ class UserItemView @JvmOverloads constructor(
 
     init {
         LayoutInflater.from(context).inflate(R.layout.user_view, this)
-        layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        clipToPadding = false
         holder = findViewById(R.id.user_view_status_holder)
         toOnlineButton = findViewById(R.id.user_view_to_online)
         toOfflineButton = findViewById(R.id.user_view_to_offline)
-
+        
         toOnlineButton.setOnClickListener {
-            this.userItem?.let { safeUserItems ->
-                safeUserItems.onMoveToOnline?.invoke(safeUserItems.firstName)
-            }
+            userItem?.onMoveToOnline?.invoke(userItem?.firstName ?: "")
         }
 
         toOfflineButton.setOnClickListener {
-            this.userItem?.let { safeUserItems ->
-                safeUserItems.onMoveToOffline?.invoke(safeUserItems.firstName)
-            }
+            userItem?.onMoveToOffline?.invoke(userItem?.firstName ?: "")
         }
 
         holder.setOnClickListener {
-            this.userItem?.let { safeUserItems ->
-                safeUserItems.onCardClick?.invoke(safeUserItems.firstName)
-            }
+            userItem?.onCardClick?.invoke(userItem?.firstName ?: "")
         }
     }
 
@@ -305,8 +279,6 @@ class UserItemView @JvmOverloads constructor(
     fun bindState(userItem: UserItem) {
         this.userItem = userItem
         firstName.text = userItem.firstName
-        toOfflineButton.isVisible = userItem.onMoveToOffline != null && userItem.online
-        toOnlineButton.isVisible = userItem.onMoveToOnline != null && !userItem.online
     }
 }
 ```
@@ -314,6 +286,10 @@ class UserItemView @JvmOverloads constructor(
 At you ViewModel handle the clicks and recreate state if needed:
 
 ```java
+lateinit var recyclerAdapter: RecyclerAdapter
+private val onlineUserNames = mutableListOf("James","Mary","Robert","Patricia")
+private val offlineUserNames = mutableListOf("Michael","Linda","William","Elizabeth","David")
+
 private fun updateRecycler() {
         val recyclerItems = mutableListOf<RecyclerItem>()
 
@@ -376,6 +352,8 @@ private fun updateRecycler() {
 ```
 
 Note, we do all logic inside Activity for simplification purposes
+
+![ezgif-3-86f646059c0c](https://user-images.githubusercontent.com/1109620/115876453-00ef8180-a44f-11eb-835e-2331cd375759.gif)
 
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0200ClickAndStateActivity.kt)
 
