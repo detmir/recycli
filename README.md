@@ -7,6 +7,7 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies complex mul
 ## Table of Contents  
 [Installation](#installation)  
 [First steps](#first_steps)  
+[Use Views or ViewHolders](#view_holders)  
 [License](#license)  
 
 <a name="installation"/>
@@ -61,7 +62,7 @@ data class UserItem(
 }
 ```
 
-And add two view classes `HeaderItemView` and `UserItemView` that extends any `View` or `ViewGroup` container. Annotate those classes with `@RecyclerItemView` annotation. And add method with items state as parameter and annotate it with `@RecyclerItemStateBinder`.
+And add two view classes `HeaderItemView` and `UserItemView` that extends any `View` or `ViewGroup` container. Annotate those classes with `@RecyclerItemView` annotation. Also add method with `RecyclerItem` state as parameter and annotate it with `@RecyclerItemStateBinder`.
 
 ```java
 @RecyclerItemView
@@ -144,12 +145,97 @@ class Case0100SimpleActivity : AppCompatActivity() {
     }
 } 
 ```
-And RecyclerView will display:
+And `RecyclerView` will display:
 
 ![Screenshot_20210423-135440_KKppt3](https://user-images.githubusercontent.com/1109620/115862192-80278a00-a43c-11eb-8a06-4552ea95001b.png)
 
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0100SimpleActivity.kt)
 
+
+
+<a name="view_holders"/>
+
+## Use Views or ViewHolders
+
+In the example earlier we used classes that extends `ViewGroup` or `View` to provide `RecyclerView` with the corresponding view. In case of you prefer inflate views directly in `RecyclerView.ViewHolder` your can do it with `@RecyclerItemViewHolder` and `@RecyclerItemViewHolderCreator` annotations. See the complete example below.
+
+Recycler item state:
+
+```java
+@RecyclerItemState
+data class ServerItem(
+    val id: String,
+    val serverAddress: String
+) : RecyclerItem {
+    override fun provideId() = id
+}
+```
+
+View holder that can bind `ServerItem` state:
+
+```java
+@RecyclerItemViewHolder
+class ServerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private val serverAddress: TextView = view.findViewById(R.id.server_item_title)
+
+    @RecyclerItemStateBinder
+    fun bindState(serverItem: ServerItem) {
+        serverAddress.text = serverItem.serverAddress
+    }
+
+    companion object {
+        @RecyclerItemViewHolderCreator
+        fun provideViewHolder(context: Context): ServerItemViewHolder {
+            val view = LayoutInflater.from(context).inflate(R.layout.server_item_view, null)
+                .apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                }
+            return ServerItemViewHolder(view)
+        }
+    }
+}
+```
+
+Bind items to `RecyclerView`:
+
+```java
+class Case0101SimpleVHActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_case_0101)
+        val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0101_recycler)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        val recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
+        recyclerView.adapter = recyclerAdapter
+
+        recyclerAdapter.bindState(
+            listOf(
+                HeaderItem(
+                    id = "HEADER_SERVERS",
+                    title = "Servers"
+                ),
+                ServerItem(
+                    id = "SERVER1",
+                    serverAddress = "124.45.22.12"
+                ),
+                ServerItem(
+                    id = "SERVER2",
+                    serverAddress = "90.0.0.28"
+                )
+            )
+        )
+    }
+}
+```
+
+the result:
+
+![Screenshot_20210423-150530_KKppt3](https://user-images.githubusercontent.com/1109620/115868740-938b2300-a445-11eb-850e-8404e52dab90.png)
+
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0101SimpleVHActivity.kt)
 
 
 <a name="license"/>
