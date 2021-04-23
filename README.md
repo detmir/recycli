@@ -363,9 +363,10 @@ Note, we do all logic inside Activity for simplification purposes
 
 ## Sealed classes as states
 
-Its common to use sealed classes as UI states. You can create sealed class items and bind it easily.
+Its common to use sealed classes as UI states. You can create sealed class state items and bind it easily.
 
 Create sealed class:
+
 ```java
 @RecyclerItemState
 sealed class ProjectItem : RecyclerItem {
@@ -400,7 +401,23 @@ sealed class ProjectItem : RecyclerItem {
 }
 ```
 
-Bind states to adapter
+Use Kotlin `when` to handle different seaeled class states:
+
+```java
+@RecyclerItemStateBinder
+    fun bindState(projectItem: ProjectItem) {
+        projectTitle.text = projectItem.title
+        when (projectItem) {
+            is ProjectItem.Failed -> projectDescription.text = "Failed"
+            is ProjectItem.New -> projectDescription.text = "New"
+            is ProjectItem.Done.AfterDeadline -> projectDescription.text = "After deadline"
+            is ProjectItem.Done.BeforeDeadline -> projectDescription.text = "Before deadline"
+        }
+    }
+```
+
+Create and bind recycler state:
+
 ```java
 recyclerAdapter.bindState(
             listOf(
@@ -427,19 +444,6 @@ recyclerAdapter.bindState(
 ```
 
 
-Use when to handle different seaeled class states:
-```java
-@RecyclerItemStateBinder
-    fun bindState(projectItem: ProjectItem) {
-        projectTitle.text = projectItem.title
-        when (projectItem) {
-            is ProjectItem.Failed -> projectDescription.text = "Failed"
-            is ProjectItem.New -> projectDescription.text = "New"
-            is ProjectItem.Done.AfterDeadline -> projectDescription.text = "After deadline"
-            is ProjectItem.Done.BeforeDeadline -> projectDescription.text = "Before deadline"
-        }
-    }
-```
 
 ![Screenshot_20210423-170301_KKppt3](https://user-images.githubusercontent.com/1109620/115882923-e967c700-a455-11eb-8bcc-3990b9a740fb.png)
 
