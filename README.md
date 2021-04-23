@@ -381,6 +381,8 @@ private fun updateRecycler() {
 
 Note, we do all logic inside Activity for simplification purposes
 
+![ezgif-3-86f646059c0c](https://user-images.githubusercontent.com/1109620/115876453-00ef8180-a44f-11eb-835e-2331cd375759.gif)
+
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0200ClickAndStateActivity.kt)
 
 <a name="license"/>
