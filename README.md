@@ -243,7 +243,7 @@ the result:
 
 ## Reaction on clicks and state changes
 
-Click reaction is handled in MVI manner. Recycler item provides intent via its state function invocation. ViewModel handles the clicks, recalculates the state and binds it to adapter. 
+Click reaction is handled in MVI manner. Recycler item provides intent via its state function invocation. ViewModel handles the intent, recalculates the state and binds it to adapter. 
 
 Firstly provide recycler item state with click reaction functions:
 
