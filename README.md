@@ -261,17 +261,17 @@ class UserItemView @JvmOverloads constructor(
         holder = findViewById(R.id.user_view_status_holder)
         toOnlineButton = findViewById(R.id.user_view_to_online)
         toOfflineButton = findViewById(R.id.user_view_to_offline)
-
+        
         toOnlineButton.setOnClickListener {
             userItem?.onMoveToOnline?.invoke(userItem?.firstName ?: "")
         }
 
         toOfflineButton.setOnClickListener {
-            userItem?.onMoveToOnline?.invoke(userItem?.firstName ?: "")
+            userItem?.onMoveToOffline?.invoke(userItem?.firstName ?: "")
         }
 
         holder.setOnClickListener {
-            userItem?.onMoveToOnline?.invoke(userItem?.firstName ?: "")
+            userItem?.onCardClick?.invoke(userItem?.firstName ?: "")
         }
     }
 
