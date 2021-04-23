@@ -38,6 +38,12 @@
                 android:text="Case: 01 00 - Simple"/>
 
             <Button
+                android:id="@+id/activity_main_0101"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Case: 01 01 - Simple View Holder"/>
+
+            <Button
                 android:id="@+id/activity_main_0200"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

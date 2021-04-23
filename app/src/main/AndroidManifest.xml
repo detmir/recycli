@@ -26,6 +26,8 @@
         <activity
             android:name=".Case0100SimpleActivity"/>
         <activity
+            android:name=".Case0101SimpleVHActivity"/>
+        <activity
             android:name=".Case0200ClickAndStateActivity"/>
 
     </application>
