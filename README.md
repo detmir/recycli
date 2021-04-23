@@ -62,7 +62,7 @@ data class UserItem(
 }
 ```
 
-And add two view classes `HeaderItemView` and `UserItemView` that extends any `View` or `ViewGroup` container. Annotate those classes with `@RecyclerItemView` annotation. Also add method with `RecyclerItem` state as parameter and annotate it with `@RecyclerItemStateBinder`.
+And add two view classes `HeaderItemView` and `UserItemView` that extends any `View` or `ViewGroup` container. Annotate those classes with `@RecyclerItemView` annotation. Also add method with recycler item state as parameter and annotate it with `@RecyclerItemStateBinder`.
 
 ```java
 @RecyclerItemView
