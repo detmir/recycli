@@ -12,7 +12,7 @@ import com.detmir.recycli.adapters.RecyclerItem
 
 class Case0200ClickAndStateActivity : AppCompatActivity() {
 
-    lateinit var recyclerAdapterRegular: RecyclerAdapter
+    lateinit var recyclerAdapter: RecyclerAdapter
     lateinit var recyclerView: RecyclerView
 
     private val onlineUserNames = mutableListOf(
@@ -37,8 +37,8 @@ class Case0200ClickAndStateActivity : AppCompatActivity() {
         setContentView(R.layout.activity_case_0200)
         recyclerView = findViewById(R.id.activity_case_0200_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerAdapterRegular = RecyclerAdapter(setOf(RecyclerBinderImpl()))
-        recyclerView.adapter = recyclerAdapterRegular
+        recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
+        recyclerView.adapter = recyclerAdapter
         updateRecycler()
     }
 
@@ -84,7 +84,7 @@ class Case0200ClickAndStateActivity : AppCompatActivity() {
             )
         }
 
-        recyclerAdapterRegular.bindState(recyclerItems)
+        recyclerAdapter.bindState(recyclerItems)
     }
 
     private fun cardClicked(name: String) {
