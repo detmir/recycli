@@ -28,7 +28,7 @@ class Case0300Sealed : AppCompatActivity() {
                 ),
                 ProjectItem.New(
                     id = "NEW",
-                    title = "Failed project"
+                    title = "New project"
                 ),
                 ProjectItem.Done.BeforeDeadline(
                     id = "BEFORE_DEAD_LINE",
