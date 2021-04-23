@@ -8,6 +8,7 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies complex mul
 [Installation](#installation)  
 [First steps](#first_steps)  
 [Use Views or ViewHolders](#view_holders)  
+[Reaction on clicks and state changes](#clicks_and_state)  
 [License](#license)  
 
 <a name="installation"/>
@@ -237,6 +238,26 @@ the result:
 
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0101SimpleVHActivity.kt)
 
+
+<a name="clicks_and_state"/>
+
+## Reaction on clicks and state changes
+
+To handle item clicks provide recycler item state with click reaction functions:
+
+```java
+@RecyclerItemState
+data class UserItem(
+    val id: String,
+    val firstName: String,
+    val online: Boolean,
+    val onCardClick: ((String) -> Unit)? = null, //Optional
+    val onMoveToOnline: ((String) -> Unit)? = null,
+    val onMoveToOffline: ((String) -> Unit)? = null
+) : RecyclerItem {
+    override fun provideId() = id
+}
+```
 
 <a name="license"/>
 
