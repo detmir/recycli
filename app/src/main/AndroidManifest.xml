@@ -29,6 +29,8 @@
             android:name=".Case0101SimpleVHActivity"/>
         <activity
             android:name=".Case0200ClickAndStateActivity"/>
+        <activity
+            android:name=".Case0300Sealed"/>
 
     </application>
 

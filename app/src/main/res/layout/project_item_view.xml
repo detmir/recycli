@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.FrameLayout">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_rounded_white_16"
+            android:elevation="8dp"
+            android:foreground="@drawable/ripple_rounded_16dp"
+            android:clickable="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
+            android:padding="16dp">
+
+                <FrameLayout
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:background="@drawable/background_rounded_white_8"
+                    android:backgroundTint="@color/recycliGreen"/>
+                <FrameLayout
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="24dp"
+                    android:background="@drawable/background_rounded_white_8"
+                    android:backgroundTint="@color/recycliRed"/>
+
+                <FrameLayout
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="48dp"
+                    android:background="@drawable/background_rounded_white_8"
+                    android:backgroundTint="@color/recycliPurple"/>
+
+                <TextView
+                    android:id="@+id/project_item_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:textColor="#000"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    tools:text="User 1" />
+
+                <TextView
+                    android:id="@+id/project_item_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="64dp"
+                    android:textColor="#4A4A4A"
+                    android:textSize="14dp"
+                    tools:text="User 1" />
+        </FrameLayout>
+
+</merge>

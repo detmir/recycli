@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         val case0100Button = findViewById<Button>(R.id.activity_main_0100)
         val case0101Button = findViewById<Button>(R.id.activity_main_0101)
         val case0200Button = findViewById<Button>(R.id.activity_main_0200)
+        val case0300Button = findViewById<Button>(R.id.activity_main_0300)
 
         case0000Button.setOnClickListener {
             startActivity(Intent(this, Case0000Demo::class.java))
@@ -71,6 +72,10 @@ class MainActivity : AppCompatActivity() {
 
         case0200Button.setOnClickListener {
             startActivity(Intent(this, Case0200ClickAndStateActivity::class.java))
+        }
+
+        case0300Button.setOnClickListener {
+            startActivity(Intent(this, Case0300Sealed::class.java))
         }
     }
 
