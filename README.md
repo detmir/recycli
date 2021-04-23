@@ -38,7 +38,7 @@ dependencies {
 <a name="first_steps"/>
 
 ## First steps
-First create kotlin data class with recycler item state:
+First create Kotlin data class with recycler item state:
 ```kotlin
 @RecyclerState
 data class UserItem(
