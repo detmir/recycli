@@ -314,6 +314,10 @@ class UserItemView @JvmOverloads constructor(
 At you ViewModel handle the clicks and recreate state if needed:
 
 ```java
+lateinit var recyclerAdapter: RecyclerAdapter
+private val onlineUserNames = mutableListOf("James","Mary","Robert","Patricia")
+private val offlineUserNames = mutableListOf("Michael","Linda","William","Elizabeth","David")
+
 private fun updateRecycler() {
         val recyclerItems = mutableListOf<RecyclerItem>()
 
