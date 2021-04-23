@@ -401,10 +401,15 @@ sealed class ProjectItem : RecyclerItem {
 }
 ```
 
-Use Kotlin `when` to handle different seaeled class states:
+Use Kotlin `when` to handle different sealed class states:
 
 ```java
-@RecyclerItemStateBinder
+@RecyclerItemView
+class ProjectItemView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+
+    @RecyclerItemStateBinder
     fun bindState(projectItem: ProjectItem) {
         projectTitle.text = projectItem.title
         when (projectItem) {
@@ -414,6 +419,7 @@ Use Kotlin `when` to handle different seaeled class states:
             is ProjectItem.Done.BeforeDeadline -> projectDescription.text = "Before deadline"
         }
     }
+}
 ```
 
 Create and bind recycler state:
