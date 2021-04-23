@@ -23,6 +23,8 @@ class UserItemView @JvmOverloads constructor(
     private val toOnlineButton: TextView
     private val toOfflineButton: TextView
     private val status: FrameLayout
+    private val holder: FrameLayout
+
 
     private var userItem: UserItem? = null
 
@@ -35,19 +37,26 @@ class UserItemView @JvmOverloads constructor(
         clipToPadding = false
         firstName = findViewById(R.id.user_view_first_name)
         status = findViewById(R.id.user_view_status)
+        holder = findViewById(R.id.user_view_status_holder)
         toOnlineButton = findViewById(R.id.user_view_to_online)
         toOfflineButton = findViewById(R.id.user_view_to_offline)
 
         toOnlineButton.setOnClickListener {
-            this.userItem?.onMoveToOnline?.invoke()
+            this.userItem?.let { safeUserItems ->
+                safeUserItems.onMoveToOnline?.invoke(safeUserItems.firstName)
+            }
         }
 
         toOfflineButton.setOnClickListener {
-            this.userItem?.onMoveToOffline?.invoke()
+            this.userItem?.let { safeUserItems ->
+                safeUserItems.onMoveToOffline?.invoke(safeUserItems.firstName)
+            }
         }
 
-        setOnClickListener {
-            this.userItem?.onCardClick?.invoke()
+        holder.setOnClickListener {
+            this.userItem?.let { safeUserItems ->
+                safeUserItems.onCardClick?.invoke(safeUserItems.firstName)
+            }
         }
     }
 

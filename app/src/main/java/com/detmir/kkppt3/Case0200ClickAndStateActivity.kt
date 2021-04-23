@@ -1,9 +1,11 @@
 package com.detmir.kkppt3
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.detmir.RecyclerBinderImpl
 import com.detmir.kkppt3.views.*
 import com.detmir.recycli.adapters.RecyclerAdapter
 import com.detmir.recycli.adapters.RecyclerItem
@@ -32,21 +34,11 @@ class Case0200ClickAndStateActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        RecyclerAdapter.staticBinders = setOf(
-            com.detmir.ui.RecyclerBinderImpl(),
-            com.detmir.shapes.RecyclerBinderImpl(),
-            com.detmir.RecyclerBinderImpl()
-        )
         setContentView(R.layout.activity_case_0200)
-
-        // Common recycler initialization
         recyclerView = findViewById(R.id.activity_case_0200_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerAdapterRegular = RecyclerAdapter()
+        recyclerAdapterRegular = RecyclerAdapter(setOf(RecyclerBinderImpl()))
         recyclerView.adapter = recyclerAdapterRegular
-
-
-        //Create Recycli state and populate RecyclerView
         updateRecycler()
     }
 
@@ -56,38 +48,19 @@ class Case0200ClickAndStateActivity : AppCompatActivity() {
 
         recyclerItems.add(
             HeaderItem(
-                id = "HEADER_TASKS",
-                title = "Tasks"
-            )
-        )
-
-        recyclerItems.add(
-            BigTaskItem(
-                id = "TASK",
-                title = "This is task title",
-                description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
-            )
-        )
-
-
-        recyclerItems.add(
-            HeaderItem(
                 id = "HEADER_ONLINE_OPERATORS",
                 title = "Online operators ${onlineUserNames.size}"
             )
         )
 
-        onlineUserNames.forEach {
+        onlineUserNames.forEach { name ->
             recyclerItems.add(
                 UserItem(
-                    id = it,
-                    firstName = it,
+                    id = name,
+                    firstName = name,
                     online = true,
-                    onMoveToOffline = {
-                        onlineUserNames.remove(it)
-                        offlineUserNames.add(0, it)
-                        updateRecycler()
-                    }
+                    onCardClick = ::cardClicked,
+                    onMoveToOffline = ::moveToOffline
                 )
             )
         }
@@ -105,15 +78,28 @@ class Case0200ClickAndStateActivity : AppCompatActivity() {
                     id = it,
                     firstName = it,
                     online = false,
-                    onMoveToOnline = {
-                        offlineUserNames.remove(it)
-                        onlineUserNames.add(it)
-                        updateRecycler()
-                    }
+                    onCardClick = ::cardClicked,
+                    onMoveToOnline = ::moveToOnline
                 )
             )
         }
 
         recyclerAdapterRegular.bindState(recyclerItems)
+    }
+
+    private fun cardClicked(name: String) {
+        Toast.makeText(this, name, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun moveToOffline(name: String) {
+        onlineUserNames.remove(name)
+        offlineUserNames.add(0, name)
+        updateRecycler()
+    }
+
+    private fun moveToOnline(name: String) {
+        offlineUserNames.remove(name)
+        onlineUserNames.add(name)
+        updateRecycler()
     }
 }

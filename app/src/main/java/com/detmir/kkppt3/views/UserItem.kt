@@ -8,9 +8,9 @@ data class UserItem(
     val id: String,
     val firstName: String,
     val online: Boolean,
-    val onCardClick: (() -> Unit)? = null, //Optional
-    val onMoveToOnline: (() -> Unit)? = null,
-    val onMoveToOffline: (() -> Unit)? = null
+    val onCardClick: ((String) -> Unit)? = null, //Optional
+    val onMoveToOnline: ((String) -> Unit)? = null,
+    val onMoveToOffline: ((String) -> Unit)? = null
 ) : RecyclerItem {
     override fun provideId() = id
 }
