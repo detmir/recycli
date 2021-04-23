@@ -28,9 +28,9 @@ plugins {
 }
 
 dependencies {
-    implementation 'com.detmir.recycli:adapters:1.0.3'
-    compileOnly 'com.detmir.recycli:annotations:1.0.3'
-    kapt 'com.detmir.recycli:processors:1.0.3'
+    implementation 'com.detmir.recycli:adapters:1.0.4'
+    compileOnly 'com.detmir.recycli:annotations:1.0.4'
+    kapt 'com.detmir.recycli:processors:1.0.4'
 }
 
 ```
