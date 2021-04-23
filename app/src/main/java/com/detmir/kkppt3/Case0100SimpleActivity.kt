@@ -9,37 +9,30 @@ import com.detmir.kkppt3.views.*
 import com.detmir.recycli.adapters.RecyclerAdapter
 
 class Case0100SimpleActivity : AppCompatActivity() {
-
-    private val recyclerAdapterRegular = RecyclerAdapter(setOf(RecyclerBinderImpl()))
-    private lateinit var recyclerView: RecyclerView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_case_0100)
-
-        // Common recycler initialization
-        recyclerView = findViewById(R.id.activity_case_0100_recycler)
+        val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0100_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = recyclerAdapterRegular
+        val recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
+        recyclerView.adapter = recyclerAdapter
 
-        recyclerAdapterRegular.bindState(
+        recyclerAdapter.bindState(
             listOf(
                 HeaderItem(
-                    id = "HEADER_TASKS",
+                    id = "HEADER_USERS",
                     title = "Tasks"
                 ),
-                BigTaskItem(
-                    id = "TASK",
-                    title = "This is task title",
-                    description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
-                ),
                 UserItem(
-                    id = "USER",
+                    id = "USER_ANDREW",
                     firstName = "Andrew",
                     online = true
+                ),
+                UserItem(
+                    id = "USER_MAX",
+                    firstName = "Max",
+                    online = true
                 )
-
             )
         )
     }
