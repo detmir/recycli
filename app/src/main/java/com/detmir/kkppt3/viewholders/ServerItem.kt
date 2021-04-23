@@ -6,7 +6,7 @@ import com.detmir.recycli.annotations.RecyclerItemState
 @RecyclerItemState
 data class ServerItem(
     val id: String,
-    val serverAdress: String
+    val serverAddress: String
 ) : RecyclerItem {
     override fun provideId() = id
 }

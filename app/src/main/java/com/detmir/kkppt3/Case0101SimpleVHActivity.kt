@@ -26,11 +26,11 @@ class Case0101SimpleVHActivity : AppCompatActivity() {
                 ),
                 ServerItem(
                     id = "SERVER1",
-                    serverAdress = "124.45.22.12"
+                    serverAddress = "124.45.22.12"
                 ),
                 ServerItem(
                     id = "SERVER2",
-                    serverAdress = "90.0.0.28"
+                    serverAddress = "90.0.0.28"
                 )
             )
         )

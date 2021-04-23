@@ -17,7 +17,7 @@ class ServerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     @RecyclerItemStateBinder
     fun bindState(serverItem: ServerItem) {
-        serverAddress.text = serverItem.serverAdress
+        serverAddress.text = serverItem.serverAddress
     }
 
     companion object {
