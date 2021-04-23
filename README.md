@@ -128,7 +128,7 @@ class Case0100SimpleActivity : AppCompatActivity() {
             listOf(
                 HeaderItem(
                     id = "HEADER_USERS",
-                    title = "Tasks"
+                    title = "Users"
                 ),
                 UserItem(
                     id = "USER_ANDREW",
@@ -147,7 +147,7 @@ class Case0100SimpleActivity : AppCompatActivity() {
 ```
 And `RecyclerView` will display:
 
-![Screenshot_20210423-135440_KKppt3](https://user-images.githubusercontent.com/1109620/115862192-80278a00-a43c-11eb-8a06-4552ea95001b.png)
+![Screenshot_20210423-151457_KKppt3](https://user-images.githubusercontent.com/1109620/115869752-03e67400-a447-11eb-9d63-0c78e98bb4f7.png)
 
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0100SimpleActivity.kt)
 
