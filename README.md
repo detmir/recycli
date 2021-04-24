@@ -12,6 +12,7 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies complex mul
 [Sealed classes as states](#sealed)  
 [Sealed classes and binding functions](#sealed_binfing)  
 [One item state and several views](#one_several)  
+[Horizontal sub lists](#horizontal)  
 [License](#license)  
 
 <a name="installation"/>
@@ -605,6 +606,98 @@ class DemoActivity : AppCompatActivity() {
 ![Screenshot_20210424-214134_KKppt3](https://user-images.githubusercontent.com/1109620/115969528-02e83c00-a546-11eb-8787-43918cf84a69.png)
 
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0400IntoView.kt)
+
+
+<a name="horizontal"/>
+
+## Horizontal sub lists
+
+It's common to have horizontal scrollig lists inside vertical scrolling container and recycli supports this feature. 
+Firstly create container state and view:
+
+```java
+@RecyclerItemState
+data class SimpleContainerItem(
+    val id: String,
+    val recyclerState: List<RecyclerItem>
+): RecyclerItem {
+    override fun provideId(): String {
+        return id
+    }
+}
+```
+
+```java
+@RecyclerItemView
+class SimpleContainerItemView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+    private val recycler: RecyclerView
+    private val recyclerAdapter: RecyclerAdapter
+
+    init {
+        val view =
+            LayoutInflater.from(context).inflate(R.layout.simple_recycler_conteiner_view, this, true)
+        layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        recyclerAdapter = RecyclerAdapter()
+        recycler = view.findViewById(R.id.simple_recycler_container_recycler)
+
+        recycler.run {
+            isNestedScrollingEnabled = false
+            layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+            adapter = recyclerAdapter
+        }
+    }
+
+    @RecyclerItemStateBinder
+    fun bindState(state: SimpleContainerItem) {
+        recyclerAdapter.bindState(state.recyclerState)
+    }
+}
+```
+
+Now populate recycler items and sub list items as ususual
+
+```java
+class Case0500Horizontal : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+        recyclerAdapter.bindState(
+            listOf(
+                HeaderItem(
+                    id = "HEADER_SUB_TASKS",
+                    title = "Subtasks"
+                ),
+                SimpleContainerItem(
+                    id = "SUB_TASKS_CONTAINER",
+                    recyclerState = (0..100).map {
+                        SubTaskItem(
+                            id = "SUB_TASK_$it",
+                            title = "Sub task $it",
+                            description = "It is a long established ..."
+                        )
+                    }
+                ),
+                BigTaskItem(
+                    id = "TASK",
+                    title = "The second task title",
+                    description = "It is a long established ..."
+                )
+            )
+        )
+    }
+}
+```
+
+![ezgif-2-9cf09cc92026](https://user-images.githubusercontent.com/1109620/115970440-0500c980-a54b-11eb-857f-9c955b7cb371.gif)
+
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0500Horizontal.kt)
+
+
 
 <a name="license"/>
 
