@@ -10,6 +10,7 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies complex mul
 [Use Views or ViewHolders](#view_holders)  
 [Reaction on clicks and state changes](#clicks_and_state)  
 [Sealed classes as states](#sealed)  
+[Sealed classes and binding functions](#sealed_binfing)  
 [License](#license)  
 
 <a name="installation"/>
@@ -454,6 +455,55 @@ recyclerAdapter.bindState(
 ![Screenshot_20210423-170301_KKppt3](https://user-images.githubusercontent.com/1109620/115882923-e967c700-a455-11eb-8bcc-3990b9a740fb.png)
 
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0300Sealed.kt)
+
+
+<a name="sealed_binfing"/>
+
+## Sealed classes and binding functions
+
+You can create binding functions for every sub class of sealed state (or even for sealed sub classes of sealed class):
+
+```java
+@RecyclerItemView
+class PipeLineItemView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+    ... 
+    @RecyclerItemStateBinder
+    fun bindState(input: PipeLineItem.Input) {
+        destination.text = input.from
+    }
+
+
+    @RecyclerItemStateBinder
+    fun bindState(output: PipeLineItem.Output) {
+        destination.text = output.to
+    }
+}
+```
+
+```java
+@RecyclerItemState
+sealed class PipeLineItem : RecyclerItem {
+    data class Input(
+        val id: String,
+        val from: String
+    ) : PipeLineItem() {
+        override fun provideId() = id
+    }
+
+    data class Output(
+        val id: String,
+        val to: String
+    ) : PipeLineItem() {
+        override fun provideId() = id
+    }
+}
+```
+
+![Screenshot_20210424-202727_KKppt3](https://user-images.githubusercontent.com/1109620/115967675-96b50a80-a53c-11eb-8f79-e681d358f1f0.png)
+
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0301SealedSeveralBinds.kt)
 
 <a name="license"/>
 
