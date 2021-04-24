@@ -11,6 +11,7 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies complex mul
 [Reaction on clicks and state changes](#clicks_and_state)  
 [Sealed classes as states](#sealed)  
 [Sealed classes and binding functions](#sealed_binfing)  
+[One item state and several views](#one_several)  
 [License](#license)  
 
 <a name="installation"/>
@@ -501,6 +502,109 @@ class PipeLineItemView @JvmOverloads constructor(
 
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0301SealedSeveralBinds.kt)
 
+
+
+<a name="one_several"/>
+
+## One item state and several views
+
+Sometimes we need several view variants for one recycler item state class. You can define which view to use by overriding `withView()` method of `RecyclerItem`
+
+```java
+@RecyclerItemState
+data class CloudItem(
+    val id: String,
+    val serverName: String,
+    val intoView: Class<out Any>
+) : RecyclerItem {
+    override fun provideId() = id
+    override fun withView() = intoView
+}
+```
+
+Create several views or view holders that can bind CloudItem:
+
+```java
+@RecyclerItemView
+class CloudAzureItemView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+    ....
+    @RecyclerItemStateBinder
+    fun bindState(cloudItem: CloudItem) {
+        name.text = cloudItem.serverName
+    }
+}
+```
+
+```java
+@RecyclerItemView
+class CloudAmazonItemView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+    ....
+    @RecyclerItemStateBinder
+    fun bindState(cloudItem: CloudItem) {
+        name.text = cloudItem.serverName
+    }
+}
+```
+
+```java
+@RecyclerItemViewHolder
+class DigitalOceanViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    @RecyclerItemStateBinder
+    fun bindState(cloudItem: CloudItem) {
+        name.text = cloudItem.serverName
+    }
+
+    companion object {
+        @RecyclerItemViewHolderCreator
+        fun provideViewHolder(context: Context): DigitalOceanViewHolder {
+            return DigitalOceanViewHolder(LayoutInflater.from(context).inflate(R.layout.cloud_digital_ocean_item_view, null))
+        }
+    }
+}
+```
+
+And fill adapter with items:
+
+```java
+class DemoActivity : AppCompatActivity() {
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ....
+        recyclerAdapter.bindState(
+            listOf(
+                CloudItem(
+                    id = "GOOGLE",
+                    serverName = "Google server",
+                    intoView = CloudGoogleItemView::class.java
+                ),
+                CloudItem(
+                    id = "AMAZON",
+                    serverName = "Amazon server",
+                    intoView = CloudAmazonItemView::class.java
+                ),
+                CloudItem(
+                    id = "AZURE",
+                    serverName = "Azure server",
+                    intoView = CloudAzureItemView::class.java
+                ),
+                CloudItem(
+                    id = "DIGITAL_OCEAN",
+                    serverName = "Digital ocean server",
+                    intoView = DigitalOceanViewHolder::class.java
+                )
+            )
+        )
+    }
+}
+```
+
+![Screenshot_20210424-214134_KKppt3](https://user-images.githubusercontent.com/1109620/115969528-02e83c00-a546-11eb-8787-43918cf84a69.png)
+
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0400IntoView.kt)
 
 <a name="license"/>
 
