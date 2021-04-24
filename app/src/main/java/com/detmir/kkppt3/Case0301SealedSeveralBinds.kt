@@ -10,6 +10,7 @@ import com.detmir.kkppt3.views.ProjectItem
 import com.detmir.recycli.adapters.RecyclerAdapter
 
 class Case0301SealedSeveralBinds : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_case_0301)

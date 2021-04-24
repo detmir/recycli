@@ -5,17 +5,17 @@ import com.detmir.recycli.annotations.RecyclerItemState
 
 @RecyclerItemState
 sealed class PipeLineItem : RecyclerItem {
-    abstract val id: String
-
     data class Input(
-        override val id: String,
+        val id: String,
         val from: String
-    ) : PipeLineItem()
+    ) : PipeLineItem() {
+        override fun provideId() = id
+    }
 
     data class Output(
-        override val id: String,
+        val id: String,
         val to: String
-    ) : PipeLineItem()
-
-    override fun provideId() = id
+    ) : PipeLineItem() {
+        override fun provideId() = id
+    }
 }
