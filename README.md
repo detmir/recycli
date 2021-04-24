@@ -240,9 +240,9 @@ Firstly provide recycler item state with click reaction functions:
 data class UserItem(
     val id: String,
     val firstName: String,
-    val onCardClick: ((String) -> Unit)? = null, //Optional
-    val onMoveToOnline: ((String) -> Unit)? = null,
-    val onMoveToOffline: ((String) -> Unit)? = null
+    val onCardClick: (String) -> Unit,
+    val onMoveToOnline: (String) -> Unit,
+    val onMoveToOffline: (String) -> Unit
 ) : RecyclerItem {
     override fun provideId() = id
 }
@@ -256,24 +256,20 @@ class UserItemView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private var userItem: UserItem? = null
+    private lateinit var userItem: UserItem
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.user_view, this)
-        holder = findViewById(R.id.user_view_status_holder)
-        toOnlineButton = findViewById(R.id.user_view_to_online)
-        toOfflineButton = findViewById(R.id.user_view_to_offline)
-        
+        ...        
         toOnlineButton.setOnClickListener {
-            userItem?.onMoveToOnline?.invoke(userItem?.firstName ?: "")
+            userItem.onMoveToOnline.invoke(userItem.firstName)
         }
 
         toOfflineButton.setOnClickListener {
-            userItem?.onMoveToOffline?.invoke(userItem?.firstName ?: "")
+            userItem.onMoveToOffline.invoke(userItem.firstName)
         }
 
         holder.setOnClickListener {
-            userItem?.onCardClick?.invoke(userItem?.firstName ?: "")
+            userItem.onCardClick.invoke(userItem.firstName)
         }
     }
 
@@ -463,26 +459,7 @@ recyclerAdapter.bindState(
 
 You can create binding functions for every sub class of sealed state (or even for sealed sub classes of sealed class):
 
-```java
-@RecyclerItemView
-class PipeLineItemView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
-    ... 
-    @RecyclerItemStateBinder
-    fun bindState(input: PipeLineItem.Input) {
-        destination.text = input.from
-    }
-
-
-    @RecyclerItemStateBinder
-    fun bindState(output: PipeLineItem.Output) {
-        destination.text = output.to
-    }
-}
-```
-
-Sealed class recycelr item state:
+Sealed class recyceler item state:
 
 ```java
 @RecyclerItemState
@@ -503,39 +480,27 @@ sealed class PipeLineItem : RecyclerItem {
 }
 ```
 
-Pass state to recycler adapter:
-
 ```java
-class DemoActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        val recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
-        recyclerView.adapter = recyclerAdapter
+@RecyclerItemView
+class PipeLineItemView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+    ... 
+    @RecyclerItemStateBinder
+    fun bindState(input: PipeLineItem.Input) {
+        destination.text = input.from
+    }
 
-        recyclerAdapter.bindState(
-            listOf(
-                PipeLineItem.Output(
-                    id = "OUTPUT",
-                    to = "Output server"
-                ),
-                PipeLineItem.Input(
-                    id = "INPUT1",
-                    from = "Input server"
-                ),
-                PipeLineItem.Input(
-                    id = "INPUT2",
-                    from = "Input server 2"
-                )
-            )
-        )
+
+    @RecyclerItemStateBinder
+    fun bindState(output: PipeLineItem.Output) {
+        destination.text = output.to
     }
 }
 ```
 
-![Screenshot_20210424-202727_KKppt3](https://user-images.githubusercontent.com/1109620/115967675-96b50a80-a53c-11eb-8f79-e681d358f1f0.png)
-
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0301SealedSeveralBinds.kt)
+
 
 <a name="license"/>
 
