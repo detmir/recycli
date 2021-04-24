@@ -22,13 +22,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:orientation="vertical"
             android:gravity="center_horizontal">
             <Button
                 android:id="@+id/activity_main_0000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
                 android:text="Case: 00 00 - Demo"/>
 
             <Button
@@ -67,6 +67,11 @@
                 android:layout_height="wrap_content"
                 android:text="Case: 04 00 - Into view"/>
 
+            <Button
+                android:id="@+id/activity_main_0500"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Case: 05 00 - horizontal"/>
 
         </LinearLayout>
 

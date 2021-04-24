@@ -35,6 +35,8 @@
             android:name=".Case0301SealedSeveralBinds"/>
         <activity
             android:name=".Case0400IntoView"/>
+        <activity
+            android:name=".Case0500Horizontal"/>
 
     </application>
 

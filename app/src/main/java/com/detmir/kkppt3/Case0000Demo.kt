@@ -88,7 +88,7 @@ class Case0000Demo : AppCompatActivity() {
 
 
         recyclerItems.add(
-            RecyclerContainer(
+            KeepPosContainerItem(
                 id = "SUBTASKS_CONTAINER",
                 recyclerState = (0..100).map {
                     SubTaskItem(

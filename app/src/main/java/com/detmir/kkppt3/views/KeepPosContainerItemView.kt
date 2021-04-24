@@ -14,13 +14,13 @@ import com.detmir.recycli.annotations.RecyclerItemStateBinder
 import com.detmir.recycli.annotations.RecyclerItemView
 
 @RecyclerItemView
-class RecyclerContainerView @JvmOverloads constructor(
+class KeepPosContainerItemView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
     private val recycler: RecyclerView
     private val recyclerPagedAdapter: RecyclerAdapter
     private var llm: LinearLayoutManager? = null
-    private var state: RecyclerContainer? = null
+    private var state: KeepPosContainerItem? = null
 
     init {
         val view =
@@ -50,7 +50,7 @@ class RecyclerContainerView @JvmOverloads constructor(
     }
 
     @RecyclerItemStateBinder
-    fun bindState(state: RecyclerContainer) {
+    fun bindState(state: KeepPosContainerItem) {
 
 
         recyclerPagedAdapter.bindState(state.recyclerState)

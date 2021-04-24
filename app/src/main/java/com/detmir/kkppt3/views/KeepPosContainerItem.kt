@@ -5,7 +5,7 @@ import com.detmir.recycli.adapters.ScrollKeeper
 import com.detmir.recycli.annotations.RecyclerItemState
 
 @RecyclerItemState
-data class RecyclerContainer(
+data class KeepPosContainerItem(
     val id: String,
     val scrollKeeper: ScrollKeeper = ScrollKeeper(),
     val recyclerState: List<RecyclerItem>

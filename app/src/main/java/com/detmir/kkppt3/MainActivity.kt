@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         val case0300Button = findViewById<Button>(R.id.activity_main_0300)
         val case0301Button = findViewById<Button>(R.id.activity_main_0301)
         val case0400Button = findViewById<Button>(R.id.activity_main_0400)
+        val case0500Button = findViewById<Button>(R.id.activity_main_0500)
 
         case0000Button.setOnClickListener {
             startActivity(Intent(this, Case0000Demo::class.java))
@@ -86,6 +87,10 @@ class MainActivity : AppCompatActivity() {
 
         case0400Button.setOnClickListener {
             startActivity(Intent(this, Case0400IntoView::class.java))
+        }
+
+        case0500Button.setOnClickListener {
+            startActivity(Intent(this, Case0500Horizontal::class.java))
         }
 
     }
