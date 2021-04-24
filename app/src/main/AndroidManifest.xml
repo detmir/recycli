@@ -31,6 +31,8 @@
             android:name=".Case0200ClickAndStateActivity"/>
         <activity
             android:name=".Case0300Sealed"/>
+        <activity
+            android:name=".Case0301SealedSeveralBinds"/>
 
     </application>
 

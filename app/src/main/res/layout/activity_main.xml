@@ -55,6 +55,12 @@
                 android:layout_height="wrap_content"
                 android:text="Case: 03 00 - Sealed classes"/>
 
+            <Button
+                android:id="@+id/activity_main_0301"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Case: 03 01 - Binding methods"/>
+
         </LinearLayout>
 
     </ScrollView>
