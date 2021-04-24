@@ -482,6 +482,8 @@ class PipeLineItemView @JvmOverloads constructor(
 }
 ```
 
+Sealed class recycelr item state:
+
 ```java
 @RecyclerItemState
 sealed class PipeLineItem : RecyclerItem {
@@ -497,6 +499,36 @@ sealed class PipeLineItem : RecyclerItem {
         val to: String
     ) : PipeLineItem() {
         override fun provideId() = id
+    }
+}
+```
+
+Pass state to recycler adapter:
+
+```java
+class DemoActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        val recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
+        recyclerView.adapter = recyclerAdapter
+
+        recyclerAdapter.bindState(
+            listOf(
+                PipeLineItem.Output(
+                    id = "OUTPUT",
+                    to = "Output server"
+                ),
+                PipeLineItem.Input(
+                    id = "INPUT1",
+                    from = "Input server"
+                ),
+                PipeLineItem.Input(
+                    id = "INPUT2",
+                    from = "Input server 2"
+                )
+            )
+        )
     }
 }
 ```
