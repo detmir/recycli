@@ -355,7 +355,7 @@ private fun updateRecycler() {
 
 Note, we do all logic inside Activity for simplification purposes
 
-![ezgif-3-86f646059c0c](https://user-images.githubusercontent.com/1109620/115876453-00ef8180-a44f-11eb-835e-2331cd375759.gif)
+![ezgif-6-a9ba26ee168f](https://user-images.githubusercontent.com/1109620/115968128-e0065980-a53e-11eb-9b9e-e0049272edc3.gif)
 
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0200ClickAndStateActivity.kt)
 
