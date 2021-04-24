@@ -7,7 +7,6 @@ import com.detmir.recycli.annotations.RecyclerItemState
 @RecyclerItemState
 data class SimpleContainerItem(
     val id: String,
-    val scrollKeeper: ScrollKeeper = ScrollKeeper(),
     val recyclerState: List<RecyclerItem>
 ): RecyclerItem {
     override fun provideId(): String {

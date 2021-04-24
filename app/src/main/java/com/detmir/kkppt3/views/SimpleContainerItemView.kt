@@ -17,7 +17,7 @@ class SimpleContainerItemView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
     private val recycler: RecyclerView
-    private val recyclerPagedAdapter: RecyclerAdapter
+    private val recyclerAdapter: RecyclerAdapter
 
     init {
         val view =
@@ -27,18 +27,18 @@ class SimpleContainerItemView @JvmOverloads constructor(
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
-        recyclerPagedAdapter = RecyclerAdapter()
+        recyclerAdapter = RecyclerAdapter()
         recycler = view.findViewById(R.id.simple_recycler_container_recycler)
 
         recycler.run {
             isNestedScrollingEnabled = false
             layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-            adapter = recyclerPagedAdapter
+            adapter = recyclerAdapter
         }
     }
 
     @RecyclerItemStateBinder
     fun bindState(state: SimpleContainerItem) {
-        recyclerPagedAdapter.bindState(state.recyclerState)
+        recyclerAdapter.bindState(state.recyclerState)
     }
 }
