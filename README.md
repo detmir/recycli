@@ -9,6 +9,7 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies complex mul
 [First steps](#first_steps)  
 [Use Views or ViewHolders](#view_holders)  
 [Reaction on clicks and state changes](#clicks_and_state)  
+[Sealed classes as states](#sealed)  
 [License](#license)  
 
 <a name="installation"/>
@@ -356,6 +357,103 @@ Note, we do all logic inside Activity for simplification purposes
 ![ezgif-3-86f646059c0c](https://user-images.githubusercontent.com/1109620/115876453-00ef8180-a44f-11eb-835e-2331cd375759.gif)
 
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0200ClickAndStateActivity.kt)
+
+
+<a name="sealed"/>
+
+## Sealed classes as states
+
+Its common to use sealed classes as UI states. You can create sealed class state items and bind it easily.
+
+Create sealed class:
+
+```java
+@RecyclerItemState
+sealed class ProjectItem : RecyclerItem {
+    abstract val id: String
+    abstract val title: String
+
+    data class Failed(
+        override val id: String,
+        override val title: String,
+        val why: String
+    ) : ProjectItem()
+
+    data class New(
+        override val id: String,
+        override val title: String
+    ) : ProjectItem()
+
+    sealed class Done: ProjectItem() {
+        data class BeforeDeadline(
+            override val id: String,
+            override val title: String
+        ) : Done()
+
+        data class AfterDeadline(
+            override val id: String,
+            override val title: String,
+            val why: String
+        ) : Done()
+    }
+
+    override fun provideId() = id
+}
+```
+
+Use Kotlin `when` to handle different sealed class states:
+
+```java
+@RecyclerItemView
+class ProjectItemView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+
+    @RecyclerItemStateBinder
+    fun bindState(projectItem: ProjectItem) {
+        projectTitle.text = projectItem.title
+        when (projectItem) {
+            is ProjectItem.Failed -> projectDescription.text = "Failed"
+            is ProjectItem.New -> projectDescription.text = "New"
+            is ProjectItem.Done.AfterDeadline -> projectDescription.text = "After deadline"
+            is ProjectItem.Done.BeforeDeadline -> projectDescription.text = "Before deadline"
+        }
+    }
+}
+```
+
+Create and bind recycler state:
+
+```java
+recyclerAdapter.bindState(
+            listOf(
+                ProjectItem.Failed(
+                    id = "FAILED",
+                    title = "Failed project",
+                    why = ""
+                ),
+                ProjectItem.New(
+                    id = "NEW",
+                    title = "New project"
+                ),
+                ProjectItem.Done.BeforeDeadline(
+                    id = "BEFORE_DEAD_LINE",
+                    title = "Done before deadline project"
+                ),
+                ProjectItem.Done.AfterDeadline(
+                    id = "AFTER_DEAD_LINE",
+                    title = "Done after deadline project",
+                    why = ""
+                )
+            )
+        )
+```
+
+
+
+![Screenshot_20210423-170301_KKppt3](https://user-images.githubusercontent.com/1109620/115882923-e967c700-a455-11eb-8bcc-3990b9a740fb.png)
+
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0300Sealed.kt)
 
 <a name="license"/>
 
