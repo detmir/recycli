@@ -613,7 +613,7 @@ class DemoActivity : AppCompatActivity() {
 ## Horizontal sub lists
 
 It's common to have horizontal scrollig lists inside vertical scrolling container and recycli supports this feature. 
-Firstly create container state and view:
+Firstly create container state and view for horizontal list. This is just another list of items, recycler with horizontal layout manager and adapter:
 
 ```java
 @RecyclerItemState
