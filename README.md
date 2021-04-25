@@ -837,8 +837,7 @@ class DemoActivity : AppCompatActivity(), RecyclerAdapter.Callbacks {
 }
 ```
 
-Note that you have to implement RecyclerBottomLoading interface and pass it to adapter to provide Dummy, Progress, Error and Button recycler items states, that will be displayed while you scroll. Its is optional, but in production apps its a standart UI you have to im![ezgif-6-5b5d2a89fbdb](https://user-images.githubusercontent.com/1109620/115992201-1bebfe00-a5d5-11eb-9ab1-e81e35c22f7c.gif)
-plement:
+Note that you have to implement RecyclerBottomLoading interface and pass it to adapter to provide Dummy, Progress, Error and Button recycler items states, that will be displayed while you scroll. Its is optional, but in production apps its a standart UI you have to implement:
 
 ```java
 class BottomLoading : RecyclerBottomLoading {
@@ -903,6 +902,7 @@ class BottomLoadingView @JvmOverloads constructor(
     }
 }
 ```
+
 Note we scroll fast, so you can see loader that displayes progress for 2 seconds. In reality users don't scroll so fast and loading process starts when 5 elements left at the bottom.
 
 ![ezgif-6-5b5d2a89fbdb](https://user-images.githubusercontent.com/1109620/115992211-27d7c000-a5d5-11eb-8753-0b340f54042f.gif)
