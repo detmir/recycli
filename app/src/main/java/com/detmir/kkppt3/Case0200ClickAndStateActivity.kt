@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.detmir.RecyclerBinderImpl
 import com.detmir.kkppt3.views.*
 import com.detmir.recycli.adapters.RecyclerAdapter
 import com.detmir.recycli.adapters.RecyclerItem

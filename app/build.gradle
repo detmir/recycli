@@ -55,7 +55,6 @@ dependencies {
     kapt project(':recycliprocessor')
 
     implementation project(path: ':ui')
-    implementation project(path: ':shapes')
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
 }

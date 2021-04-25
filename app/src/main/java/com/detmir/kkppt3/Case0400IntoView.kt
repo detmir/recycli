@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.detmir.RecyclerBinderImpl
 import com.detmir.kkppt3.viewholders.DigitalOceanViewHolder
-import com.detmir.kkppt3.views.*
+import com.detmir.kkppt3.views.CloudAmazonItemView
+import com.detmir.kkppt3.views.CloudAzureItemView
+import com.detmir.kkppt3.views.CloudGoogleItemView
+import com.detmir.kkppt3.views.CloudItem
 import com.detmir.recycli.adapters.RecyclerAdapter
 
 class Case0400IntoView : AppCompatActivity() {

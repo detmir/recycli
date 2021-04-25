@@ -4,8 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.detmir.RecyclerBinderImpl
-import com.detmir.kkppt3.views.*
+import com.detmir.kkppt3.views.BigTaskItem
+import com.detmir.kkppt3.views.HeaderItem
+import com.detmir.kkppt3.views.SimpleContainerItem
+import com.detmir.kkppt3.views.SubTaskItem
 import com.detmir.recycli.adapters.RecyclerAdapter
 
 class Case0500Horizontal : AppCompatActivity() {

@@ -33,9 +33,7 @@ class Case0000Demo : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         RecyclerAdapter.staticBinders = setOf(
-            com.detmir.ui.RecyclerBinderImpl(),
-            com.detmir.shapes.RecyclerBinderImpl(),
-            com.detmir.RecyclerBinderImpl()
+            com.detmir.ui.RecyclerBinderImpl()
         )
         setContentView(R.layout.activity_case_0000)
 

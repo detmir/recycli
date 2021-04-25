@@ -1,4 +1,3 @@
-include ':shapes'
 include ':ui'
 include ':recycliprocessor'
 include ':recycliannotation'
