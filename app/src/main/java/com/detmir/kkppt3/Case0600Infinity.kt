@@ -16,8 +16,11 @@ import java.util.concurrent.TimeUnit
 
 class Case0600Infinity : AppCompatActivity(), RecyclerAdapter.Callbacks {
 
+    private lateinit var recyclerView: RecyclerView
     private val items = mutableListOf<RecyclerItem>()
     private var infiniteItemsErrorThrown = false
+    private val PAGE_SIZE = 20
+
     private var recyclerAdapter = RecyclerAdapter(
         binders = setOf(com.detmir.kkppt3.RecyclerBinderImpl(), com.detmir.ui.RecyclerBinderImpl()),
         infinityCallbacks = this,
@@ -27,7 +30,7 @@ class Case0600Infinity : AppCompatActivity(), RecyclerAdapter.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_case_0600)
-        val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0600_recycler)
+        recyclerView = findViewById<RecyclerView>(R.id.activity_case_0600_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = recyclerAdapter
         loadRange(0)
@@ -37,7 +40,7 @@ class Case0600Infinity : AppCompatActivity(), RecyclerAdapter.Callbacks {
         val delay = if (curPage == 0) 0L else 2000L
         Single.timer(delay, TimeUnit.MILLISECONDS)
             .flatMap {
-                Single.just((curPage * 10 until (curPage * 10 + 10)).map {
+                Single.just((curPage * PAGE_SIZE until (curPage * PAGE_SIZE + PAGE_SIZE)).map {
                     UserItem(
                         id = "$it",
                         firstName = "John $it",
