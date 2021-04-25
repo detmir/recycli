@@ -718,21 +718,62 @@ private var recyclerAdapter = RecyclerAdapter(
 
 # Endless scrolling lists
 One of the main features of Recycli - support for infinity scroll lists. It handles paging loading callbacks, display bottom progress bars and errors.
-To create infinity scroll list pass `RecyclerAdapter.Callbacks` to adapter constructor and this will switch it to infinity scroll.
+To create infinity scroll list pass `RecyclerAdapter.Callbacks` to adapter constructor and this will switch it to infinity scroll. `BottomLoading` is optional. It responsible for displaying bottom progress bar, error page loading and dummy item that provides some extra space for better load position detection.
 
 ```java
 private var recyclerAdapter = RecyclerAdapter(
         binders = setOf(com.detmir.kkppt3.RecyclerBinderImpl(), com.detmir.ui.RecyclerBinderImpl()),
-        infinityCallbacks = this
+        infinityCallbacks = this,
+        bottomLoading = BottomLoading()
     )
 ```
 
-```java
-class Case0600Infinity : AppCompatActivity(), RecyclerAdapter.Callbacks {
-    private val items = mutableListOf<RecyclerItem>()
+You need to provide `loadRange` function to implement infinity callback interfeface `RecyclerAdapter.Callbacks`.
+Adapter does not initiate first page loading, so we have to call loadRange(0) to initiate loading. All the later pages are loading by adapter when you scroll the recycler. 
 
+When adapter invoke loadRange you have to to bind `InfinityState` with `requestState = InfinityState.Request.LOADING` firstly, so adapter understand that loading process started, and stops calling `loadRange`. You also have to pass current items, loading page number and peovide boolean `endReached` to indicate there are no more data.
+
+```java
+    recyclerAdapter.bindState(
+        InfinityState(
+            requestState = InfinityState.Request.LOADING,
+            items = items,
+            page = curPage,
+            endReached = curPage == 10
+        )
+    )
+```    
+
+Once you load data, add it to your items and pass it to adapter with IDLE state:
+
+```java
+    if (curPage == 0) items.clear()
+    items.addAll(it)
+
+    recyclerAdapter.bindState(
+        InfinityState(
+            requestState = InfinityState.Request.IDLE,
+            items = items,
+            page = curPage,
+            endReached = curPage == 10
+        )
+    )
+```
+
+if you encounter error while loading data bind `InfinityState` with `InfinityState.Request.ERROR`
+
+See the example below. We load 10 pages (20 items per page). 
+On the page 4 emulate error and bind error state to show error button appears at the bottom.
+When page 10 is loaded we provide `endReached` as true and adapter stops asking for more data.
+We use RX to emulate loading process with 2 seconds data loading delay.
+
+```java
+class DemoActivity : AppCompatActivity(), RecyclerAdapter.Callbacks {
+    
+    private val items = mutableListOf<RecyclerItem>()
+    private val PAGE_SIZE = 20
+    
     override fun onCreate(savedInstanceState: Bundle?) {
-        ....
         recyclerView.adapter = recyclerAdapter
         loadRange(0)
     }
@@ -741,7 +782,7 @@ class Case0600Infinity : AppCompatActivity(), RecyclerAdapter.Callbacks {
         val delay = if (curPage == 0) 0L else 2000L
         Single.timer(delay, TimeUnit.MILLISECONDS)
             .flatMap {
-                Single.just((curPage * 10 until (curPage * 10 + 10)).map {
+                Single.just((curPage * PAGE_SIZE until (curPage * PAGE_SIZE + PAGE_SIZE)).map {
                     UserItem(
                         id = "$it",
                         firstName = "John $it",
@@ -795,6 +836,78 @@ class Case0600Infinity : AppCompatActivity(), RecyclerAdapter.Callbacks {
     }
 }
 ```
+
+Note that you have to implement RecyclerBottomLoading interface and pass it to adapter to provide Dummy, Progress, Error and Button recycler items states, that will be displayed while you scroll. Its is optional, but in production apps its a standart UI you have to im![ezgif-6-5b5d2a89fbdb](https://user-images.githubusercontent.com/1109620/115992201-1bebfe00-a5d5-11eb-9ab1-e81e35c22f7c.gif)
+plement:
+
+```java
+class BottomLoading : RecyclerBottomLoading {
+
+    @RecyclerItemState
+    sealed class State : RecyclerItem {
+        override fun provideId(): String {
+            return "bottom"
+        }
+        object Dummy : State()
+        object Progress : State()
+        data class Error(val reload: () -> Unit) : State()
+        data class Button(val next: () -> Unit) : State()
+    }
+
+    override fun provideProgress(): RecyclerItem {
+        return State.Progress
+    }
+
+    override fun provideDummy(): RecyclerItem {
+        return State.Dummy
+    }
+
+    override fun provideError(reload: () -> Unit): RecyclerItem {
+        return State.Error(reload)
+    }
+
+    override fun provideButton(next: () -> Unit): RecyclerItem {
+        return State.Button(next)
+    }
+}
+```
+
+```java
+@RecyclerItemView
+class BottomLoadingView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+    ...
+    @RecyclerItemStateBinder
+    fun bindState(state: BottomLoading.State) {
+        when (state) {
+            is BottomLoading.State.Progress -> {
+                buttonError.visibility = View.GONE
+                progress.visibility = View.VISIBLE
+            }
+            is BottomLoading.State.Button -> {
+                buttonError.visibility = View.GONE
+                progress.visibility = View.GONE
+
+            }
+            is BottomLoading.State.Dummy -> {
+                buttonError.visibility = View.GONE
+                progress.visibility = View.GONE
+            }
+
+            is BottomLoading.State.Error -> {
+                buttonError.visibility = View.VISIBLE
+                progress.visibility = View.GONE
+            }
+        }
+    }
+}
+```
+Note we scroll fast, so you can see loader that displayes progress for 2 seconds. In reality users don't scroll so fast and loading process starts when 5 elements left at the bottom.
+
+![ezgif-6-5b5d2a89fbdb](https://user-images.githubusercontent.com/1109620/115992211-27d7c000-a5d5-11eb-8753-0b340f54042f.gif)
+
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0600Infinity.kt)
 
 <a name="license"/>
 
