@@ -14,6 +14,7 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies complex mul
 [One item state and several views](#one_several)  
 [Horizontal sub lists](#horizontal)  
 [Multi-module applications](#multi_module)  
+[Endless scrolling lists](#infinity)  
 [License](#license)  
 
 <a name="installation"/>
@@ -711,6 +712,89 @@ private var recyclerAdapter = RecyclerAdapter(
     )
 ```
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0600Infinity.kt)
+
+
+<a name="infinity"/>
+
+# Endless scrolling lists
+One of the main features of Recycli - support for infinity scroll lists. It handles paging loading callbacks, display bottom progress bars and errors.
+To create infinity scroll list pass `RecyclerAdapter.Callbacks` to adapter constructor and this will switch it to infinity scroll.
+
+```java
+private var recyclerAdapter = RecyclerAdapter(
+        binders = setOf(com.detmir.kkppt3.RecyclerBinderImpl(), com.detmir.ui.RecyclerBinderImpl()),
+        infinityCallbacks = this
+    )
+```
+
+```java
+class Case0600Infinity : AppCompatActivity(), RecyclerAdapter.Callbacks {
+    private val items = mutableListOf<RecyclerItem>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ....
+        recyclerView.adapter = recyclerAdapter
+        loadRange(0)
+    }
+
+    override fun loadRange(curPage: Int) {
+        val delay = if (curPage == 0) 0L else 2000L
+        Single.timer(delay, TimeUnit.MILLISECONDS)
+            .flatMap {
+                Single.just((curPage * 10 until (curPage * 10 + 10)).map {
+                    UserItem(
+                        id = "$it",
+                        firstName = "John $it",
+                        online = it < 5
+                    )
+                })
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                if (curPage == 4 && !infiniteItemsErrorThrown) {
+                    infiniteItemsErrorThrown = true
+                    throw Exception("error")
+                }
+                it
+            }
+            .doOnSubscribe {
+                recyclerAdapter.bindState(
+                    InfinityState(
+                        requestState = InfinityState.Request.LOADING,
+                        items = items,
+                        page = curPage,
+                        endReached = curPage == 10
+                    )
+                )
+            }
+            .doOnError {
+                recyclerAdapter.bindState(
+                    InfinityState(
+                        requestState = InfinityState.Request.ERROR,
+                        items = items,
+                        page = curPage,
+                        endReached = curPage == 10
+                    )
+                )
+            }
+            .doOnSuccess {
+                if (curPage == 0) items.clear()
+                items.addAll(it)
+
+                recyclerAdapter.bindState(
+                    InfinityState(
+                        requestState = InfinityState.Request.IDLE,
+                        items = items,
+                        page = curPage,
+                        endReached = curPage == 10
+                    )
+                )
+            }
+            .subscribe({}, {})
+    }
+}
+```
 
 <a name="license"/>
 
