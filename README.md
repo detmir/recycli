@@ -4,7 +4,7 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies complex mul
 
 ![ezgif-6-e9d7bd416187](https://user-images.githubusercontent.com/1109620/115579256-a7f8df80-a2ce-11eb-9bc2-ac79d3905b89.gif)
 
-## Table of Contents  
+# Table of Contents  
 [Installation](#installation)  
 [First steps](#first_steps)  
 [Use Views or ViewHolders](#view_holders)  
@@ -18,7 +18,7 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies complex mul
 
 <a name="installation"/>
 
-## Installation
+# Installation
 Add Maven Central to you repositories at project or module level build.gradle:
 
 ```gradle
