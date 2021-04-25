@@ -27,6 +27,8 @@ class Case0600Infinity : AppCompatActivity(), RecyclerAdapter.Callbacks {
         bottomLoading = BottomLoading()
     )
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_case_0600)
@@ -93,3 +95,4 @@ class Case0600Infinity : AppCompatActivity(), RecyclerAdapter.Callbacks {
             .subscribe({}, {})
     }
 }
+

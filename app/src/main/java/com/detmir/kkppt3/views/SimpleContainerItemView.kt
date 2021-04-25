@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.detmir.kkppt3.R
+import com.detmir.kkppt3.RecyclerBinderImpl
 import com.detmir.recycli.adapters.RecyclerAdapter
 import com.detmir.recycli.annotations.RecyclerItemStateBinder
 import com.detmir.recycli.annotations.RecyclerItemView
@@ -27,7 +28,7 @@ class SimpleContainerItemView @JvmOverloads constructor(
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
-        recyclerAdapter = RecyclerAdapter()
+        recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
         recycler = view.findViewById(R.id.simple_recycler_container_recycler)
 
         recycler.run {
