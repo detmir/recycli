@@ -33,7 +33,9 @@ class Case0600Infinity : AppCompatActivity(), RecyclerAdapter.Callbacks {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_case_0600)
         recyclerView = findViewById<RecyclerView>(R.id.activity_case_0600_recycler)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(this).apply {
+            reverseLayout = false
+        }
         recyclerView.adapter = recyclerAdapter
         loadRange(0)
     }

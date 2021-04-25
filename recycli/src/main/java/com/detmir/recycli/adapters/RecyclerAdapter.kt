@@ -322,9 +322,16 @@ open class RecyclerAdapter(
             val lm = recyclerView?.layoutManager as LinearLayoutManager
             val visibleItemCount = lm.childCount
             val totalItemCount = lm.itemCount
-            val firstVisibleItemPosition = lm.findFirstVisibleItemPosition()
-            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount - 5) {
-                rangeLoading()
+            if (lm.stackFromEnd) {
+                val firstVisibleItemPosition = lm.findFirstVisibleItemPosition()
+                if (firstVisibleItemPosition < 5) {
+                    rangeLoading()
+                }
+            } else {
+                val firstVisibleItemPosition = lm.findFirstVisibleItemPosition()
+                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount - 5) {
+                    rangeLoading()
+                }
             }
         }
     }
