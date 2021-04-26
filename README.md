@@ -454,7 +454,7 @@ recyclerAdapter.bindState(
 
 ![Screenshot_20210423-170301_KKppt3](https://user-images.githubusercontent.com/1109620/115882923-e967c700-a455-11eb-8bcc-3990b9a740fb.png)
 
-[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0300Sealed.kt)
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0300SealedActivity.kt)
 
 
 <a name="sealed_binfing"/>
@@ -503,7 +503,7 @@ class PipeLineItemView @JvmOverloads constructor(
 }
 ```
 
-[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0301SealedSeveralBinds.kt)
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0301SealedSeveralBindsActivity.kt)
 
 
 
@@ -607,7 +607,7 @@ class DemoActivity : AppCompatActivity() {
 
 ![Screenshot_20210424-214134_KKppt3](https://user-images.githubusercontent.com/1109620/115969528-02e83c00-a546-11eb-8787-43918cf84a69.png)
 
-[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0400IntoView.kt)
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0400IntoViewActivity.kt)
 
 
 <a name="horizontal"/>
@@ -665,7 +665,7 @@ class SimpleContainerItemView @JvmOverloads constructor(
 Now populate recycler items and sub list items as ususual
 
 ```java
-class Case0500Horizontal : AppCompatActivity() {
+class DemoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         ...
         recyclerAdapter.bindState(
@@ -697,7 +697,7 @@ class Case0500Horizontal : AppCompatActivity() {
 
 ![ezgif-2-9cf09cc92026](https://user-images.githubusercontent.com/1109620/115970440-0500c980-a54b-11eb-857f-9c955b7cb371.gif)
 
-[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0500Horizontal.kt)
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0500HorizontalActivity.kt)
 
 
 <a name="multi_module"/>
@@ -711,7 +711,7 @@ private var recyclerAdapter = RecyclerAdapter(
         binders = setOf(com.detmixr.kkppt3.RecyclerBinderImpl(), com.detmir.ui.RecyclerBinderImpl())
     )
 ```
-[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0600Infinity.kt)
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0600InfinityActivity.kt)
 
 
 <a name="infinity"/>
