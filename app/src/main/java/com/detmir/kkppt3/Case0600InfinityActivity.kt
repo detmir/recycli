@@ -14,7 +14,7 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-class Case0600Infinity : AppCompatActivity(), RecyclerAdapter.Callbacks {
+class Case0600InfinityActivity : AppCompatActivity(), RecyclerAdapter.Callbacks {
 
     private lateinit var recyclerView: RecyclerView
     private val items = mutableListOf<RecyclerItem>()

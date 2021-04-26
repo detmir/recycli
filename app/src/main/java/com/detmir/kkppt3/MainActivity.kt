@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         val case0600Button = findViewById<Button>(R.id.activity_main_0600)
 
         case0000Button.setOnClickListener {
-            startActivity(Intent(this, Case0000Demo::class.java))
+            startActivity(Intent(this, Case0000DemoActivity::class.java))
         }
 
         case0100Button.setOnClickListener {
@@ -38,23 +38,23 @@ class MainActivity : AppCompatActivity() {
         }
 
         case0300Button.setOnClickListener {
-            startActivity(Intent(this, Case0300Sealed::class.java))
+            startActivity(Intent(this, Case0300SealedActivity::class.java))
         }
 
         case0301Button.setOnClickListener {
-            startActivity(Intent(this, Case0301SealedSeveralBinds::class.java))
+            startActivity(Intent(this, Case0301SealedSeveralBindsActivity::class.java))
         }
 
         case0400Button.setOnClickListener {
-            startActivity(Intent(this, Case0400IntoView::class.java))
+            startActivity(Intent(this, Case0400IntoViewActivity::class.java))
         }
 
         case0500Button.setOnClickListener {
-            startActivity(Intent(this, Case0500Horizontal::class.java))
+            startActivity(Intent(this, Case0500HorizontalActivity::class.java))
         }
 
         case0600Button.setOnClickListener {
-            startActivity(Intent(this, Case0600Infinity::class.java))
+            startActivity(Intent(this, Case0600InfinityActivity::class.java))
         }
 
     }

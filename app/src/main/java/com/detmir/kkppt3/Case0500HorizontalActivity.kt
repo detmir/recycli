@@ -10,7 +10,7 @@ import com.detmir.kkppt3.views.SimpleContainerItem
 import com.detmir.kkppt3.views.SubTaskItem
 import com.detmir.recycli.adapters.RecyclerAdapter
 
-class Case0500Horizontal : AppCompatActivity() {
+class Case0500HorizontalActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

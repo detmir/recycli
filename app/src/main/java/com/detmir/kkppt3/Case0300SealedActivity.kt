@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.detmir.kkppt3.views.ProjectItem
 import com.detmir.recycli.adapters.RecyclerAdapter
 
-class Case0300Sealed : AppCompatActivity() {
+class Case0300SealedActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_case_0300)

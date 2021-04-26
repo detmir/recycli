@@ -9,7 +9,7 @@ import com.detmir.recycli.adapters.RecyclerAdapter
 import com.detmir.recycli.adapters.RecyclerItem
 import com.detmir.ui.RecyclerBinderImpl
 
-class Case0000Demo : AppCompatActivity() {
+class Case0000DemoActivity : AppCompatActivity() {
 
     lateinit var recyclerAdapterRegular: RecyclerAdapter
     lateinit var recyclerView: RecyclerView

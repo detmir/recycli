@@ -11,7 +11,7 @@ import com.detmir.kkppt3.views.CloudGoogleItemView
 import com.detmir.kkppt3.views.CloudItem
 import com.detmir.recycli.adapters.RecyclerAdapter
 
-class Case0400IntoView : AppCompatActivity() {
+class Case0400IntoViewActivity : AppCompatActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.detmir.kkppt3.views.PipeLineItem
 import com.detmir.recycli.adapters.RecyclerAdapter
 
-class Case0301SealedSeveralBinds : AppCompatActivity() {
+class Case0301SealedSeveralBindsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

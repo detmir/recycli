@@ -22,7 +22,7 @@
 
 
         <activity
-            android:name=".Case0000Demo"/>
+            android:name=".Case0000DemoActivity"/>
         <activity
             android:name=".Case0100SimpleActivity"/>
         <activity
@@ -30,15 +30,15 @@
         <activity
             android:name=".Case0200ClickAndStateActivity"/>
         <activity
-            android:name=".Case0300Sealed"/>
+            android:name=".Case0300SealedActivity"/>
         <activity
-            android:name=".Case0301SealedSeveralBinds"/>
+            android:name=".Case0301SealedSeveralBindsActivity"/>
         <activity
-            android:name=".Case0400IntoView"/>
+            android:name=".Case0400IntoViewActivity"/>
         <activity
-            android:name=".Case0500Horizontal"/>
+            android:name=".Case0500HorizontalActivity"/>
         <activity
-            android:name=".Case0600Infinity"/>
+            android:name=".Case0600InfinityActivity"/>
     </application>
 
 </manifest>
