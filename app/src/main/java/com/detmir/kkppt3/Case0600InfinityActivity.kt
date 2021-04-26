@@ -19,7 +19,7 @@ class Case0600InfinityActivity : AppCompatActivity(), RecyclerAdapter.Callbacks 
     private lateinit var recyclerView: RecyclerView
     private val items = mutableListOf<RecyclerItem>()
     private var infiniteItemsErrorThrown = false
-    private val PAGE_SIZE = 20
+
 
     private var recyclerAdapter = RecyclerAdapter(
         binders = setOf(com.detmir.kkppt3.RecyclerBinderImpl(), com.detmir.ui.RecyclerBinderImpl()),
@@ -46,7 +46,7 @@ class Case0600InfinityActivity : AppCompatActivity(), RecyclerAdapter.Callbacks 
             .flatMap {
                 Single.just((curPage * PAGE_SIZE until (curPage * PAGE_SIZE + PAGE_SIZE)).map {
                     UserItem(
-                        id = "$it",
+                        id = "USER_$it",
                         firstName = "John $it",
                         online = it < 5
                     )
@@ -95,6 +95,11 @@ class Case0600InfinityActivity : AppCompatActivity(), RecyclerAdapter.Callbacks 
                 )
             }
             .subscribe({}, {})
+    }
+
+
+    companion object {
+        const val PAGE_SIZE = 20
     }
 }
 

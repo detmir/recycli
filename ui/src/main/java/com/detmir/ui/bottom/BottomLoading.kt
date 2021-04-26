@@ -9,14 +9,18 @@ class BottomLoading : RecyclerBottomLoading {
 
     @RecyclerItemState
     sealed class State : RecyclerItem {
-        override fun provideId(): String {
-            return "bottom"
+        object Dummy : State() {
+            override fun provideId() = BOTTOM_DUMMY
         }
-
-        object Dummy : State()
-        object Progress : State()
-        data class Error(val reload: () -> Unit) : State()
-        data class Button(val next: () -> Unit) : State()
+        object Progress : State() {
+            override fun provideId() = BOTTOM_PROGRESS
+        }
+        data class Error(val reload: () -> Unit) : State() {
+            override fun provideId() = BOTTOM_ERROR
+        }
+        data class Button(val next: () -> Unit) : State() {
+            override fun provideId() = BOTTOM_BUTTON
+        }
     }
 
     override fun provideProgress(): RecyclerItem {
@@ -35,4 +39,11 @@ class BottomLoading : RecyclerBottomLoading {
         return State.Button(next)
     }
 
+
+    companion object {
+        const val BOTTOM_DUMMY  = "BOTTOM_DUMMY"
+        const val BOTTOM_PROGRESS  = "BOTTOM_PROGRESS"
+        const val BOTTOM_ERROR  = "BOTTOM_ERROR"
+        const val BOTTOM_BUTTON  = "BOTTOM_BUTTON"
+    }
 }

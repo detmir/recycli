@@ -26,5 +26,6 @@ class HeaderItemView @JvmOverloads constructor(
     @RecyclerItemStateBinder
     fun bindState(headerItem: HeaderItem) {
         title.text = headerItem.title
+        tag = headerItem.id
     }
 }

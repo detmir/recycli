@@ -64,5 +64,6 @@ class UserItemView @JvmOverloads constructor(
 
         toOfflineButton.isVisible = userItem.onMoveToOffline != null && userItem.online
         toOnlineButton.isVisible = userItem.onMoveToOnline != null && !userItem.online
+        tag = userItem.id
     }
 }

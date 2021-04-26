@@ -52,6 +52,7 @@ class BottomLoadingView @JvmOverloads constructor(
     @RecyclerItemStateBinder
     fun bindState(state: BottomLoading.State) {
         this.state = state
+        tag = state.provideId()
         when (state) {
             is BottomLoading.State.Progress -> {
                 buttonNext.visibility = View.GONE
