@@ -57,4 +57,7 @@ dependencies {
     implementation project(path: ':ui')
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
+    androidTestImplementation("com.kaspersky.android-components:kaspresso:1.2.0")
+    androidTestImplementation "org.assertj:assertj-core:3.19.0"
+
 }
