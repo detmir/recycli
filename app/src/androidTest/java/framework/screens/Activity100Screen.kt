@@ -26,7 +26,7 @@ class Activity100Screen : KScreen<Activity100Screen>() {
         val headerTitle = KTextView(parent) { withId(R.id.header_view_title) }
     }
 
-    private val userItems = KRecyclerView({ withId(R.id.activity_case_0100_recycler) },
+    private val recycler = KRecyclerView({ withId(R.id.activity_case_0100_recycler) },
         {
             itemType(::UsersRecyclerItem)
             itemType(::HeaderRecyclerItem)
@@ -36,7 +36,7 @@ class Activity100Screen : KScreen<Activity100Screen>() {
     fun getUserNames(): List<String> {
         val names = mutableListOf<String>()
         (1..2).forEach { pos ->
-            userItems.childAt<UsersRecyclerItem>(pos) {
+            recycler.childAt<UsersRecyclerItem>(pos) {
                 names.add(firstName.getText())
             }
         }
@@ -45,7 +45,7 @@ class Activity100Screen : KScreen<Activity100Screen>() {
 
     fun getHeader(): String {
         var header: String? = null
-        userItems.firstChild<HeaderRecyclerItem> { header = headerTitle.getText() }
+        recycler.firstChild<HeaderRecyclerItem> { header = headerTitle.getText() }
         return header ?: throw AssertionError("Cant get header title")
     }
 }
