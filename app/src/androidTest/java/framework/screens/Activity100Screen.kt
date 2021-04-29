@@ -8,29 +8,27 @@ import com.detmir.kkppt3.Case0100SimpleActivity
 import com.detmir.kkppt3.R
 import com.detmir.kkppt3.views.HeaderItemView
 import com.detmir.kkppt3.views.UserItemView
-import com.kaspersky.kaspresso.screens.KScreen
-import framework.screens.BaseScreen.Companion.getText
 import org.hamcrest.Matcher
 
-class Activity100Screen : KScreen<Activity100Screen>() {
+class Activity100Screen : BaseScreen<Activity100Screen>() {
     override val layoutId: Int = R.layout.activity_case_0100
     override val viewClass: Class<*> = Case0100SimpleActivity::class.java
 
     class UsersRecyclerItem(parent: Matcher<View>) :
-        KRecyclerItem<UserItemView>(parent) {
+            KRecyclerItem<UserItemView>(parent) {
         val firstName = KTextView(parent) { withId(R.id.user_view_first_name) }
     }
 
     class HeaderRecyclerItem(parent: Matcher<View>) :
-        KRecyclerItem<HeaderItemView>(parent) {
+            KRecyclerItem<HeaderItemView>(parent) {
         val headerTitle = KTextView(parent) { withId(R.id.header_view_title) }
     }
 
     private val recycler = KRecyclerView({ withId(R.id.activity_case_0100_recycler) },
-        {
-            itemType(::UsersRecyclerItem)
-            itemType(::HeaderRecyclerItem)
-        }
+            {
+                itemType(::UsersRecyclerItem)
+                itemType(::HeaderRecyclerItem)
+            }
     )
 
     fun getUserNames(): List<String> {
