@@ -12,23 +12,35 @@ import com.detmir.recycli.adapters.RecyclerAdapter
 
 class Case0500HorizontalActivity : AppCompatActivity() {
 
+    lateinit var recyclerAdapter: RecyclerAdapter
+    lateinit var recyclerView: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_case_0500)
-        val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0500_recycler)
+        recyclerView = findViewById<RecyclerView>(R.id.activity_case_0500_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
+        recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
         recyclerView.adapter = recyclerAdapter
 
+        bi()
+
+
+    }
+
+    var i = 0
+
+    fun bi() {
+        i++
+        val r = 10 - i
         recyclerAdapter.bindState(
             listOf(
                 HeaderItem(
                     id = "HEADER_SUB_TASKS",
-                    title = "Subtasks"
+                    title = "Subtasks $i"
                 ),
                 SimpleContainerItem(
                     id = "SUB_TASKS_CONTAINER",
-                    recyclerState = (0..100).map {
+                    recyclerState = (0..10).map {
                         SubTaskItem(
                             id = "SUB_TASK_$it",
                             title = "Sub task $it",
@@ -43,5 +55,8 @@ class Case0500HorizontalActivity : AppCompatActivity() {
                 )
             )
         )
+        recyclerView.postDelayed({
+            bi()
+        }, 5000)
     }
 }

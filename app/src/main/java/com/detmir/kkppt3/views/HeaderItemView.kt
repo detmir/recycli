@@ -2,6 +2,7 @@ package com.detmir.kkppt3.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -18,6 +19,7 @@ class HeaderItemView @JvmOverloads constructor(
     private val title: TextView
 
     init {
+        Log.d("a","init Header sdasd")
         LayoutInflater.from(context).inflate(R.layout.header_view, this)
         setPadding(24.toPx, 32.toPx, 24.toPx, 8.toPx)
         title = findViewById(R.id.header_view_title)

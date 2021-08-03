@@ -10,11 +10,16 @@ apply plugin: 'com.vanniktech.maven.publish'
 
 buildscript {
     repositories {
+        maven { url "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven" }
+        google()
         mavenCentral()
+        maven {
+            url "https://maven.google.com/"
+        }
     }
     dependencies {
         classpath 'com.vanniktech:gradle-maven-publish-plugin:0.14.2'
-        classpath 'org.jetbrains.dokka:dokka-gradle-plugin:1.4.20'
+        classpath 'org.jetbrains.dokka:dokka-gradle-plugin:1.5.0'
     }
 }
 
@@ -29,12 +34,8 @@ mavenPublish {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    // Code generation library for kotlin, highly recommended
-    implementation "com.squareup:kotlinpoet:+"
-
-    // configuration generator for service providers
-    implementation "com.google.auto.service:auto-service:+"
-    kapt "com.google.auto.service:auto-service:+"
+    implementation "com.google.auto.service:auto-service:1.0"
+    kapt "com.google.auto.service:auto-service:1.0"
 }
 
 sourceCompatibility = "1.8"
