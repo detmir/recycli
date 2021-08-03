@@ -2,7 +2,7 @@
 
 ![GitHub](https://img.shields.io/github/license/detmir/recycli?logo=heartex) ![GitHub release](https://img.shields.io/github/v/release/detmir/recycli?include_prereleases)
 
-Recycli is a Kotlin library for Android RecyclerView that simplifies complex multiple view types lists creation. With DiffUtils inside, annotation based adapter generator and MVI pattern as philosophy it provides both simple and powerful tool for fast RecyclerView based screens development.
+Recycli is a Kotlin library for Android RecyclerView that simplifies the creation of multiple view types lists. Featuring DiffUtils inside, annotation-based adapter generator and MVI pattern as philosophy, it is both a simple and powerful tool for rapid development of RecyclerView-based screens.
 
 ![ezgif-6-e9d7bd416187](https://user-images.githubusercontent.com/1109620/115579256-a7f8df80-a2ce-11eb-9bc2-ac79d3905b89.gif)
 
@@ -22,211 +22,213 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies complex mul
 <a name="installation"/>
 
 # Installation
-Add Maven Central to you repositories at project or module level build.gradle:
+1. Add Maven Central to you repositories in the 'build.gradle' file at the project or module level:
 
-```gradle
-allprojects {
-    repositories {
-        mavenCentral()
+    ```gradle
+    allprojects {
+        repositories {
+            mavenCentral()
+        }
     }
-}
-```
-and add Kapt plugin and Recycli dependencies to your build.gradle at module level:
-```gradle
-plugins {
-    id 'kotlin-kapt'
-}
+    ```
+2. Add the Kapt plugin and Recycli dependencies to your 'build.gradle' at the module level:
+    ```gradle
+    plugins {
+        id 'kotlin-kapt'
+    }
 
-dependencies {
-    implementation 'com.detmir.recycli:adapters:1.0.5'
-    compileOnly 'com.detmir.recycli:annotations:1.0.5'
-    kapt 'com.detmir.recycli:processors:1.0.5'
-}
+    dependencies {
+        implementation 'com.detmir.recycli:adapters:1.0.5'
+        compileOnly 'com.detmir.recycli:annotations:1.0.5'
+        kapt 'com.detmir.recycli:processors:1.0.5'
+    }
 
-```
+    ```
 
 <a name="first_steps"/>
 
 # First steps
-First create Kotlin data classes annotated with `@RecyclerItemState` and extends `RecyclerItem`. Unique (for this adapter) String `id` must be provided.
-Those classes describes recycler items states. Let's create 2 data classes - Header and User items.
-```java
-@RecyclerItemState
-data class HeaderItem(
-    val id: String,
-    val title: String
-) : RecyclerItem {
-    override fun provideId() = id
-}
-```
+1. Create Kotlin data classes that are annotated with `@RecyclerItemState` and are extending `RecyclerItem`. A unique (for this adapter) string `id` must be provided. Those classes describe recycler items states. Let's create two data classes - Header and User items:
 
-```java
-@RecyclerItemState
-data class UserItem(
-    val id: String,
-    val firstName: String
-) : RecyclerItem {
-    override fun provideId() = id
-}
-```
-
-And add two view classes `HeaderItemView` and `UserItemView` that extends any `View` or `ViewGroup` container. Annotate those classes with `@RecyclerItemView` annotation. Also add method with recycler item state as parameter and annotate it with `@RecyclerItemStateBinder`.
-
-```java
-@RecyclerItemView
-class HeaderItemView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
-
-    private val title: TextView
-
-    init {
-        LayoutInflater.from(context).inflate(R.layout.header_view, this)
-        title = findViewById(R.id.header_view_title)
+    ```java
+    @RecyclerItemState
+    data class HeaderItem(
+        val id: String,
+        val title: String
+    ) : RecyclerItem {
+        override fun provideId() = id
     }
+    ```
 
-    @RecyclerItemStateBinder
-    fun bindState(headerItem: HeaderItem) {
-        title.text = headerItem.title
+    ```java
+    @RecyclerItemState
+    data class UserItem(
+        val id: String,
+        val firstName: String
+    ) : RecyclerItem {
+        override fun provideId() = id
     }
-}
-```
+    ```
 
-```java
-@RecyclerItemView
-class UserItemView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+2. Add two view classes `HeaderItemView` and `UserItemView` that extend any `View` or `ViewGroup` container. Annotate these classes with `@RecyclerItemView` annotation. Also, add a method with recycler item state as a parameter and annotate it with `@RecyclerItemStateBinder`.
 
-    private val firstName: TextView
+    ```java
+    @RecyclerItemView
+    class HeaderItemView @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    init {
-        LayoutInflater.from(context).inflate(R.layout.user_view, this)
-        firstName = findViewById(R.id.user_view_first_name)
+        private val title: TextView
+
+        init {
+            LayoutInflater.from(context).inflate(R.layout.header_view, this)
+            title = findViewById(R.id.header_view_title)
+        }
+
+        @RecyclerItemStateBinder
+        fun bindState(headerItem: HeaderItem) {
+            title.text = headerItem.title
+        }
     }
+    ```
 
-    @RecyclerItemStateBinder
-    fun bindState(userItem: UserItem) {
-        firstName.text = userItem.firstName
+    ```java
+    @RecyclerItemView
+    class UserItemView @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    ) : FrameLayout(context, attrs, defStyleAttr) {
+
+        private val firstName: TextView
+
+        init {
+            LayoutInflater.from(context).inflate(R.layout.user_view, this)
+            firstName = findViewById(R.id.user_view_first_name)
+        }
+
+        @RecyclerItemStateBinder
+        fun bindState(userItem: UserItem) {
+            firstName.text = userItem.firstName
+        }
     }
-}
-```
+    ```
 
-Those views will be used at `onCreateViewHolder` functions at `RecyclerView.Adapter` for corresponding states. `bindState` will be called when `onBindViewHolder` called at adapter.
+    Those views will be used in `onCreateViewHolder` functions in `RecyclerView.Adapter` for corresponding states. `bindState` will be called when `onBindViewHolder` called in the adapter.
 
-And now you can create `RecyclerView`, set `RecyclerAdapter` as adapter and bind list of `RecyclerItems` to it.
-Note that RecyclerBinderImpl is passed as parameter to RecyclerAdapter - this class is generated by Recycli lib usig the annotations mentioned earlier. If the class doesn't exist yet, simply click *Build/Make Project* at *Android studio*.
+3. Create `RecyclerView`, set `RecyclerAdapter` as an adapter, and bind the list of `RecyclerItems` to it.
+Note that RecyclerBinderImpl is passed as a parameter to RecyclerAdapter - this class is generated by Recycli lib using the annotations mentioned earlier. If the class doesn't exist yet, simply click *Build/Make Project* at *Android studio*.
 
-```java
-class DemoActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0100_recycler)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        val recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
-        recyclerView.adapter = recyclerAdapter
+    ```java
+    class DemoActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0100_recycler)
+            recyclerView.layoutManager = LinearLayoutManager(this)
+            val recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
+            recyclerView.adapter = recyclerAdapter
 
-        recyclerAdapter.bindState(
-            listOf(
-                HeaderItem(
-                    id = "HEADER_USERS",
-                    title = "Users"
-                ),
-                UserItem(
-                    id = "USER_ANDREW",
-                    firstName = "Andrew",
-                    online = true
-                ),
-                UserItem(
-                    id = "USER_MAX",
-                    firstName = "Max",
-                    online = true
+            recyclerAdapter.bindState(
+                listOf(
+                    HeaderItem(
+                        id = "HEADER_USERS",
+                        title = "Users"
+                    ),
+                    UserItem(
+                        id = "USER_ANDREW",
+                        firstName = "Andrew",
+                        online = true
+                    ),
+                    UserItem(
+                        id = "USER_MAX",
+                        firstName = "Max",
+                        online = true
+                    )
                 )
             )
-        )
-    }
-} 
-```
-And `RecyclerView` will display:
+        }
+    } 
+    ```
+
+The `RecyclerView` will display:
 
 ![Screenshot_20210423-151457_KKppt3](https://user-images.githubusercontent.com/1109620/115869752-03e67400-a447-11eb-9d63-0c78e98bb4f7.png)
 
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0100SimpleActivity.kt)
 
 
-
 <a name="view_holders"/>
 
 # Use Views or ViewHolders
 
-In the example earlier we used classes that extends `ViewGroup` or `View` to provide `RecyclerView` with the corresponding view. In case of you prefer inflate views directly in `RecyclerView.ViewHolder` your can do it with `@RecyclerItemViewHolder` and `@RecyclerItemViewHolderCreator` annotations. Note that `@RecyclerItemViewHolderCreator` must be a function located in companion class of `ViewHolder` See the complete example below.
+In the example earlier we used classes that extend `ViewGroup` or `View` to provide `RecyclerView` with the corresponding view. If you prefer to inflate views directly in `RecyclerView.ViewHolder`, your can do it with `@RecyclerItemViewHolder` and `@RecyclerItemViewHolderCreator` annotations. Note that `@RecyclerItemViewHolderCreator` must be a function located in the companion class of `ViewHolder`.
 
-Recycler item state:
+See the full example below:
 
-```java
-@RecyclerItemState
-data class ServerItem(
-    val id: String,
-    val serverAddress: String
-) : RecyclerItem {
-    override fun provideId() = id
-}
-```
+* Recycler item state:
 
-View holder that can bind `ServerItem` state:
-
-```java
-@RecyclerItemViewHolder
-class ServerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    private val serverAddress: TextView = view.findViewById(R.id.server_item_title)
-
-    @RecyclerItemStateBinder
-    fun bindState(serverItem: ServerItem) {
-        serverAddress.text = serverItem.serverAddress
+    ```java
+    @RecyclerItemState
+    data class ServerItem(
+        val id: String,
+        val serverAddress: String
+    ) : RecyclerItem {
+        override fun provideId() = id
     }
+    ```
 
-    companion object {
-        @RecyclerItemViewHolderCreator
-        fun provideViewHolder(context: Context): ServerItemViewHolder {
-            val view = LayoutInflater.from(context).inflate(R.layout.server_item_view, null)
-            return ServerItemViewHolder(view)
+* View holder that can bind `ServerItem` state:
+
+    ```java
+    @RecyclerItemViewHolder
+    class ServerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val serverAddress: TextView = view.findViewById(R.id.server_item_title)
+
+        @RecyclerItemStateBinder
+        fun bindState(serverItem: ServerItem) {
+            serverAddress.text = serverItem.serverAddress
+        }
+
+        companion object {
+            @RecyclerItemViewHolderCreator
+            fun provideViewHolder(context: Context): ServerItemViewHolder {
+                val view = LayoutInflater.from(context).inflate(R.layout.server_item_view, null)
+                return ServerItemViewHolder(view)
+            }
         }
     }
-}
-```
+    ```
 
-Bind items to `RecyclerView`:
+* Bind items to `RecyclerView`:
 
-```java
-class Case0101SimpleVHActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0101_recycler)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        val recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
-        recyclerView.adapter = recyclerAdapter
+    ```java
+    class Case0101SimpleVHActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0101_recycler)
+            recyclerView.layoutManager = LinearLayoutManager(this)
+            val recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
+            recyclerView.adapter = recyclerAdapter
 
-        recyclerAdapter.bindState(
-            listOf(
-                HeaderItem(
-                    id = "HEADER_SERVERS",
-                    title = "Servers"
-                ),
-                ServerItem(
-                    id = "SERVER1",
-                    serverAddress = "124.45.22.12"
-                ),
-                ServerItem(
-                    id = "SERVER2",
-                    serverAddress = "90.0.0.28"
+            recyclerAdapter.bindState(
+                listOf(
+                    HeaderItem(
+                        id = "HEADER_SERVERS",
+                        title = "Servers"
+                    ),
+                    ServerItem(
+                        id = "SERVER1",
+                        serverAddress = "124.45.22.12"
+                    ),
+                    ServerItem(
+                        id = "SERVER2",
+                        serverAddress = "90.0.0.28"
+                    )
                 )
             )
-        )
+        }
     }
-}
-```
+    ```
 
-the result:
+The result:
 
 ![Screenshot_20210423-150530_KKppt3](https://user-images.githubusercontent.com/1109620/115868740-938b2300-a445-11eb-850e-8404e52dab90.png)
 
@@ -237,125 +239,127 @@ the result:
 
 # Reaction on clicks and state changes
 
-Click reaction is handled in MVI manner. Recycler item provides intent via its state function invocation. ViewModel handles the intent, recalculates the state and binds it to adapter. 
+Click reaction is handled in MVI manner. Recycler item provides the intent via its state function invocation. ViewModel handles the intent, recalculates the state and binds it to the adapter. 
 
-Firstly provide recycler item state with click reaction functions:
+1. Provide the recycler item state with click reaction functions:
 
-```java
-@RecyclerItemState
-data class UserItem(
-    val id: String,
-    val firstName: String,
-    val onCardClick: (String) -> Unit,
-    val onMoveToOnline: (String) -> Unit,
-    val onMoveToOffline: (String) -> Unit
-) : RecyclerItem {
-    override fun provideId() = id
-}
-```
+    ```java
+    @RecyclerItemState
+    data class UserItem(
+        val id: String,
+        val firstName: String,
+        val onCardClick: (String) -> Unit,
+        val onMoveToOnline: (String) -> Unit,
+        val onMoveToOffline: (String) -> Unit
+    ) : RecyclerItem {
+        override fun provideId() = id
+    }
+    ```
 
-Add on click listeners at view:
+2. Add on-click listeners to the view:
 
-```java
-@RecyclerItemView
-class UserItemView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+    ```java
+    @RecyclerItemView
+    class UserItemView @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private lateinit var userItem: UserItem
+        private lateinit var userItem: UserItem
 
-    init {
-        ...        
-        toOnlineButton.setOnClickListener {
-            userItem.onMoveToOnline.invoke(userItem.firstName)
+        init {
+            ...        
+            toOnlineButton.setOnClickListener {
+                userItem.onMoveToOnline.invoke(userItem.firstName)
+            }
+
+            toOfflineButton.setOnClickListener {
+                userItem.onMoveToOffline.invoke(userItem.firstName)
+            }
+
+            holder.setOnClickListener {
+                userItem.onCardClick.invoke(userItem.firstName)
+            }
         }
 
-        toOfflineButton.setOnClickListener {
-            userItem.onMoveToOffline.invoke(userItem.firstName)
-        }
-
-        holder.setOnClickListener {
-            userItem.onCardClick.invoke(userItem.firstName)
+        @RecyclerItemStateBinder
+        fun bindState(userItem: UserItem) {
+            this.userItem = userItem
+            firstName.text = userItem.firstName
         }
     }
+    ```
 
-    @RecyclerItemStateBinder
-    fun bindState(userItem: UserItem) {
-        this.userItem = userItem
-        firstName.text = userItem.firstName
-    }
-}
-```
+3. In your ViewModel you can handle the clicks, recreate the state if needed and bind it to your adapter using `bindState`:
 
-At you ViewModel handle the clicks and recreate state if needed:
+    ```java
+    lateinit var recyclerAdapter: RecyclerAdapter
+    private val onlineUserNames = mutableListOf("James","Mary","Robert","Patricia")
+    private val offlineUserNames = mutableListOf("Michael","Linda","William","Elizabeth","David")
 
-```java
-lateinit var recyclerAdapter: RecyclerAdapter
-private val onlineUserNames = mutableListOf("James","Mary","Robert","Patricia")
-private val offlineUserNames = mutableListOf("Michael","Linda","William","Elizabeth","David")
+    private fun updateRecycler() {
+            val recyclerItems = mutableListOf<RecyclerItem>()
 
-private fun updateRecycler() {
-        val recyclerItems = mutableListOf<RecyclerItem>()
-
-        recyclerItems.add(
-            HeaderItem(
-                id = "HEADER_ONLINE_OPERATORS",
-                title = "Online operators ${onlineUserNames.size}"
-            )
-        )
-
-        onlineUserNames.forEach { name ->
             recyclerItems.add(
-                UserItem(
-                    id = name,
-                    firstName = name,
-                    online = true,
-                    onCardClick = ::cardClicked,
-                    onMoveToOffline = ::moveToOffline
+                HeaderItem(
+                    id = "HEADER_ONLINE_OPERATORS",
+                    title = "Online operators ${onlineUserNames.size}"
                 )
             )
-        }
 
-        recyclerItems.add(
-            HeaderItem(
-                id = "HEADER_OFFLINE_OPERATORS",
-                title = "Offline operators ${offlineUserNames.size}"
-            )
-        )
+            onlineUserNames.forEach { name ->
+                recyclerItems.add(
+                    UserItem(
+                        id = name,
+                        firstName = name,
+                        online = true,
+                        onCardClick = ::cardClicked,
+                        onMoveToOffline = ::moveToOffline
+                    )
+                )
+            }
 
-        offlineUserNames.forEach {
             recyclerItems.add(
-                UserItem(
-                    id = it,
-                    firstName = it,
-                    online = false,
-                    onCardClick = ::cardClicked,
-                    onMoveToOnline = ::moveToOnline
+                HeaderItem(
+                    id = "HEADER_OFFLINE_OPERATORS",
+                    title = "Offline operators ${offlineUserNames.size}"
                 )
             )
+
+            offlineUserNames.forEach {
+                recyclerItems.add(
+                    UserItem(
+                        id = it,
+                        firstName = it,
+                        online = false,
+                        onCardClick = ::cardClicked,
+                        onMoveToOnline = ::moveToOnline
+                    )
+                )
+            }
+
+            recyclerAdapter.bindState(recyclerItems)
         }
 
-        recyclerAdapter.bindState(recyclerItems)
-    }
+        private fun cardClicked(name: String) {
+            Toast.makeText(this, name, Toast.LENGTH_SHORT).show()
+        }
 
-    private fun cardClicked(name: String) {
-        Toast.makeText(this, name, Toast.LENGTH_SHORT).show()
-    }
+        private fun moveToOffline(name: String) {
+            onlineUserNames.remove(name)
+            offlineUserNames.add(0, name)
+            updateRecycler()
+        }
 
-    private fun moveToOffline(name: String) {
-        onlineUserNames.remove(name)
-        offlineUserNames.add(0, name)
-        updateRecycler()
-    }
+        private fun moveToOnline(name: String) {
+            offlineUserNames.remove(name)
+            onlineUserNames.add(name)
+            updateRecycler()
+        }
+    ```
 
-    private fun moveToOnline(name: String) {
-        offlineUserNames.remove(name)
-        onlineUserNames.add(name)
-        updateRecycler()
-    }
-```
+Note that we have implemented all the logic inside Activity for simplification purposes.
 
-Note, we do all logic inside Activity for simplification purposes
+The result:
 
 ![ezgif-6-a9ba26ee168f](https://user-images.githubusercontent.com/1109620/115968128-e0065980-a53e-11eb-9b9e-e0049272edc3.gif)
 
@@ -366,93 +370,93 @@ Note, we do all logic inside Activity for simplification purposes
 
 # Sealed classes as states
 
-Its common to use sealed classes as UI states. You can create sealed class state items and bind it easily.
+Using sealed classes as UI states is a common thing. You can create sealed class state items and bind them easily.
 
-Create sealed class:
+1. Create a sealed class:
 
-```java
-@RecyclerItemState
-sealed class ProjectItem : RecyclerItem {
-    abstract val id: String
-    abstract val title: String
+    ```java
+    @RecyclerItemState
+    sealed class ProjectItem : RecyclerItem {
+        abstract val id: String
+        abstract val title: String
 
-    data class Failed(
-        override val id: String,
-        override val title: String,
-        val why: String
-    ) : ProjectItem()
-
-    data class New(
-        override val id: String,
-        override val title: String
-    ) : ProjectItem()
-
-    sealed class Done: ProjectItem() {
-        data class BeforeDeadline(
-            override val id: String,
-            override val title: String
-        ) : Done()
-
-        data class AfterDeadline(
+        data class Failed(
             override val id: String,
             override val title: String,
             val why: String
-        ) : Done()
+        ) : ProjectItem()
+
+        data class New(
+            override val id: String,
+            override val title: String
+        ) : ProjectItem()
+
+        sealed class Done: ProjectItem() {
+            data class BeforeDeadline(
+                override val id: String,
+                override val title: String
+            ) : Done()
+
+            data class AfterDeadline(
+                override val id: String,
+                override val title: String,
+                val why: String
+            ) : Done()
+        }
+
+        override fun provideId() = id
     }
+    ```
 
-    override fun provideId() = id
-}
-```
+2. Use Kotlin `when` to handle different sealed class states:
 
-Use Kotlin `when` to handle different sealed class states:
+    ```java
+    @RecyclerItemView
+    class ProjectItemView @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    ) : FrameLayout(context, attrs, defStyleAttr) {
 
-```java
-@RecyclerItemView
-class ProjectItemView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
-
-    @RecyclerItemStateBinder
-    fun bindState(projectItem: ProjectItem) {
-        projectTitle.text = projectItem.title
-        when (projectItem) {
-            is ProjectItem.Failed -> projectDescription.text = "Failed"
-            is ProjectItem.New -> projectDescription.text = "New"
-            is ProjectItem.Done.AfterDeadline -> projectDescription.text = "After deadline"
-            is ProjectItem.Done.BeforeDeadline -> projectDescription.text = "Before deadline"
+        @RecyclerItemStateBinder
+        fun bindState(projectItem: ProjectItem) {
+            projectTitle.text = projectItem.title
+            when (projectItem) {
+                is ProjectItem.Failed -> projectDescription.text = "Failed"
+                is ProjectItem.New -> projectDescription.text = "New"
+                is ProjectItem.Done.AfterDeadline -> projectDescription.text = "After deadline"
+                is ProjectItem.Done.BeforeDeadline -> projectDescription.text = "Before deadline"
+            }
         }
     }
-}
-```
+    ```
 
-Create and bind recycler state:
+3. Create and bind the recycler state:
 
-```java
-recyclerAdapter.bindState(
-            listOf(
-                ProjectItem.Failed(
-                    id = "FAILED",
-                    title = "Failed project",
-                    why = ""
-                ),
-                ProjectItem.New(
-                    id = "NEW",
-                    title = "New project"
-                ),
-                ProjectItem.Done.BeforeDeadline(
-                    id = "BEFORE_DEAD_LINE",
-                    title = "Done before deadline project"
-                ),
-                ProjectItem.Done.AfterDeadline(
-                    id = "AFTER_DEAD_LINE",
-                    title = "Done after deadline project",
-                    why = ""
+    ```java
+    recyclerAdapter.bindState(
+                listOf(
+                    ProjectItem.Failed(
+                        id = "FAILED",
+                        title = "Failed project",
+                        why = ""
+                    ),
+                    ProjectItem.New(
+                        id = "NEW",
+                        title = "New project"
+                    ),
+                    ProjectItem.Done.BeforeDeadline(
+                        id = "BEFORE_DEAD_LINE",
+                        title = "Done before deadline project"
+                    ),
+                    ProjectItem.Done.AfterDeadline(
+                        id = "AFTER_DEAD_LINE",
+                        title = "Done after deadline project",
+                        why = ""
+                    )
                 )
             )
-        )
-```
+    ```
 
-
+The result:
 
 ![Screenshot_20210423-170301_KKppt3](https://user-images.githubusercontent.com/1109620/115882923-e967c700-a455-11eb-8bcc-3990b9a740fb.png)
 
@@ -463,9 +467,9 @@ recyclerAdapter.bindState(
 
 # Sealed classes and binding functions
 
-You can create binding functions for every sub class of sealed state (or even for sealed sub classes of sealed class):
+You can create binding functions for every subclass of a sealed state (or even for sealed sub classes of a sealed class).
 
-Sealed class recyceler item state:
+Sealed class recycler item state:
 
 ```java
 @RecyclerItemState
@@ -505,6 +509,8 @@ class PipeLineItemView @JvmOverloads constructor(
 }
 ```
 
+See:
+
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0301SealedSeveralBindsActivity.kt)
 
 
@@ -513,7 +519,7 @@ class PipeLineItemView @JvmOverloads constructor(
 
 # One item state and several views
 
-Sometimes we need several view variants for one recycler item state class. You can define which view to use by overriding `withView()` method of `RecyclerItem`
+Sometimes one needs several view variants for one recycler item state class. You can define which view to use by overriding the `withView()` method of `RecyclerItem`:
 
 ```java
 @RecyclerItemState
@@ -527,85 +533,87 @@ data class CloudItem(
 }
 ```
 
-Create several views or view holders that can bind CloudItem:
+1. Create several views or view holders that can bind CloudItem:
 
-```java
-@RecyclerItemView
-class CloudAzureItemView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
-    ....
-    @RecyclerItemStateBinder
-    fun bindState(cloudItem: CloudItem) {
-        name.text = cloudItem.serverName
-    }
-}
-```
-
-```java
-@RecyclerItemView
-class CloudAmazonItemView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
-    ....
-    @RecyclerItemStateBinder
-    fun bindState(cloudItem: CloudItem) {
-        name.text = cloudItem.serverName
-    }
-}
-```
-
-```java
-@RecyclerItemViewHolder
-class DigitalOceanViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    @RecyclerItemStateBinder
-    fun bindState(cloudItem: CloudItem) {
-        name.text = cloudItem.serverName
-    }
-
-    companion object {
-        @RecyclerItemViewHolderCreator
-        fun provideViewHolder(context: Context): DigitalOceanViewHolder {
-            return DigitalOceanViewHolder(LayoutInflater.from(context).inflate(R.layout.cloud_digital_ocean_item_view, null))
+    ```java
+    @RecyclerItemView
+    class CloudAzureItemView @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    ) : FrameLayout(context, attrs, defStyleAttr) {
+        ....
+        @RecyclerItemStateBinder
+        fun bindState(cloudItem: CloudItem) {
+            name.text = cloudItem.serverName
         }
     }
-}
-```
+    ```
 
-And fill adapter with items:
-
-```java
-class DemoActivity : AppCompatActivity() {
-    
-    override fun onCreate(savedInstanceState: Bundle?) {
+    ```java
+    @RecyclerItemView
+    class CloudAmazonItemView @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    ) : FrameLayout(context, attrs, defStyleAttr) {
         ....
-        recyclerAdapter.bindState(
-            listOf(
-                CloudItem(
-                    id = "GOOGLE",
-                    serverName = "Google server",
-                    intoView = CloudGoogleItemView::class.java
-                ),
-                CloudItem(
-                    id = "AMAZON",
-                    serverName = "Amazon server",
-                    intoView = CloudAmazonItemView::class.java
-                ),
-                CloudItem(
-                    id = "AZURE",
-                    serverName = "Azure server",
-                    intoView = CloudAzureItemView::class.java
-                ),
-                CloudItem(
-                    id = "DIGITAL_OCEAN",
-                    serverName = "Digital ocean server",
-                    intoView = DigitalOceanViewHolder::class.java
+        @RecyclerItemStateBinder
+        fun bindState(cloudItem: CloudItem) {
+            name.text = cloudItem.serverName
+        }
+    }
+    ```
+
+    ```java
+    @RecyclerItemViewHolder
+    class DigitalOceanViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        @RecyclerItemStateBinder
+        fun bindState(cloudItem: CloudItem) {
+            name.text = cloudItem.serverName
+        }
+
+        companion object {
+            @RecyclerItemViewHolderCreator
+            fun provideViewHolder(context: Context): DigitalOceanViewHolder {
+                return DigitalOceanViewHolder(LayoutInflater.from(context).inflate(R.layout.cloud_digital_ocean_item_view, null))
+            }
+        }
+    }
+    ```
+
+2. Then, fill the adapter with items:
+
+    ```java
+    class DemoActivity : AppCompatActivity() {
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            ....
+            recyclerAdapter.bindState(
+                listOf(
+                    CloudItem(
+                        id = "GOOGLE",
+                        serverName = "Google server",
+                        intoView = CloudGoogleItemView::class.java
+                    ),
+                    CloudItem(
+                        id = "AMAZON",
+                        serverName = "Amazon server",
+                        intoView = CloudAmazonItemView::class.java
+                    ),
+                    CloudItem(
+                        id = "AZURE",
+                        serverName = "Azure server",
+                        intoView = CloudAzureItemView::class.java
+                    ),
+                    CloudItem(
+                        id = "DIGITAL_OCEAN",
+                        serverName = "Digital ocean server",
+                        intoView = DigitalOceanViewHolder::class.java
+                    )
                 )
             )
-        )
+        }
     }
-}
-```
+    ```
+
+The result:
 
 ![Screenshot_20210424-214134_KKppt3](https://user-images.githubusercontent.com/1109620/115969528-02e83c00-a546-11eb-8787-43918cf84a69.png)
 
@@ -616,86 +624,89 @@ class DemoActivity : AppCompatActivity() {
 
 # Horizontal sub lists
 
-It's common to have horizontal scrollig lists inside vertical scrolling container and recycli supports this feature. 
-Firstly create container state and view for horizontal list. This is just another list of items, recycler with horizontal layout manager and adapter:
+It's common to have horizontal scrolling lists inside the vertical scrolling container, and recycli supports this feature. 
 
-```java
-@RecyclerItemState
-data class SimpleContainerItem(
-    val id: String,
-    val recyclerState: List<RecyclerItem>
-): RecyclerItem {
-    override fun provideId(): String {
-        return id
-    }
-}
-```
+1. Create a container state and view for horizontal list. This is just another list of items, recycler with horizontal layout manager and adapter:
 
-```java
-@RecyclerItemView
-class SimpleContainerItemView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
-    private val recycler: RecyclerView
-    private val recyclerAdapter: RecyclerAdapter
-
-    init {
-        val view =
-            LayoutInflater.from(context).inflate(R.layout.simple_recycler_conteiner_view, this, true)
-        layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-
-        recyclerAdapter = RecyclerAdapter()
-        recycler = view.findViewById(R.id.simple_recycler_container_recycler)
-
-        recycler.run {
-            isNestedScrollingEnabled = false
-            layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-            adapter = recyclerAdapter
+    ```java
+    @RecyclerItemState
+    data class SimpleContainerItem(
+        val id: String,
+        val recyclerState: List<RecyclerItem>
+    ): RecyclerItem {
+        override fun provideId(): String {
+            return id
         }
     }
+    ```
 
-    @RecyclerItemStateBinder
-    fun bindState(state: SimpleContainerItem) {
-        recyclerAdapter.bindState(state.recyclerState)
+    ```java
+    @RecyclerItemView
+    class SimpleContainerItemView @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    ) : FrameLayout(context, attrs, defStyleAttr) {
+        private val recycler: RecyclerView
+        private val recyclerAdapter: RecyclerAdapter
+
+        init {
+            val view =
+                LayoutInflater.from(context).inflate(R.layout.simple_recycler_conteiner_view, this, true)
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            recyclerAdapter = RecyclerAdapter()
+            recycler = view.findViewById(R.id.simple_recycler_container_recycler)
+
+            recycler.run {
+                isNestedScrollingEnabled = false
+                layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                adapter = recyclerAdapter
+            }
+        }
+
+        @RecyclerItemStateBinder
+        fun bindState(state: SimpleContainerItem) {
+            recyclerAdapter.bindState(state.recyclerState)
+        }
     }
-}
-```
+    ```
+    
+2. Now, populate recycler items and sublist items in a usual way:
 
-Now populate recycler items and sub list items as ususual
-
-```java
-class DemoActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        ...
-        recyclerAdapter.bindState(
-            listOf(
-                HeaderItem(
-                    id = "HEADER_SUB_TASKS",
-                    title = "Subtasks"
-                ),
-                SimpleContainerItem(
-                    id = "SUB_TASKS_CONTAINER",
-                    recyclerState = (0..100).map {
-                        SubTaskItem(
-                            id = "SUB_TASK_$it",
-                            title = "Sub task $it",
-                            description = "It is a long established ..."
-                        )
-                    }
-                ),
-                BigTaskItem(
-                    id = "TASK",
-                    title = "The second task title",
-                    description = "It is a long established ..."
+    ```java
+    class DemoActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            ...
+            recyclerAdapter.bindState(
+                listOf(
+                    HeaderItem(
+                        id = "HEADER_SUB_TASKS",
+                        title = "Subtasks"
+                    ),
+                    SimpleContainerItem(
+                        id = "SUB_TASKS_CONTAINER",
+                        recyclerState = (0..100).map {
+                            SubTaskItem(
+                                id = "SUB_TASK_$it",
+                                title = "Sub task $it",
+                                description = "It is a long established ..."
+                            )
+                        }
+                    ),
+                    BigTaskItem(
+                        id = "TASK",
+                        title = "The second task title",
+                        description = "It is a long established ..."
+                    )
                 )
             )
-        )
+        }
     }
-}
-```
+    ```
+
+The result:
 
 ![ezgif-2-9cf09cc92026](https://user-images.githubusercontent.com/1109620/115970440-0500c980-a54b-11eb-857f-9c955b7cb371.gif)
 
@@ -706,21 +717,24 @@ class DemoActivity : AppCompatActivity() {
 
 # Multi-module applications
 
-In case of your app has several modules and your recycler item states and views are located in different modules you still can combine them in one list. Each modulte has its own `RecyclerBinderImpl` generated by Recycli lib. Just pass all the needed binders to `RecyclerAdapter`.
+If your app has several modules and your recycler item states and views are located in different modules, you still can combine them in one list. Each module has its own `RecyclerBinderImpl` generated by the Recycli lib. Just pass all the needed binders to `RecyclerAdapter`:
 
 ```java
 private var recyclerAdapter = RecyclerAdapter(
         binders = setOf(com.detmixr.kkppt3.RecyclerBinderImpl(), com.detmir.ui.RecyclerBinderImpl())
     )
 ```
+
+See:
+
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0600InfinityActivity.kt)
 
 
 <a name="infinity"/>
 
-# Endless scrolling lists
-One of the main features of Recycli - support for infinity scroll lists. It handles paging loading callbacks, display bottom progress bars and errors.
-To create infinity scroll list pass `RecyclerAdapter.Callbacks` to adapter constructor and this will switch it to infinity scroll. `BottomLoading` is optional. It responsible for displaying bottom progress bar, error page loading and dummy item that provides some extra space for better load position detection.
+# Infinite scrolling lists
+One of the main features of Recycli - support for infinite scroll lists. It handles paging loading callbacks, displain bottom progress bars and errors.
+To create an infinite scroll list, just pass `RecyclerAdapter.Callbacks` to the adapter constructor: this will switch it to infinite scroll. `BottomLoading` is optional. It is responsible for displaying bottom progress bar, error page loading and for dummy item that provides some extra space for better load position detection:
 
 ```java
 private var recyclerAdapter = RecyclerAdapter(
@@ -730,182 +744,185 @@ private var recyclerAdapter = RecyclerAdapter(
     )
 ```
 
-You need to provide `loadRange` function to implement infinity callback interfeface `RecyclerAdapter.Callbacks`.
-Adapter does not initiate first page loading, so we have to call loadRange(0) to initiate loading. All the later pages are loading by adapter when you scroll the recycler. 
+1. You need to provide the `loadRange` function to implement infinite callback interface `RecyclerAdapter.Callbacks`.
+Adapter does not initiate loading of the first page, so we have to call `loadRange(0)` to initiate loading. All the later pages will loaded by the adapter when you scroll the recycler. 
 
-When adapter invoke loadRange you have to to bind `InfinityState` with `requestState = InfinityState.Request.LOADING` firstly, so adapter understand that loading process started, and stops calling `loadRange`. You also have to pass current items, loading page number and peovide boolean `endReached` to indicate there are no more data.
+2. When the adapter invokes `loadRange`, you need to bind `InfinityState` with `requestState = InfinityState.Request.LOADING` first: the adapter will understand that loading process has started, and will stop calling `loadRange`. You also need to pass current items, loading page number and provide boolean `endReached` to indicate there are no more data:
 
-```java
-    recyclerAdapter.bindState(
-        InfinityState(
-            requestState = InfinityState.Request.LOADING,
-            items = items,
-            page = curPage,
-            endReached = curPage == 10
+    ```java
+        recyclerAdapter.bindState(
+            InfinityState(
+                requestState = InfinityState.Request.LOADING,
+                items = items,
+                page = curPage,
+                endReached = curPage == 10
+            )
         )
-    )
-```    
+    ```    
 
-Once you load data, add it to your items and pass it to adapter with IDLE state:
+3. Once you load data, add it to your items and pass it to adapter with the IDLE state:
 
-```java
-    if (curPage == 0) items.clear()
-    items.addAll(it)
+    ```java
+        if (curPage == 0) items.clear()
+        items.addAll(it)
 
-    recyclerAdapter.bindState(
-        InfinityState(
-            requestState = InfinityState.Request.IDLE,
-            items = items,
-            page = curPage,
-            endReached = curPage == 10
+        recyclerAdapter.bindState(
+            InfinityState(
+                requestState = InfinityState.Request.IDLE,
+                items = items,
+                page = curPage,
+                endReached = curPage == 10
+            )
         )
-    )
-```
+    ```
 
-if you encounter error while loading data bind `InfinityState` with `InfinityState.Request.ERROR`
+4. If you encounter an error while loading data, bind `InfinityState` with `InfinityState.Request.ERROR`. Consider the example below:
 
-See the example below. We load 10 pages (20 items per page). 
-On the page 4 emulate error and bind error state to show error button appears at the bottom.
-When page 10 is loaded we provide `endReached` as true and adapter stops asking for more data.
-We use RX to emulate loading process with 2 seconds data loading delay.
+    * We load 10 pages (20 items per page). 
+    * On page 4, we emulate error and bind error state to show error button appears at the bottom.
+    * When page 10 is loaded, we set `endReached` to true and adapter stops asking for more data.
+    * We use RX to emulate loading process with 2 seconds data loading delay.
 
-```java
-class DemoActivity : AppCompatActivity(), RecyclerAdapter.Callbacks {
-    
-    private val items = mutableListOf<RecyclerItem>()
-    private val PAGE_SIZE = 20
-    
-    override fun onCreate(savedInstanceState: Bundle?) {
-        recyclerView.adapter = recyclerAdapter
-        loadRange(0)
-    }
 
-    override fun loadRange(curPage: Int) {
-        val delay = if (curPage == 0) 0L else 2000L
-        Single.timer(delay, TimeUnit.MILLISECONDS)
-            .flatMap {
-                Single.just((curPage * PAGE_SIZE until (curPage * PAGE_SIZE + PAGE_SIZE)).map {
-                    UserItem(
-                        id = "$it",
-                        firstName = "John $it",
-                        online = it < 5
-                    )
-                })
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                if (curPage == 4 && !infiniteItemsErrorThrown) {
-                    infiniteItemsErrorThrown = true
-                    throw Exception("error")
+    ```java
+    class DemoActivity : AppCompatActivity(), RecyclerAdapter.Callbacks {
+
+        private val items = mutableListOf<RecyclerItem>()
+        private val PAGE_SIZE = 20
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            recyclerView.adapter = recyclerAdapter
+            loadRange(0)
+        }
+
+        override fun loadRange(curPage: Int) {
+            val delay = if (curPage == 0) 0L else 2000L
+            Single.timer(delay, TimeUnit.MILLISECONDS)
+                .flatMap {
+                    Single.just((curPage * PAGE_SIZE until (curPage * PAGE_SIZE + PAGE_SIZE)).map {
+                        UserItem(
+                            id = "$it",
+                            firstName = "John $it",
+                            online = it < 5
+                        )
+                    })
                 }
-                it
-            }
-            .doOnSubscribe {
-                recyclerAdapter.bindState(
-                    InfinityState(
-                        requestState = InfinityState.Request.LOADING,
-                        items = items,
-                        page = curPage,
-                        endReached = curPage == 10
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map {
+                    if (curPage == 4 && !infiniteItemsErrorThrown) {
+                        infiniteItemsErrorThrown = true
+                        throw Exception("error")
+                    }
+                    it
+                }
+                .doOnSubscribe {
+                    recyclerAdapter.bindState(
+                        InfinityState(
+                            requestState = InfinityState.Request.LOADING,
+                            items = items,
+                            page = curPage,
+                            endReached = curPage == 10
+                        )
                     )
-                )
-            }
-            .doOnError {
-                recyclerAdapter.bindState(
-                    InfinityState(
-                        requestState = InfinityState.Request.ERROR,
-                        items = items,
-                        page = curPage,
-                        endReached = curPage == 10
+                }
+                .doOnError {
+                    recyclerAdapter.bindState(
+                        InfinityState(
+                            requestState = InfinityState.Request.ERROR,
+                            items = items,
+                            page = curPage,
+                            endReached = curPage == 10
+                        )
                     )
-                )
-            }
-            .doOnSuccess {
-                if (curPage == 0) items.clear()
-                items.addAll(it)
+                }
+                .doOnSuccess {
+                    if (curPage == 0) items.clear()
+                    items.addAll(it)
 
-                recyclerAdapter.bindState(
-                    InfinityState(
-                        requestState = InfinityState.Request.IDLE,
-                        items = items,
-                        page = curPage,
-                        endReached = curPage == 10
+                    recyclerAdapter.bindState(
+                        InfinityState(
+                            requestState = InfinityState.Request.IDLE,
+                            items = items,
+                            page = curPage,
+                            endReached = curPage == 10
+                        )
                     )
-                )
-            }
-            .subscribe({}, {})
-    }
-}
-```
-
-Note that you have to implement RecyclerBottomLoading interface and pass it to adapter to provide Dummy, Progress, Error and Button recycler items states, that will be displayed while you scroll. Its is optional, but in production apps its a standart UI you have to implement:
-
-```java
-class BottomLoading : RecyclerBottomLoading {
-
-    @RecyclerItemState
-    sealed class State : RecyclerItem {
-        override fun provideId(): String {
-            return "bottom"
-        }
-        object Dummy : State()
-        object Progress : State()
-        data class Error(val reload: () -> Unit) : State()
-        data class Button(val next: () -> Unit) : State()
-    }
-
-    override fun provideProgress(): RecyclerItem {
-        return State.Progress
-    }
-
-    override fun provideDummy(): RecyclerItem {
-        return State.Dummy
-    }
-
-    override fun provideError(reload: () -> Unit): RecyclerItem {
-        return State.Error(reload)
-    }
-
-    override fun provideButton(next: () -> Unit): RecyclerItem {
-        return State.Button(next)
-    }
-}
-```
-
-```java
-@RecyclerItemView
-class BottomLoadingView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
-    ...
-    @RecyclerItemStateBinder
-    fun bindState(state: BottomLoading.State) {
-        when (state) {
-            is BottomLoading.State.Progress -> {
-                buttonError.visibility = View.GONE
-                progress.visibility = View.VISIBLE
-            }
-            is BottomLoading.State.Button -> {
-                buttonError.visibility = View.GONE
-                progress.visibility = View.GONE
-
-            }
-            is BottomLoading.State.Dummy -> {
-                buttonError.visibility = View.GONE
-                progress.visibility = View.GONE
-            }
-
-            is BottomLoading.State.Error -> {
-                buttonError.visibility = View.VISIBLE
-                progress.visibility = View.GONE
-            }
+                }
+                .subscribe({}, {})
         }
     }
-}
-```
+    ```
 
-Note we scroll fast, so you can see loader that displayes progress for 2 seconds. In reality users don't scroll so fast and loading process starts when 5 elements left at the bottom.
+    Keep in mind that you need to implement the `RecyclerBottomLoading` interface and pass it to adapter to provide `Dummy`, `Progress`, `Error` and `Button` recycler items states that will be displayed while you scroll. This is optional, but in production apps it is a standart UI you have to implement:
+
+    ```java
+    class BottomLoading : RecyclerBottomLoading {
+
+        @RecyclerItemState
+        sealed class State : RecyclerItem {
+            override fun provideId(): String {
+                return "bottom"
+            }
+            object Dummy : State()
+            object Progress : State()
+            data class Error(val reload: () -> Unit) : State()
+            data class Button(val next: () -> Unit) : State()
+        }
+
+        override fun provideProgress(): RecyclerItem {
+            return State.Progress
+        }
+
+        override fun provideDummy(): RecyclerItem {
+            return State.Dummy
+        }
+
+        override fun provideError(reload: () -> Unit): RecyclerItem {
+            return State.Error(reload)
+        }
+
+        override fun provideButton(next: () -> Unit): RecyclerItem {
+            return State.Button(next)
+        }
+    }
+    ```
+
+    ```java
+    @RecyclerItemView
+    class BottomLoadingView @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    ) : FrameLayout(context, attrs, defStyleAttr) {
+        ...
+        @RecyclerItemStateBinder
+        fun bindState(state: BottomLoading.State) {
+            when (state) {
+                is BottomLoading.State.Progress -> {
+                    buttonError.visibility = View.GONE
+                    progress.visibility = View.VISIBLE
+                }
+                is BottomLoading.State.Button -> {
+                    buttonError.visibility = View.GONE
+                    progress.visibility = View.GONE
+
+                }
+                is BottomLoading.State.Dummy -> {
+                    buttonError.visibility = View.GONE
+                    progress.visibility = View.GONE
+                }
+
+                is BottomLoading.State.Error -> {
+                    buttonError.visibility = View.VISIBLE
+                    progress.visibility = View.GONE
+                }
+            }
+        }
+    }
+    ```
+
+    Note that we scroll fast, so you can see loader that displays progress for 2 seconds. In reality users don't scroll that fast and loading process starts when 5 elements are left at the bottom.
+
+The result:
 
 ![ezgif-6-5b5d2a89fbdb](https://user-images.githubusercontent.com/1109620/115992211-27d7c000-a5d5-11eb-8753-0b340f54042f.gif)
 
