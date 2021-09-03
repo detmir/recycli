@@ -9,11 +9,12 @@ android {
 
     defaultConfig {
         applicationId "com.detmir.kkppt3"
-        minSdkVersion 21
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 100050
         versionName "1.0.5"
 
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -56,5 +57,8 @@ dependencies {
 
     androidTestImplementation("com.kaspersky.android-components:kaspresso:1.2.0")
     androidTestImplementation "org.assertj:assertj-core:3.19.0"
+
+
+    implementation("androidx.multidex:multidex:2.0.1")
 
 }
