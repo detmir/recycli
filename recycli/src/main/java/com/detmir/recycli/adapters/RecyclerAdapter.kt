@@ -16,7 +16,7 @@ open class RecyclerAdapter(
 
     var recyclerView: RecyclerView? = null
 
-    val attachListeners: Map<String, AttachListener>? = null
+    var attachListeners: Map<String, AttachListener>? = null
     var firstAppearanceListeners: Map<String, FirstAppearanceListener>? = null
 
     private val items = mutableListOf<RecyclerItem>()
