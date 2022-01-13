@@ -35,7 +35,6 @@ class RecyclerProcessor : AbstractProcessor() {
         elementsSet: MutableSet<out TypeElement>?,
         roundEnvironment: RoundEnvironment?
     ): Boolean {
-        ld("process $roundEnvironment")
         val indexToStateMap = mutableMapOf<Int, String>()
         val stateToIndexMap = mutableMapOf<String, Int>()
         val stateToViewMap = mutableMapOf<String, MutableList<ViewProps>>()
@@ -53,7 +52,7 @@ class RecyclerProcessor : AbstractProcessor() {
             stateToIndexMap[element.toString()] = iWrap.i
             stateSealedAliases[iWrap.i] = iWrap.i
             val topClassIndex = iWrap.i
-            iWrap.i++
+
 
             craftSealedClass(
                 element = element,
@@ -63,6 +62,7 @@ class RecyclerProcessor : AbstractProcessor() {
                 stateToIndexMap = stateToIndexMap,
                 stateSealedAliases = stateSealedAliases
             )
+            iWrap.i++
         }
 
 
@@ -77,7 +77,6 @@ class RecyclerProcessor : AbstractProcessor() {
                 type = Type.VIEW
             )
         }
-
 
         //VIEW HOLDERS
         roundEnvironment?.getElementsAnnotatedWith(
@@ -102,6 +101,9 @@ class RecyclerProcessor : AbstractProcessor() {
         )
 
 
+
+
+
         generateBinderClass(
             completeMap = completeMap
         )
@@ -118,11 +120,11 @@ class RecyclerProcessor : AbstractProcessor() {
     ) {
         element.enclosedElements.forEach { enclosedElement ->
             if (enclosedElement.enclosingElement == element && enclosedElement.kind == ElementKind.CLASS) {
+                iWrap.i++
                 indexToStateMap[iWrap.i] = enclosedElement.toString()
                 stateToIndexMap[enclosedElement.toString()] = iWrap.i
                 stateSealedAliases[iWrap.i] = topClassIndex
-                ld("enclosedElement i=${iWrap.i} for $topClassIndex enclosedElement=$enclosedElement")
-                iWrap.i++
+
                 craftSealedClass(
                     enclosedElement,
                     topClassIndex,
@@ -205,6 +207,14 @@ class RecyclerProcessor : AbstractProcessor() {
                 }
             }
         }
+
+        var i = 0
+        stateToViewMap.forEach { t, viewPropsMap ->
+            viewPropsMap.forEach { viewProps ->
+                viewProps.index = i
+                i++
+            }
+        }
     }
 
 
@@ -236,25 +246,22 @@ class RecyclerProcessor : AbstractProcessor() {
         var completeIndex = 0
 
         stateToViewMap.putAll(addSealed)
+
         stateToViewMap.forEach {
             val state = it.key
+
             it.value.forEach { viewProps ->
                 if (!completeMap.containsKey("$state#default")) {
                     completeMap.putIfAbsent(
                         "$state#default",
-                        viewProps.copy(index = completeIndex)
+                        viewProps
                     )
                     completeIndex++
                 }
 
-                completeMap[state + "#" + viewProps.viewBinderClassName] =
-                    viewProps.copy(index = completeIndex)
+                completeMap[state + "#" + viewProps.viewBinderClassName] = viewProps
                 completeIndex++
             }
-        }
-
-        completeMap.forEach {
-            ld("FINALLY stateClass = ${it.key} index = ${it.value.index} to view =${it.value.viewBinderClassName}")
         }
     }
 
@@ -292,7 +299,7 @@ class RecyclerProcessor : AbstractProcessor() {
                 )
                 .addFunction(
                     getOnCreateView(
-                        stateToViewMap = completeMap
+                        completeMap = completeMap
                     )
                 )
                 .addFunction(
@@ -415,7 +422,7 @@ class RecyclerProcessor : AbstractProcessor() {
 
 
     private fun getOnCreateView(
-        stateToViewMap: Map<String, ViewProps>
+        completeMap: Map<String, ViewProps>
     ): FunSpec {
         val builder = FunSpec.builder("onCreateViewHolder")
         builder.addModifiers(KModifier.OVERRIDE)
@@ -438,7 +445,18 @@ class RecyclerProcessor : AbstractProcessor() {
             )
         )
 
-        stateToViewMap.forEach { (_, viewProps) ->
+
+        val reversedMap = mutableMapOf<ViewProps, ArrayList<String>>()
+
+        completeMap.forEach { state, viewProp ->
+            val states = reversedMap.getOrPut(viewProp) {
+                ArrayList()
+            }
+
+            states.add(state)
+        }
+
+        reversedMap.forEach { (viewProps, states) ->
             when (viewProps.type) {
                 Type.VIEW_HOLDER -> {
                     builder.addCode(
@@ -512,7 +530,7 @@ class RecyclerProcessor : AbstractProcessor() {
     }
 
     data class ViewProps(
-        val index: Int,
+        var index: Int,
         var type: Type,
         val viewCreatorClassName: String,
         val viewBinderClassName: String,
