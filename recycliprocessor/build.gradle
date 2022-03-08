@@ -33,7 +33,6 @@ mavenPublish {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "com.squareup:kotlinpoet:1.9.0"
     compileOnly project(':recycliannotation')
     implementation "com.google.auto.service:auto-service:1.0"
     kapt "com.google.auto.service:auto-service:1.0"
