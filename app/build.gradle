@@ -4,13 +4,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 31
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.detmir.kkppt3"
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 100050
         versionName "1.0.5"
 
@@ -55,7 +55,7 @@ dependencies {
     implementation project(path: ':ui')
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
-    androidTestImplementation("com.kaspersky.android-components:kaspresso:1.2.0")
+    androidTestImplementation("com.kaspersky.android-components:kaspresso:1.4.1")
     androidTestImplementation "org.assertj:assertj-core:3.19.0"
 
 

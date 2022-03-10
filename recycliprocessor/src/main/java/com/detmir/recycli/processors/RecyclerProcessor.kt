@@ -1,8 +1,10 @@
 package com.detmir.recycli.processors
 
 import com.detmir.recycli.annotations.*
-import com.google.auto.service.AutoService
-import javax.annotation.processing.*
+import javax.annotation.processing.AbstractProcessor
+import javax.annotation.processing.RoundEnvironment
+import javax.annotation.processing.SupportedOptions
+import javax.annotation.processing.SupportedSourceVersion
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.Element
 import javax.lang.model.element.ElementKind
@@ -10,7 +12,6 @@ import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
 
-@AutoService(Processor::class)
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedOptions(RecyclerProcessor.KAPT_KOTLIN_GENERATED_OPTION_NAME)
 @Suppress("unused")
