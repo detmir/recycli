@@ -15,7 +15,7 @@ import javax.tools.Diagnostic
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedOptions(RecyclerProcessor.KAPT_KOTLIN_GENERATED_OPTION_NAME)
 @Suppress("unused")
-class RecyclerProcessor : AbstractProcessor() {
+internal class RecyclerProcessor : AbstractProcessor() {
 
     private var packageName: String? = null
 

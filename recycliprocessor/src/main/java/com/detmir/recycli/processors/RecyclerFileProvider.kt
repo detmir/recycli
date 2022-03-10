@@ -3,7 +3,7 @@ package com.detmir.recycli.processors
 import java.io.File
 import javax.annotation.processing.ProcessingEnvironment
 
-object RecyclerFileProvider {
+internal object RecyclerFileProvider {
 
     fun generateBinderClass(
         packageName: String?,
