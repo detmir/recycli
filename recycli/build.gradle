@@ -53,7 +53,5 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.0.+"
-    implementation "androidx.core:core-ktx:1.0.+"
     implementation "androidx.recyclerview:recyclerview:1.0.+"
 }

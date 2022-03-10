@@ -1,6 +1,5 @@
 package com.detmir.recycli.adapters
 
-import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 
 class RecyclerDiffCallback(
