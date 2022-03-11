@@ -39,6 +39,8 @@
             android:name=".Case0500HorizontalActivity"/>
         <activity
             android:name=".Case0600InfinityActivity"/>
+        <activity
+            android:name=".Case0700Paging"/>
     </application>
 
 </manifest>

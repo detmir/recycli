@@ -69,6 +69,12 @@
                 android:layout_height="wrap_content"
                 android:text="Case: 06 00 - Infinity"/>
 
+            <Button
+                android:id="@+id/activity_main_0700"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Case: 07 00 - Infinity"/>
+
         </LinearLayout>
 
     </ScrollView>
