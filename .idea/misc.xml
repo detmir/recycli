@@ -5,6 +5,9 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_case_0500.xml" value="0.18020833333333333" />
+        <entry key="app/src/main/res/layout/activity_case_0600.xml" value="0.18795289855072464" />
+        <entry key="app/src/main/res/layout/activity_case_0900.xml" value="0.18795289855072464" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.11574074074074074" />
         <entry key="app/src/main/res/layout/big_task_view.xml" value="0.13177083333333334" />
         <entry key="app/src/main/res/layout/header_view.xml" value="0.13177083333333334" />
         <entry key="app/src/main/res/layout/project_item_view.xml" value="0.1609375" />
