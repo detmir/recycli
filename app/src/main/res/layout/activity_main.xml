@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,71 +8,80 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
             <Button
                 android:id="@+id/activity_main_0000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
-                android:text="Case: 00 00 - Demo"/>
+                android:text="Case: 00 00 - Demo" />
 
             <Button
                 android:id="@+id/activity_main_0100"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Case: 01 00 - Simple"/>
+                android:text="Case: 01 00 - Simple" />
 
             <Button
                 android:id="@+id/activity_main_0101"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Case: 01 01 - Simple View Holder"/>
+                android:text="Case: 01 01 - Simple View Holder" />
 
             <Button
                 android:id="@+id/activity_main_0200"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Case: 02 00 - Clicks and states"/>
+                android:text="Case: 02 00 - Clicks and states" />
 
             <Button
                 android:id="@+id/activity_main_0300"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Case: 03 00 - Sealed classes"/>
+                android:text="Case: 03 00 - Sealed classes" />
 
             <Button
                 android:id="@+id/activity_main_0301"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Case: 03 01 - Binding methods"/>
+                android:text="Case: 03 01 - Binding methods" />
 
             <Button
                 android:id="@+id/activity_main_0400"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Case: 04 00 - Into view"/>
+                android:text="Case: 04 00 - Into view" />
 
             <Button
                 android:id="@+id/activity_main_0500"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Case: 05 00 - horizontal"/>
+                android:text="Case: 05 00 - horizontal" />
 
             <Button
                 android:id="@+id/activity_main_0600"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Case: 06 00 - Infinity"/>
+                android:text="Case: 06 00 - Infinity" />
 
             <Button
-                android:id="@+id/activity_main_0900"
+                android:id="@+id/activity_main_0700"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Case: 09 00 - Sticky Headers"/>
+                android:text="Case: 07 00 - Paging 3" />
+
+            <Button
+                android:id="@+id/activity_main_0800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Case: 08 00 - Sticky Headers" />
+
 
         </LinearLayout>
 

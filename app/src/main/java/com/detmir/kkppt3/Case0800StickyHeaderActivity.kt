@@ -16,7 +16,7 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-class Case0900StickyHeaderActivity : AppCompatActivity(), RecyclerAdapter.Callbacks {
+class Case0800StickyHeaderActivity : AppCompatActivity(), RecyclerAdapter.Callbacks {
 
     private lateinit var recyclerView: RecyclerView
     private val items = ArrayList<RecyclerItem>()
