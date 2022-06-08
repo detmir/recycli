@@ -933,9 +933,10 @@ The result:
 
 <a name="paging3"/>
 
+
 # Jetpack Paging 3
 
-You can use low level Recycli adapter `RecyclerBaseAdapter` to provide ViewHolders and bindingsm and use Paging 3 library for all needed infinity scroll logic
+You can use low level Recycli adapter `RecyclerBaseAdapter` to provide ViewHolders and bindings and use Paging 3 library for all needed infinity scroll logic
 
 ![paging](https://user-images.githubusercontent.com/1109620/172666638-ddb0377f-c2b8-4dd9-8faf-582b0c4081d5.gif)
 
@@ -943,6 +944,7 @@ You can use low level Recycli adapter `RecyclerBaseAdapter` to provide ViewHolde
 
 
 <a name="sticky_headers"/>
+
 
 # Sticky headers
 
