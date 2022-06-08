@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/repo_top"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:shimmer_auto_start="false"
     tools:parentTag="android.widget.FrameLayout">
 
         <FrameLayout
@@ -39,6 +41,15 @@
                     android:backgroundTint="@color/recycliPurple"/>
 
                 <TextView
+                    android:id="@+id/repo_pos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="74dp"
+                    android:textColor="#4A4A4A"
+                    android:textSize="14dp"
+                    tools:text="1" />
+
+                <TextView
                     android:id="@+id/repo_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -49,7 +60,7 @@
                     tools:text="User 1" />
 
                 <TextView
-                    android:id="@+id/repo_description"
+                    android:id="@+id/repo_plused"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
@@ -69,4 +80,4 @@
                     android:text="Plus" />
         </FrameLayout>
 
-</merge>
+</com.facebook.shimmer.ShimmerFrameLayout>

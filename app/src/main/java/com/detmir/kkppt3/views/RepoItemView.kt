@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.detmir.kkppt3.R
 import com.detmir.recycli.annotations.RecyclerItemStateBinder
 import com.detmir.recycli.annotations.RecyclerItemView
+import com.facebook.shimmer.ShimmerFrameLayout
 
 @RecyclerItemView
 class RepoItemView @JvmOverloads constructor(
@@ -17,8 +18,10 @@ class RepoItemView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private val taskTitle: TextView
-    private val taskDescription: TextView
+    private val taskPos: TextView
+    private val taskPlused: TextView
     private val plus: Button
+    private val shimmer: ShimmerFrameLayout
     private var state: RepoItem? = null
 
 
@@ -29,7 +32,9 @@ class RepoItemView @JvmOverloads constructor(
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         taskTitle = findViewById(R.id.repo_title)
-        taskDescription = findViewById(R.id.repo_description)
+        shimmer = findViewById(R.id.repo_top)
+        taskPos = findViewById(R.id.repo_pos)
+        taskPlused = findViewById(R.id.repo_plused)
         plus = findViewById(R.id.repo_plus)
         plus.setOnClickListener {
             state?.onPlus?.invoke()
@@ -39,7 +44,16 @@ class RepoItemView @JvmOverloads constructor(
     @RecyclerItemStateBinder
     fun bindState(state: RepoItem) {
         this.state = state
+        if (state.placeholder) {
+            shimmer.showShimmer(true)
+            shimmer.startShimmer()
+        } else {
+            shimmer.stopShimmer()
+            shimmer.hideShimmer()
+        }
+
         taskTitle.text = state.repoName
-        taskDescription.text = "${state.i}"
+        taskPos.text = "${state.pos}"
+        taskPlused.text = "Plused = ${state.plusedValue}"
     }
 }

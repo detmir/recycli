@@ -7,8 +7,10 @@ import com.detmir.recycli.annotations.RecyclerItemState
 data class RepoItem(
     val id: String,
     val repoName: String,
-    val i: Int,
-    val onPlus: () -> Unit
+    val pos: Int,
+    val plusedValue: Int,
+    val placeholder: Boolean,
+    val onPlus: (() -> Unit)?
 ) : RecyclerItem {
     override fun provideId() = id
 }

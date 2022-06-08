@@ -3,14 +3,9 @@ package com.detmir.kkppt3.paging
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.detmir.kkppt3.views.RepoDto
-import com.detmir.kkppt3.views.RepoItem
 import com.detmir.recycli.adapters.RecyclerItem
-import kotlinx.coroutines.delay
 
-class GithubPagingSource(
-    private val externalLoad: suspend (from: Int, to: Int) -> List<RecyclerItem>
-) : PagingSource<Int, RecyclerItem>() {
+abstract class RecycliPagingSource : PagingSource<Int, RecyclerItem>() {
 
     companion object {
         const val NETWORK_PAGE_SIZE = 20
@@ -30,9 +25,9 @@ class GithubPagingSource(
         val from = page * NETWORK_PAGE_SIZE
         val to = page * NETWORK_PAGE_SIZE + loadSize
         Log.d("pager3", "page = $page loadSize = $loadSize from =$from to = $to")
-        val repos = externalLoad(from, to)
+        val items = actualLoad(from, to)
 
-        val nextKey = if (repos.isEmpty()) {
+        val nextKey = if (items.isEmpty()) {
             null
         } else {
             // if initial load size = 3 * NETWORK_PAGE_SIZE
@@ -42,9 +37,14 @@ class GithubPagingSource(
 
         Log.d("pager3", "nextKey = $nextKey")
         return LoadResult.Page(
-            data = repos,
+            data = items,
             prevKey = if (page == 0) null else page - 1,
-            nextKey = nextKey
+            nextKey = nextKey,
+            itemsBefore = from,
+            itemsAfter = totalItems - to
         )
     }
+
+    abstract var totalItems: Int
+    abstract suspend fun actualLoad(from: Int, to: Int): List<RecyclerItem>
 }

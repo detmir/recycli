@@ -2,15 +2,15 @@ package com.detmir.kkppt3
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.detmir.kkppt3.paging.GithubPagingSource
-import com.detmir.kkppt3.paging.Paging3RecycliAdapter
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.detmir.kkppt3.paging.RecycliPagingAdapter
+import com.detmir.kkppt3.paging.RecycliPagingSource
 import com.detmir.kkppt3.views.RepoDto
 import com.detmir.kkppt3.views.RepoItem
 import com.detmir.recycli.adapters.RecyclerBaseAdapter
@@ -18,61 +18,62 @@ import com.detmir.recycli.adapters.RecyclerItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class Case0700Paging : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
-    private var total = 0
+    private var plusedValue = 0
     private var cachedData = mutableMapOf<Int, RepoDto>()
-    private lateinit var adapter: Paging3RecycliAdapter
-    private var githubPagingSource = GithubPagingSource(
-        externalLoad = ::externalLoad
-    )
-
-    private lateinit var refresh: Button
-    private lateinit var invalidate: Button
-
-    fun getTotal() = total
+    private lateinit var adapter: RecycliPagingAdapter
+    private var githubPagingSource: RecycliPagingSource? = null
+    private lateinit var swipeRefresh: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val cs = CoroutineScope(Dispatchers.Default)
         RecyclerBaseAdapter.staticBinders = setOf(
             com.detmir.ui.RecyclerBinderImpl(),
-            com.detmir.kkppt3.RecyclerBinderImpl()
+            RecyclerBinderImpl()
         )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_case_0700)
-        recyclerView = findViewById<RecyclerView>(R.id.activity_case_0700_recycler)
-        refresh = findViewById<Button>(R.id.activity_case_0700_refresh)
-        invalidate = findViewById<Button>(R.id.activity_case_0700_invalidate)
+        recyclerView = findViewById(R.id.activity_case_0700_recycler)
+        swipeRefresh = findViewById(R.id.activity_case_0700_swipe)
 
-        refresh.setOnClickListener {
+        swipeRefresh.isRefreshing = true
+
+        swipeRefresh.setOnRefreshListener {
+            plusedValue = 0
+            cachedData.clear()
             adapter.refresh()
-        }
-
-        invalidate.setOnClickListener {
-                githubPagingSource.invalidate()
         }
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         (recyclerView.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
 
-        adapter = Paging3RecycliAdapter()
-
+        adapter = RecycliPagingAdapter(
+            placeHolderProvider = ::placeHolderProvider
+        )
         recyclerView.adapter = adapter
 
         cs.launch {
             Pager(
                 config = PagingConfig(
-                    pageSize = GithubPagingSource.NETWORK_PAGE_SIZE,
+                    pageSize = RecycliPagingSource.NETWORK_PAGE_SIZE,
                     prefetchDistance = 2,
-                    enablePlaceholders = false,
-                    initialLoadSize = GithubPagingSource.NETWORK_PAGE_SIZE
+                    enablePlaceholders = true,
+                    initialLoadSize = RecycliPagingSource.NETWORK_PAGE_SIZE
                 ),
-                pagingSourceFactory = ::provideGithubPagingSource
+                pagingSourceFactory = {
+                    val githubPagingSourceLocal = object : RecycliPagingSource() {
+                        override var totalItems: Int = 1000
+                        override suspend fun actualLoad(from: Int, to: Int): List<RecyclerItem> {
+                            return load(from, to)
+                        }
+                    }
+                    githubPagingSource = githubPagingSourceLocal
+                    githubPagingSourceLocal
+                }
             ).flow.collect { pagindData ->
                 adapter.submitData(pagindData)
             }
@@ -80,62 +81,63 @@ class Case0700Paging : AppCompatActivity() {
 
     }
 
-
-    fun provideGithubPagingSource(): GithubPagingSource {
-        githubPagingSource = GithubPagingSource(
-            externalLoad = ::externalLoad
+    private fun placeHolderProvider(pos: Int): RecyclerItem {
+        return RepoItem(
+            id = "$pos",
+            repoName = "",
+            pos = pos,
+            plusedValue = 0,
+            placeholder = true,
+            onPlus = null
         )
-        return githubPagingSource
     }
 
 
-    fun onPlus() {
-        Log.d("pager3","onPlus total=$total")
-        total++
-        githubPagingSource.invalidate()
+    private fun onPlus() {
+        Log.d("pager3", "onPlus plusedValue=$plusedValue")
+        plusedValue++
+        githubPagingSource?.invalidate()
     }
 
 
-    private suspend fun externalLoad(from: Int, to: Int): List<RecyclerItem> {
-        val repos: List<RecyclerItem>
+    private fun mapItem(repoDto: RepoDto): RepoItem {
+        return RepoItem(
+            id = "${repoDto.i}",
+            repoName = repoDto.name,
+            onPlus = ::onPlus,
+            pos = repoDto.i,
+            plusedValue = plusedValue,
+            placeholder = false
+        )
+    }
+
+
+    private suspend fun load(from: Int, to: Int): List<RecyclerItem> {
+        val items: List<RecyclerItem>
         if (cachedData[from] != null && cachedData[to - 1] != null) {
-            Log.d("pager3", "Hit cached")
-            repos = cachedData.filter { entry ->
+            Log.d("pager3", "Fetch cache")
+            items = cachedData.filter { entry ->
                 entry.key in from until to
-            }.values.map { repoDto ->
-                RepoItem(
-                    id = "${repoDto.i}",
-                    repoName = repoDto.name,
-                    onPlus = ::onPlus,
-                    i = total
-                )
-            }
+            }.values.map(::mapItem)
         } else {
-            Log.d("pager3", "Fetch netwirk")
+            Log.d("pager3", "Fetch network")
             delay(2000) // emulate network delay
             val repoDtos = (from until to).map { pos ->
-                RepoDto(
+                val repoDto = RepoDto(
                     i = pos,
                     name = "my name is $pos"
                 )
-            }
-            repos = repoDtos.map { repoDto ->
-                val repoItem = RepoItem(
-                    id = "${repoDto.i}",
-                    repoName = repoDto.name,
-                    onPlus = ::onPlus,
-                    i = total
-                )
                 cachedData[repoDto.i] = repoDto
-                repoItem
+                repoDto
             }
+
+            swipeRefresh.isRefreshing = false
+
+            items = repoDtos
+                .map(::mapItem)
+
         }
-        return repos
-    }
-
-
-    companion object {
-        const val PAGE_SIZE = 20
+        return items
     }
 }
 
