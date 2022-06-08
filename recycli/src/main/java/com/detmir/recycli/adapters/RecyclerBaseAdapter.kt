@@ -1,11 +1,7 @@
 package com.detmir.recycli.adapters
 
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 
 open class RecyclerBaseAdapter(
     val getRecyclerItem: (pos: Int) -> RecyclerItem,
