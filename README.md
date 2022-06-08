@@ -18,6 +18,9 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies the creatio
 [Multi-module applications](#multi_module)  
 [Endless scrolling lists](#infinity)  
 [License](#license)  
+[Paging 3](#paging3)  
+[Sticky Headers](#sticky_headers)  
+
 
 <a name="installation"/>
 
@@ -927,6 +930,28 @@ The result:
 ![ezgif-6-5b5d2a89fbdb](https://user-images.githubusercontent.com/1109620/115992211-27d7c000-a5d5-11eb-8753-0b340f54042f.gif)
 
 [Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0600Infinity.kt)
+
+<a name="paging3"/>
+
+# Jetpack Paging 3
+
+You can use low level Recycli adapter `RecyclerBaseAdapter` to provide ViewHolders and bindingsm and use Paging 3 library for all needed infinity scroll logic
+
+![paging](https://user-images.githubusercontent.com/1109620/172666638-ddb0377f-c2b8-4dd9-8faf-582b0c4081d5.gif)
+
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0700Paging.kt)
+
+
+<a name="sticky_headers"/>
+
+# Sticky headers
+
+You can use standart Item decorator technique to support sticky headers
+
+![sticky](https://user-images.githubusercontent.com/1109620/172666665-016712b7-73c2-4ac1-a4e3-3e73da40875e.gif)
+
+[Demo Activity](https://github.com/detmir/recycli/blob/master/app/src/main/java/com/detmir/kkppt3/Case0800StickyHeaderActivity.kt)
+
 
 <a name="license"/>
 
