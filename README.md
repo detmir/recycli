@@ -38,9 +38,9 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies the creatio
     }
 
     dependencies {
-        implementation 'com.detmir.recycli:adapters:1.2.0'
-        compileOnly 'com.detmir.recycli:annotations:1.2.0'
-        kapt 'com.detmir.recycli:processors:1.2.0'
+        implementation 'com.detmir.recycli:adapters:1.4.0'
+        compileOnly 'com.detmir.recycli:annotations:1.4.0'
+        kapt 'com.detmir.recycli:processors:1.4.0'
     }
 
     ```
