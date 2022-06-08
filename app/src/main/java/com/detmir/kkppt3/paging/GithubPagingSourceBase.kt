@@ -8,8 +8,10 @@ import com.detmir.kkppt3.views.RepoItem
 import com.detmir.recycli.adapters.RecyclerItem
 import kotlinx.coroutines.delay
 
-class GithubPagingSource(
-    private val externalLoad: suspend (from: Int, to: Int) -> List<RecyclerItem>
+class GithubPagingSourceBase(
+    private val onPlus: () -> Unit,
+    private val getTotal: () -> Int,
+    private val cachedData: MutableMap<Int, RepoDto>
 ) : PagingSource<Int, RecyclerItem>() {
 
     companion object {
@@ -30,7 +32,41 @@ class GithubPagingSource(
         val from = page * NETWORK_PAGE_SIZE
         val to = page * NETWORK_PAGE_SIZE + loadSize
         Log.d("pager3", "page = $page loadSize = $loadSize from =$from to = $to")
-        val repos = externalLoad(from, to)
+        val repos: List<RecyclerItem>
+        if (cachedData[from] != null && cachedData[to - 1] != null) {
+            Log.d("pager3", "Hit cached")
+            repos = cachedData.filter { entry ->
+                entry.key in from until to
+            }.values.map { repoDto ->
+                RepoItem(
+                    id = "${repoDto.i}",
+                    repoName = repoDto.name,
+                    onPlus = onPlus,
+                    i = getTotal.invoke()
+                )
+            }
+        } else {
+            Log.d("pager3", "Fetch netwirk")
+            delay(2000) // emulate network delay
+
+            val repoDtos = (from until to).map { pos ->
+                RepoDto(
+                    i = pos,
+                    name = "my name is $pos"
+                )
+            }
+            repos = repoDtos.map { repoDto ->
+                val repoItem = RepoItem(
+                    id = "${repoDto.i}",
+                    repoName = repoDto.name,
+                    onPlus = onPlus,
+                    i = getTotal.invoke()
+                )
+                cachedData[repoDto.i] = repoDto
+                repoItem
+            }
+        }
+
 
         val nextKey = if (repos.isEmpty()) {
             null
@@ -48,3 +84,4 @@ class GithubPagingSource(
         )
     }
 }
+

@@ -57,6 +57,16 @@
                     android:textColor="#4A4A4A"
                     android:textSize="14dp"
                     tools:text="User 1" />
+
+                <Button
+                    android:id="@+id/repo_plus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="94dp"
+                    android:textColor="#4A4A4A"
+                    android:textSize="14dp"
+                    android:text="Plus" />
         </FrameLayout>
 
 </merge>

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.detmir.kkppt3.views.*
 import com.detmir.recycli.adapters.RecyclerAdapter
+import com.detmir.recycli.adapters.RecyclerBaseAdapter
 import com.detmir.recycli.adapters.RecyclerItem
 import com.detmir.ui.RecyclerBinderImpl
 
@@ -33,7 +34,7 @@ class Case0000DemoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        RecyclerAdapter.staticBinders = setOf(
+        RecyclerBaseAdapter.staticBinders = setOf(
             com.detmir.ui.RecyclerBinderImpl(),
             com.detmir.kkppt3.RecyclerBinderImpl()
         )
