@@ -162,7 +162,7 @@ The `RecyclerView` will display:
 
 # Use Views or ViewHolders
 
-In the example earlier we used classes that extend `ViewGroup` or `View` to provide `RecyclerView` with the corresponding view. If you prefer to inflate views directly in `RecyclerView.ViewHolder`, your can do it with `@RecyclerItemViewHolder` and `@RecyclerItemViewHolderCreator` annotations. Note that `@RecyclerItemViewHolderCreator` must be a function located in the companion class of `ViewHolder`.
+In the example earlier, we used classes that extend `ViewGroup` or `View` to provide `RecyclerView` with the corresponding view. If you prefer to inflate views directly in `RecyclerView.ViewHolder`, you can do it with `@RecyclerItemViewHolder` and `@RecyclerItemViewHolderCreator` annotations. Note that `@RecyclerItemViewHolderCreator` must be a function located in the companion class of `ViewHolder`.
 
 See the full example below:
 
