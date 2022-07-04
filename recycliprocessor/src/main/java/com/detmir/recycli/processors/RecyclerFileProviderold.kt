@@ -6,9 +6,8 @@ import java.io.Writer
 import javax.annotation.processing.Filer
 import javax.annotation.processing.ProcessingEnvironment
 import javax.lang.model.element.Element
-import javax.tools.StandardLocation
 
-internal object RecyclerFileProvider {
+internal object RecyclerFileProviderold {
 
     fun generateBinderClass(
         packageName: String?,
@@ -26,6 +25,8 @@ internal object RecyclerFileProvider {
         if (completeMap.isNotEmpty()) {
 
 
+
+
             val sbStateToIndexMap = StringBuilder("")
             var r = 0
             completeMap.forEach {
@@ -38,24 +39,32 @@ internal object RecyclerFileProvider {
                 r++
             }
 
+            val generatedSourcesRoot: String =
+                processingEnv.options[RecyclerProcessor.KAPT_KOTLIN_GENERATED_OPTION_NAME].orEmpty()
+
+            val file = File(
+                "$generatedSourcesRoot/${
+                    packageName.replace(
+                        ".",
+                        "/"
+                    )
+                }/RecyclerBinderImpl.kt"
+            ).also { file ->
+                file.parentFile.mkdirs()
+            }
+
             val sb = StringBuilder("")
             sb.append("package $packageName\n")
             getImports(sb = sb)
-            sb.append("\npublic class RecyclerBinderImpl : RecyclerBinder {\n")
+            sb.append("public class RecyclerBinderImpl : RecyclerBinder {\n")
             getStateToIndex(sb = sb, completeMap = completeMap)
             getOnCreateView(sb = sb, completeMap = completeMap)
             getOnBindView(sb = sb, completeMap = completeMap)
             getItemViewType(sb = sb)
             sb.append("}\n")
 
-            val kotlinFileObject = filer.createResource(
-                StandardLocation.SOURCE_OUTPUT,
-                packageName, "RecyclerBinderImplXXD.kt"
-            )
-            val writer = kotlinFileObject.openWriter()
-            writer.write(sb.toString())
-            writer.flush()
-            writer.close()
+
+            file.writeText(sb.toString())
         }
     }
 

@@ -14,6 +14,16 @@ open class RecyclerAdapter(
     private val infinityType: InfinityType = InfinityType.SCROLL
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    companion object {
+        var staticBinders: Set<RecyclerBinder>?
+            set(value) {
+                RecyclerBaseAdapter.staticBinders = value
+            }
+            get() {
+                return RecyclerBaseAdapter.staticBinders
+            }
+    }
+
     var recyclerView: RecyclerView? = null
 
     var attachListeners: Map<String, AttachListener>? = null
@@ -26,7 +36,7 @@ open class RecyclerAdapter(
 
     private var scrollChecker: Runnable = Runnable { checkNeedLoad() }
     private var infinityState: InfinityState? = null
-    private val recyclerBaseAdapter: RecyclerBaseAdapter
+    val recyclerBaseAdapter: RecyclerBaseAdapter
 
     init {
         recyclerBaseAdapter = RecyclerBaseAdapter(
@@ -99,6 +109,8 @@ open class RecyclerAdapter(
     ): RecyclerView.ViewHolder = recyclerBaseAdapter.onCreateViewHolder(parent, viewType)
 
     override fun getItemViewType(position: Int): Int = recyclerBaseAdapter.getItemViewType(position)
+
+    fun getItem(position: Int): RecyclerItem = combinedItems[position]
 
     override fun getItemCount(): Int = combinedItems.size
 

@@ -34,7 +34,7 @@ class Case0000DemoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        RecyclerBaseAdapter.staticBinders = setOf(
+        RecyclerAdapter.staticBinders = setOf(
             com.detmir.ui.RecyclerBinderImpl(),
             com.detmir.kkppt3.RecyclerBinderImpl()
         )

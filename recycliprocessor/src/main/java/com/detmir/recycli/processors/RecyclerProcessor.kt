@@ -1,6 +1,7 @@
 package com.detmir.recycli.processors
 
 import com.detmir.recycli.annotations.*
+import java.io.File
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.RoundEnvironment
 import javax.annotation.processing.SupportedOptions
@@ -39,12 +40,13 @@ internal class RecyclerProcessor : AbstractProcessor() {
         val stateSealedAliases = mutableMapOf<Int, Int>()
         val completeMap = mutableMapOf<String, ViewProps>()
         val iWrap = IWrap()
-
+        val allElementsInvolved = mutableSetOf<Element>()
 
         //STATES
         roundEnvironment?.getElementsAnnotatedWith(
             RecyclerItemState::class.java
         )?.forEach { element ->
+            allElementsInvolved.add(element)
             getTopPackageOnce(element)
             indexToStateMap[iWrap.i] = element.toString()
             stateToIndexMap[element.toString()] = iWrap.i
@@ -58,7 +60,8 @@ internal class RecyclerProcessor : AbstractProcessor() {
                 iWrap = iWrap,
                 indexToStateMap = indexToStateMap,
                 stateToIndexMap = stateToIndexMap,
-                stateSealedAliases = stateSealedAliases
+                stateSealedAliases = stateSealedAliases,
+                allElementsInvolved = allElementsInvolved
             )
             iWrap.i++
         }
@@ -68,6 +71,7 @@ internal class RecyclerProcessor : AbstractProcessor() {
         roundEnvironment?.getElementsAnnotatedWith(
             RecyclerItemView::class.java
         )?.forEach { viewElement ->
+            allElementsInvolved.add(viewElement)
             fillViewProps(
                 viewElement = viewElement,
                 stateToIndexMap = stateToIndexMap,
@@ -80,6 +84,7 @@ internal class RecyclerProcessor : AbstractProcessor() {
         roundEnvironment?.getElementsAnnotatedWith(
             RecyclerItemViewHolder::class.java
         )?.forEach { viewElement ->
+            allElementsInvolved.add(viewElement)
             fillViewProps(
                 viewElement = viewElement,
                 stateToIndexMap = stateToIndexMap,
@@ -102,7 +107,9 @@ internal class RecyclerProcessor : AbstractProcessor() {
         RecyclerFileProvider.generateBinderClass(
             processingEnv = processingEnv,
             packageName = packageName,
-            completeMap = completeMap
+            completeMap = completeMap,
+            allElementsInvolved = allElementsInvolved,
+            filer = processingEnv.filer
         )
         return true
     }
@@ -113,10 +120,12 @@ internal class RecyclerProcessor : AbstractProcessor() {
         iWrap: IWrap,
         indexToStateMap: MutableMap<Int, String>,
         stateToIndexMap: MutableMap<String, Int>,
-        stateSealedAliases: MutableMap<Int, Int>
+        stateSealedAliases: MutableMap<Int, Int>,
+        allElementsInvolved: MutableSet<Element>
     ) {
         element.enclosedElements.forEach { enclosedElement ->
             if (enclosedElement.enclosingElement == element && enclosedElement.kind == ElementKind.CLASS) {
+                allElementsInvolved.add(element)
                 iWrap.i++
                 indexToStateMap[iWrap.i] = enclosedElement.toString()
                 stateToIndexMap[enclosedElement.toString()] = iWrap.i
@@ -128,7 +137,8 @@ internal class RecyclerProcessor : AbstractProcessor() {
                     iWrap,
                     indexToStateMap,
                     stateToIndexMap,
-                    stateSealedAliases
+                    stateSealedAliases,
+                    allElementsInvolved
                 )
             }
         }
@@ -261,9 +271,6 @@ internal class RecyclerProcessor : AbstractProcessor() {
             }
         }
     }
-
-
-
 
 
     @Suppress("unused")
