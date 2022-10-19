@@ -32,7 +32,7 @@ class Case0700Paging : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val cs = CoroutineScope(Dispatchers.Default)
         RecyclerBaseAdapter.staticBinders = setOf(
-            com.detmir.ui.RecyclerBinderImpl(),
+            com.detmir.ui.bottom.RecyclerBinderImpl(),
             RecyclerBinderImpl()
         )
         super.onCreate(savedInstanceState)

@@ -50,7 +50,7 @@ internal object RecyclerFileProvider {
 
             val kotlinFileObject = filer.createResource(
                 StandardLocation.SOURCE_OUTPUT,
-                packageName, "RecyclerBinderImplXXD.kt"
+                packageName, "RecyclerBinderImpl.kt"
             )
             val writer = kotlinFileObject.openWriter()
             writer.write(sb.toString())

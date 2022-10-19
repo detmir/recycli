@@ -18,7 +18,7 @@ import javax.tools.Diagnostic
 @Suppress("unused")
 internal class RecyclerProcessor : AbstractProcessor() {
 
-    private var packageName: String? = null
+    private var packageName: ArrayList<String> = ArrayList()
 
     override fun getSupportedAnnotationTypes(): Set<String?> {
         return setOf(
@@ -47,12 +47,11 @@ internal class RecyclerProcessor : AbstractProcessor() {
             RecyclerItemState::class.java
         )?.forEach { element ->
             allElementsInvolved.add(element)
-            getTopPackageOnce(element)
+            getTopPackage(element)
             indexToStateMap[iWrap.i] = element.toString()
             stateToIndexMap[element.toString()] = iWrap.i
             stateSealedAliases[iWrap.i] = iWrap.i
             val topClassIndex = iWrap.i
-
 
             craftSealedClass(
                 element = element,
@@ -106,7 +105,7 @@ internal class RecyclerProcessor : AbstractProcessor() {
 
         RecyclerFileProvider.generateBinderClass(
             processingEnv = processingEnv,
-            packageName = packageName,
+            packageName = packageName.joinToString("."),
             completeMap = completeMap,
             allElementsInvolved = allElementsInvolved,
             filer = processingEnv.filer
@@ -145,16 +144,25 @@ internal class RecyclerProcessor : AbstractProcessor() {
     }
 
 
-    private fun getTopPackageOnce(element: Element) {
-        if (packageName == null) {
-            var enclosing: Element = element.enclosingElement
-            while (enclosing.kind != ElementKind.PACKAGE) {
-                enclosing = enclosing.enclosingElement
-            }
-            val enclosingPackage = enclosing.toString()
-            val arr = enclosingPackage.split(".")
-            packageName = arr.dropLast(1).joinToString(".")
+    private fun getTopPackage(element: Element) {
+        var enclosing: Element = element.enclosingElement
+        while (enclosing.kind != ElementKind.PACKAGE) {
+            enclosing = enclosing.enclosingElement
         }
+        val enclosingPackage = enclosing.toString()
+        val arr = enclosingPackage.split(".")
+
+        if (packageName.isEmpty()) {
+            packageName = ArrayList(arr)
+        }
+        val newPackageName = ArrayList<String>()
+        arr.forEachIndexed { index, s ->
+            val curAtIndex = packageName.getOrNull(index)
+            if (curAtIndex == s) {
+                newPackageName.add(s)
+            }
+        }
+        packageName = newPackageName
     }
 
 

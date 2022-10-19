@@ -22,7 +22,7 @@ class Case0600InfinityActivity : AppCompatActivity(), RecyclerAdapter.Callbacks 
 
 
     private var recyclerAdapter = RecyclerAdapter(
-        binders = setOf(com.detmir.kkppt3.RecyclerBinderImpl(), com.detmir.ui.RecyclerBinderImpl()),
+        binders = setOf(com.detmir.kkppt3.RecyclerBinderImpl(), com.detmir.ui.bottom.RecyclerBinderImpl()),
         infinityCallbacks = this,
         bottomLoading = BottomLoading()
     )
