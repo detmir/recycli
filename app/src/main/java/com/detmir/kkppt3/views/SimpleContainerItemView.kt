@@ -29,8 +29,7 @@ class SimpleContainerItemView @JvmOverloads constructor(
             ViewGroup.LayoutParams.MATCH_PARENT,
             300
         )
-
-        setBackgroundColor(ContextCompat.getColor(context,R.color.recycliRed))
+        
         recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
         recycler = view.findViewById(R.id.simple_recycler_container_recycler)
 

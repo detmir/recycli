@@ -75,6 +75,7 @@ open class RecyclerAdapter(
             is RecyclerAction.ScrollToTop -> {
                 scrollToPos(0, action.smooth)
             }
+            else -> {}
         }
     }
 

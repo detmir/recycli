@@ -46,6 +46,7 @@ class BottomLoadingView @JvmOverloads constructor(
         when (val s = state) {
             is BottomLoading.State.Button -> s.next.invoke()
             is BottomLoading.State.Error -> s.reload.invoke()
+            else -> {}
         }
     }
 
