@@ -26,7 +26,7 @@ internal class RecyclerProcessor : AbstractProcessor() {
             RecyclerItemStateBinder::class.java.canonicalName,
             RecyclerItemView::class.java.canonicalName,
             RecyclerItemViewHolder::class.java.canonicalName,
-            RecyclerItemViewHolderCreator::class.java.canonicalName
+            RecyclerItemViewHolderCreator::class.java.canonicalName,
         )
     }
 
@@ -46,6 +46,7 @@ internal class RecyclerProcessor : AbstractProcessor() {
         roundEnvironment?.getElementsAnnotatedWith(
             RecyclerItemState::class.java
         )?.forEach { element ->
+            ld("dasdasda RecyclerItemState  ${element.toString()}")
             allElementsInvolved.add(element)
             getTopPackage(element)
             indexToStateMap[iWrap.i] = element.toString()
@@ -110,7 +111,7 @@ internal class RecyclerProcessor : AbstractProcessor() {
             allElementsInvolved = allElementsInvolved,
             filer = processingEnv.filer
         )
-        return true
+        return false
     }
 
     private fun craftSealedClass(
@@ -302,7 +303,7 @@ internal class RecyclerProcessor : AbstractProcessor() {
 
     companion object {
         const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated"
-        const val ALLOW_DEBUG_LOG = false
+        const val ALLOW_DEBUG_LOG = true
     }
 
     enum class Type {

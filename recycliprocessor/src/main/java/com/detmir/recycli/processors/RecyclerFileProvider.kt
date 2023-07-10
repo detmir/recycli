@@ -41,7 +41,8 @@ internal object RecyclerFileProvider {
             val sb = StringBuilder("")
             sb.append("package $packageName\n")
             getImports(sb = sb)
-            sb.append("\npublic class RecyclerBinderImpl : RecyclerBinder {\n")
+            sb.append("\n\n@RecyclerBackedAdapter\n")
+            sb.append("public class RecyclerBinderImpl : RecyclerBinder {\n")
             getStateToIndex(sb = sb, completeMap = completeMap)
             getOnCreateView(sb = sb, completeMap = completeMap)
             getOnBindView(sb = sb, completeMap = completeMap)
@@ -133,6 +134,7 @@ internal object RecyclerFileProvider {
             import androidx.recyclerview.widget.RecyclerView.ViewHolder
             import com.detmir.recycli.adapters.RecyclerBinder
             import com.detmir.recycli.adapters.RecyclerItem
+            import com.detmir.recycli.annotations.RecyclerBackedAdapter           
             import java.util.HashMap
             import kotlin.Int
             import kotlin.String
