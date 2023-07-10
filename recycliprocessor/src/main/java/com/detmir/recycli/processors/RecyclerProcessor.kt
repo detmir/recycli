@@ -46,7 +46,7 @@ internal class RecyclerProcessor : AbstractProcessor() {
         roundEnvironment?.getElementsAnnotatedWith(
             RecyclerItemState::class.java
         )?.forEach { element ->
-            ld("dasdasda RecyclerItemState  ${element.toString()}")
+                ld("dasdasda RecyclerProcessor RecyclerItemState  ${element.toString()}")
             allElementsInvolved.add(element)
             getTopPackage(element)
             indexToStateMap[iWrap.i] = element.toString()

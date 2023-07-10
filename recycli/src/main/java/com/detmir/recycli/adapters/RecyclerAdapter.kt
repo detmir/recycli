@@ -57,7 +57,7 @@ open class RecyclerAdapter(
         )
 
         val clazzez = RecyclerFinder.getClasses("com.detmir")
-        Log.d("asd", "$clazzez")
+        Log.d("asddddd", "${clazzez.size}")
 
 
     }

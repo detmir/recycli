@@ -35,7 +35,7 @@ internal class RecyclerProcessor2 : AbstractProcessor() {
         roundEnvironment?.getElementsAnnotatedWith(
             RecyclerBackedAdapter::class.java
         )?.forEach { element ->
-            ld("dasdasda2  RecyclerBackedAdapter ${element.toString()}")
+            ld("dasdasda2  RecyclerProcessor2 RecyclerBackedAdapter ${element.toString()}")
         }
 
         roundEnvironment?.getElementsAnnotatedWith(
