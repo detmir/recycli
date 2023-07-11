@@ -14,6 +14,7 @@ import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSFile
 import com.google.devtools.ksp.validate
 import javax.lang.model.element.Element
 import javax.lang.model.element.ElementKind
@@ -37,6 +38,7 @@ class RecyclerProcessorKsp(
         val completeMap = mutableMapOf<String, ViewProps>()
         val iWrap = IWrap()
         val allElementsInvolved = mutableSetOf<KSClassDeclaration>()
+        val filesInvolved = mutableListOf<KSFile>()
 
         logger.info("jksps KSP process STATES AND VIEWS options=$options")
 
@@ -51,10 +53,11 @@ class RecyclerProcessorKsp(
 //
 //        val symbolsStatesClass = symbolsStates
 //            .filterIsInstance<KSClassDeclaration>()
+
+
         val stateSymbols = resolver
             .getSymbolsWithAnnotation("com.detmir.recycli.annotations.RecyclerItemState")
             .filterIsInstance<KSClassDeclaration>()
-
 
 
         val stateSymbolsIterator = stateSymbols.iterator()
@@ -88,6 +91,7 @@ class RecyclerProcessorKsp(
             getTopPackage(stateClazz)
             val stateClazzName = stateClazz.qualifiedName?.asString()
             if (stateClazzName != null) {
+                stateClazz.containingFile?.let(filesInvolved::add)
                 indexToStateMap[iWrap.i] = stateClazzName
                 //logger.info("jksps KSP iWrap.i=${iWrap.i} klass.qualifiedName=${stateClazz.qualifiedName?.asString()}")
                 stateToIndexMap[stateClazzName] = iWrap.i
@@ -113,6 +117,7 @@ class RecyclerProcessorKsp(
 
         while (viewSymbolsIterator.hasNext()) {
             val viewClazz = viewSymbolsIterator.next()
+            viewClazz.containingFile?.let(filesInvolved::add)
             allElementsInvolved.add(viewClazz)
             fillViewProps(
                 viewElement = viewClazz,
@@ -126,7 +131,7 @@ class RecyclerProcessorKsp(
 
         while (viewHolderSymbolsIterator.hasNext()) {
             val holderClazz = viewHolderSymbolsIterator.next()
-            //logger.info("jksps KSP iWrap.i=${iWrap.i} holderClazz=${holderClazz.qualifiedName?.asString()}")
+            holderClazz.containingFile?.let(filesInvolved::add)
             allElementsInvolved.add(holderClazz)
             fillViewProps(
                 viewElement = holderClazz,
@@ -147,8 +152,13 @@ class RecyclerProcessorKsp(
         )
 
 
+//        filesInvolved.forEach {file ->
+//            logger.info("jksps fileInvolved=${file.fileName}")
+//        }
+
 
         RecyclerFileProviderKsp.generateBinderClass(
+            filesInvolved = filesInvolved,
             resolver = resolver,
             codeGenerator = codeGenerator,
             packageName = packageName.joinToString("."),
@@ -157,17 +167,17 @@ class RecyclerProcessorKsp(
         )
 
 
-        resolver.getNewFiles().forEach {file ->
-            //logger.info("jksps KSP new file=${file.fileName}")
-        }
+//        resolver.getNewFiles().forEach {file ->
+//            //logger.info("jksps KSP new file=${file.fileName}")
+//        }
 
-        val recyclerBinderAdapters = resolver
-            .getSymbolsWithAnnotation("com.detmir.recycli.annotations.RecyclerBinderAdapter")
-            .filterIsInstance<KSClassDeclaration>().iterator()
-
-        recyclerBinderAdapters.forEach {
-            //logger.info("jksps KSP recyclerBinderAdapters=${recyclerBinderAdapters.next().qualifiedName?.asString()}")
-        }
+//        val recyclerBinderAdapters = resolver
+//            .getSymbolsWithAnnotation("com.detmir.recycli.annotations.RecyclerBinderAdapter")
+//            .filterIsInstance<KSClassDeclaration>().iterator()
+//
+//        recyclerBinderAdapters.forEach {
+//            //logger.info("jksps KSP recyclerBinderAdapters=${recyclerBinderAdapters.next().qualifiedName?.asString()}")
+//        }
 
         logger.info("jksps KSP RecyclerProcessorGlobal=${RecyclerProcessorGlobal.binders}")
 

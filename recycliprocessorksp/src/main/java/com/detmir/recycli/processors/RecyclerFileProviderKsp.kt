@@ -4,6 +4,7 @@ import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSFile
 import java.io.OutputStream
 
 internal object RecyclerFileProviderKsp {
@@ -13,6 +14,7 @@ internal object RecyclerFileProviderKsp {
     }
 
     fun generateBinderClass(
+        filesInvolved: List<KSFile>,
         packageName: String?,
         codeGenerator: CodeGenerator,
         resolver: Resolver,
@@ -32,7 +34,8 @@ internal object RecyclerFileProviderKsp {
                 // Make sure to associate the generated file with sources to keep/maintain it across incremental builds.
                 // Learn more about incremental processing in KSP from the official docs:
                 // https://kotlinlang.org/docs/ksp-incremental.html
-                dependencies = Dependencies(false, *resolver.getAllFiles().toList().toTypedArray()),
+                //dependencies = Dependencies(false, *resolver.getAllFiles().toList().toTypedArray()),
+                dependencies = Dependencies(false, *filesInvolved.toTypedArray()),
                 packageName = packageName,
                 fileName = "RecyclerBinderImpl"
             )
