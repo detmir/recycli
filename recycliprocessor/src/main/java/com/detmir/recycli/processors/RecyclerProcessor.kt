@@ -167,6 +167,7 @@ internal class RecyclerProcessor : AbstractProcessor() {
                 newPackageName.add(s)
             }
         }
+        ld("jksps enclosingPackage enclosingPackage=${enclosingPackage} newPackageName=${newPackageName}")
         packageName = newPackageName
     }
 
@@ -198,6 +199,8 @@ internal class RecyclerProcessor : AbstractProcessor() {
         } else {
             viewCreatorClassName = viewElement.toString()
         }
+
+        ld("jksps viewCreatorClassName ${viewCreatorClassName}")
 
         viewElement.enclosedElements.forEach { enclosedElement ->
             if (enclosedElement.enclosingElement == viewElement

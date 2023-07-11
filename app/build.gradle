@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+//apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.devtools.ksp'
 
 android {
@@ -50,7 +50,7 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.0.8'
     implementation project(path: ':recycli')
     compileOnly project(':recycliannotation')
-    kapt project(':recycliprocessor')
+    //kapt project(':recycliprocessor')
     ksp project(":recycliprocessorksp")
 
     implementation project(path: ':ui')
