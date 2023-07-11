@@ -1,5 +1,5 @@
 package com.detmir.recycli.annotations
 
-@Retention(AnnotationRetention.SOURCE)
+@Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)
 annotation class RecyclerBinderAdapter

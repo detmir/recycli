@@ -1,11 +1,13 @@
 package com.detmir.recycli.adapters
 
+import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
+import com.detmir.recycli.annotations.RecyclerBinderAdapter
 
 open class RecyclerAdapter(
     binders: Set<RecyclerBinder>? = null,
@@ -13,6 +15,7 @@ open class RecyclerAdapter(
     private val bottomLoading: RecyclerBottomLoading? = null,
     private val infinityType: InfinityType = InfinityType.SCROLL
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
 
     companion object {
         var staticBinders: Set<RecyclerBinder>?
@@ -39,6 +42,10 @@ open class RecyclerAdapter(
     val recyclerBaseAdapter: RecyclerBaseAdapter
 
     init {
+
+//        val d = RecyclerBinderAdapter::class
+//        Log.d("dasd","$d")
+
         recyclerBaseAdapter = RecyclerBaseAdapter(
             getRecyclerItem = { pos ->
                 combinedItems[pos]

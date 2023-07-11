@@ -40,6 +40,7 @@ internal object RecyclerFileProviderKsp {
 
 
 
+            RecyclerProcessorGlobal.binders.add("$packageName.RecyclerBinderImpl.kt")
 
             val sbStateToIndexMap = StringBuilder("")
             var r = 0

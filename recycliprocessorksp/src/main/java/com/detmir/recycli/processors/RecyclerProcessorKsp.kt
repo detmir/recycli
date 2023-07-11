@@ -14,6 +14,7 @@ import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.validate
 import javax.lang.model.element.Element
 import javax.lang.model.element.ElementKind
 import javax.lang.model.element.ExecutableElement
@@ -28,6 +29,7 @@ class RecyclerProcessorKsp(
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
 
+        RecyclerProcessorGlobal.ii
         val indexToStateMap = mutableMapOf<Int, String>()
         val stateToIndexMap = mutableMapOf<String, Int>()
         val stateToViewMap = mutableMapOf<String, MutableList<ViewProps>>()
@@ -36,9 +38,13 @@ class RecyclerProcessorKsp(
         val iWrap = IWrap()
         val allElementsInvolved = mutableSetOf<KSClassDeclaration>()
 
-        logger.info("jksps KSP process")
+        logger.info("jksps KSP process STATES AND VIEWS options=$options")
 
 
+//        resolver.getAllFiles().forEach { it.validate{ v,s ->
+//            logger.info("jksps KSP process")
+//            false
+//        } }
         //STATES
 //        val symbolsStates = resolver
 //            .getSymbolsWithAnnotation("com.detmir.recycli.annotations.RecyclerItemState")
@@ -48,6 +54,8 @@ class RecyclerProcessorKsp(
         val stateSymbols = resolver
             .getSymbolsWithAnnotation("com.detmir.recycli.annotations.RecyclerItemState")
             .filterIsInstance<KSClassDeclaration>()
+
+
 
         val stateSymbolsIterator = stateSymbols.iterator()
 
@@ -72,6 +80,7 @@ class RecyclerProcessorKsp(
         ) return emptyList()
 
 
+        logger.info("jksps KSP process STATES AND VIEWS DOOO")
 
         while (stateSymbolsIterator.hasNext()) {
             val stateClazz = stateSymbolsIterator.next()
@@ -80,7 +89,7 @@ class RecyclerProcessorKsp(
             val stateClazzName = stateClazz.qualifiedName?.asString()
             if (stateClazzName != null) {
                 indexToStateMap[iWrap.i] = stateClazzName
-                logger.info("jksps KSP iWrap.i=${iWrap.i} klass.qualifiedName=${stateClazz.qualifiedName?.asString()}")
+                //logger.info("jksps KSP iWrap.i=${iWrap.i} klass.qualifiedName=${stateClazz.qualifiedName?.asString()}")
                 stateToIndexMap[stateClazzName] = iWrap.i
                 stateSealedAliases[iWrap.i] = iWrap.i
                 val topClassIndex = iWrap.i
@@ -117,7 +126,7 @@ class RecyclerProcessorKsp(
 
         while (viewHolderSymbolsIterator.hasNext()) {
             val holderClazz = viewHolderSymbolsIterator.next()
-            logger.info("jksps KSP iWrap.i=${iWrap.i} holderClazz=${holderClazz.qualifiedName?.asString()}")
+            //logger.info("jksps KSP iWrap.i=${iWrap.i} holderClazz=${holderClazz.qualifiedName?.asString()}")
             allElementsInvolved.add(holderClazz)
             fillViewProps(
                 viewElement = holderClazz,
@@ -146,6 +155,22 @@ class RecyclerProcessorKsp(
             completeMap = completeMap,
             allElementsInvolved = allElementsInvolved
         )
+
+
+        resolver.getNewFiles().forEach {file ->
+            //logger.info("jksps KSP new file=${file.fileName}")
+        }
+
+        val recyclerBinderAdapters = resolver
+            .getSymbolsWithAnnotation("com.detmir.recycli.annotations.RecyclerBinderAdapter")
+            .filterIsInstance<KSClassDeclaration>().iterator()
+
+        recyclerBinderAdapters.forEach {
+            //logger.info("jksps KSP recyclerBinderAdapters=${recyclerBinderAdapters.next().qualifiedName?.asString()}")
+        }
+
+        logger.info("jksps KSP RecyclerProcessorGlobal=${RecyclerProcessorGlobal.binders}")
+
         return emptyList()
     }
 
@@ -171,7 +196,6 @@ class RecyclerProcessorKsp(
                 stateToIndexMap[enclosedElementQualifiedName] = iWrap.i
                 stateSealedAliases[iWrap.i] = topClassIndex
 
-                logger.info("jksps KSP iWrap.i=${iWrap.i} element=${element.qualifiedName?.asString()} enclosedElementQualifiedName=${enclosedElementQualifiedName}")
 
                 craftSealedClass(
                     logger = logger,
@@ -208,7 +232,7 @@ class RecyclerProcessorKsp(
                 newPackageName.add(s)
             }
         }
-        logger.info("jksps KSP enclosingPackage=${enclosingPackage} newPackageName=${newPackageName}")
+        //logger.info("jksps KSP enclosingPackage=${enclosingPackage} newPackageName=${newPackageName}")
         packageName = newPackageName
     }
 
@@ -256,7 +280,7 @@ class RecyclerProcessorKsp(
             viewCreatorClassName = viewElement.qualifiedName?.asString()
         }
 
-        logger.info("jksps KSP viewCreatorClassName ${viewCreatorClassName}")
+        //logger.info("jksps KSP viewCreatorClassName ${viewCreatorClassName}")
 
 
         if (viewCreatorClassName == null) {
@@ -277,18 +301,18 @@ class RecyclerProcessorKsp(
 
 
             if (isRecyclerItemViewBinderAnnotation != null) {
-                logger.info("jksps KSP binderFunction ${binderFunction.qualifiedName?.asString()}")
+                //logger.info("jksps KSP binderFunction ${binderFunction.qualifiedName?.asString()}")
                 if (binderFunction.parameters.size == 1) {
                     binderFunction.parameters.forEach { binderParameter ->
                         val currentStateClass: String? =
                             binderParameter.type.resolve().declaration.qualifiedName?.asString()
-                        logger.info("jksps KSP currentStateClass $currentStateClass")
+                        //logger.info("jksps KSP currentStateClass $currentStateClass")
                         if (currentStateClass == null) {
                             logger.error("jksps KSP binder function must be one arhument function with state ${binderFunction.qualifiedName?.asString()} in ${viewElement.qualifiedName?.asString()}")
                         }
                         val viewElementqualifiedName = viewElement.qualifiedName?.asString()
                         if (stateToIndexMap.containsKey(currentStateClass) && viewElementqualifiedName != null) {
-                            logger.info("jksps KSP PUT TO stateToViewMap currentStateClass $currentStateClass")
+//                            logger.info("jksps KSP PUT TO stateToViewMap currentStateClass $currentStateClass")
                             val viewProps = ViewProps(
                                 index = 0,
                                 viewCreatorClassName = viewCreatorClassName,
