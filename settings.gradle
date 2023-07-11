@@ -1,5 +1,6 @@
 include ':ui'
 include ':recycliprocessor'
+include ':recycliprocessorksp'
 include ':recycliannotation'
 include ':recycli'
 include ':app'

@@ -43,12 +43,14 @@ internal class RecyclerProcessor : AbstractProcessor() {
         val allElementsInvolved = mutableSetOf<Element>()
 
         //STATES
+        ld("jksps process")
         roundEnvironment?.getElementsAnnotatedWith(
             RecyclerItemState::class.java
         )?.forEach { element ->
             allElementsInvolved.add(element)
             getTopPackage(element)
             indexToStateMap[iWrap.i] = element.toString()
+            ld("jksps indexToStateMap i=${iWrap.i} element.toString()=${element.toString()}")
             stateToIndexMap[element.toString()] = iWrap.i
             stateSealedAliases[iWrap.i] = iWrap.i
             val topClassIndex = iWrap.i
@@ -123,13 +125,16 @@ internal class RecyclerProcessor : AbstractProcessor() {
         allElementsInvolved: MutableSet<Element>
     ) {
         element.enclosedElements.forEach { enclosedElement ->
+
             if (enclosedElement.enclosingElement == element && enclosedElement.kind == ElementKind.CLASS) {
+
                 allElementsInvolved.add(element)
                 iWrap.i++
                 indexToStateMap[iWrap.i] = enclosedElement.toString()
                 stateToIndexMap[enclosedElement.toString()] = iWrap.i
                 stateSealedAliases[iWrap.i] = topClassIndex
 
+                ld("jksps iWrap.i=${iWrap.i} element=$element enclosedElement=$enclosedElement")
                 craftSealedClass(
                     enclosedElement,
                     topClassIndex,
@@ -302,7 +307,7 @@ internal class RecyclerProcessor : AbstractProcessor() {
 
     companion object {
         const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated"
-        const val ALLOW_DEBUG_LOG = false
+        const val ALLOW_DEBUG_LOG = true
     }
 
     enum class Type {
