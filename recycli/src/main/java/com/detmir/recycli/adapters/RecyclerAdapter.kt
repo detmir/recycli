@@ -1,5 +1,6 @@
 package com.detmir.recycli.adapters
 
+import android.content.Context
 import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,25 +8,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
-import com.detmir.recycli.annotations.RecyclerBinderAdapter
+import java.io.IOException
 
 open class RecyclerAdapter(
-    binders: Set<RecyclerBinder>? = null,
     private val infinityCallbacks: Callbacks? = null,
     private val bottomLoading: RecyclerBottomLoading? = null,
     private val infinityType: InfinityType = InfinityType.SCROLL
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-
-    companion object {
-        var staticBinders: Set<RecyclerBinder>?
-            set(value) {
-                RecyclerBaseAdapter.staticBinders = value
-            }
-            get() {
-                return RecyclerBaseAdapter.staticBinders
-            }
-    }
 
     var recyclerView: RecyclerView? = null
 
@@ -42,18 +31,12 @@ open class RecyclerAdapter(
     val recyclerBaseAdapter: RecyclerBaseAdapter
 
     init {
-
-//        val d = RecyclerBinderAdapter::class
-//        Log.d("dasd","$d")
-
         recyclerBaseAdapter = RecyclerBaseAdapter(
             getRecyclerItem = { pos ->
                 combinedItems[pos]
-            },
-            binders = binders
+            }
         )
     }
-
 
     fun bindState(items: List<RecyclerItem>) {
         if (infinityCallbacks != null) {
@@ -264,7 +247,7 @@ open class RecyclerAdapter(
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         this.recyclerView = recyclerView
-
+        recyclerBaseAdapter.warmUpBinders(recyclerView.context)
         if (isInfinity()) {
             recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

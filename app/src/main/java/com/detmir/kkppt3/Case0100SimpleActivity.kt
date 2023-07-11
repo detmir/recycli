@@ -13,7 +13,7 @@ class Case0100SimpleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_case_0100)
         val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0100_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
+        val recyclerAdapter = RecyclerAdapter()
         recyclerView.adapter = recyclerAdapter
 
         recyclerAdapter.bindState(

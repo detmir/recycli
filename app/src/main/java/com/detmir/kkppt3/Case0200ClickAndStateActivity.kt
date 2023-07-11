@@ -23,7 +23,7 @@ class Case0200ClickAndStateActivity : AppCompatActivity() {
         setContentView(R.layout.activity_case_0200)
         recyclerView = findViewById(R.id.activity_case_0200_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
+        recyclerAdapter = RecyclerAdapter()
         recyclerView.adapter = recyclerAdapter
         updateRecycler()
     }

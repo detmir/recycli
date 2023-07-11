@@ -19,7 +19,7 @@ class Case0500HorizontalActivity : AppCompatActivity() {
         setContentView(R.layout.activity_case_0500)
         recyclerView = findViewById<RecyclerView>(R.id.activity_case_0500_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
+        recyclerAdapter = RecyclerAdapter()
         recyclerView.adapter = recyclerAdapter
 
         bi()

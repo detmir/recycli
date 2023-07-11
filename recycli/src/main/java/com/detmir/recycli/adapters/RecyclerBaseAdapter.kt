@@ -1,33 +1,58 @@
 package com.detmir.recycli.adapters
 
+import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import java.io.IOException
 
 open class RecyclerBaseAdapter(
-    val getRecyclerItem: (pos: Int) -> RecyclerItem,
-    binders: Set<RecyclerBinder>? = null,
+    val getRecyclerItem: (pos: Int) -> RecyclerItem
 ) {
-
-    private val stateToBindersWrapped: HashMap<String, BinderWrapped> = HashMap()
-    private val bindersToStateWrapped: HashMap<Int, BinderWrapped> = HashMap()
+    companion object {
+        var warmedUp = false
+        var kspBinders: Set<RecyclerBinder>? = null
+        val stateToBindersWrapped: HashMap<String, BinderWrapped> = HashMap()
+        val bindersToStateWrapped: HashMap<Int, BinderWrapped> = HashMap()
+    }
 
     init {
-        val realBinders = binders ?: staticBinders
-        ?: throw Exception("No binder found. Please pass Recylii binder to the constructor or via staticBinders")
 
-        var i = 1
-        realBinders.forEach { recyclerBinder ->
-            recyclerBinder.stateToIndexMap.forEach {
-                val binderWrapped = BinderWrapped(
-                    bindersPosition = i,
-                    wrappedBinderType = i * 1000000 + it.value,
-                    binder = recyclerBinder,
-                    type = it.value
-                )
-                stateToBindersWrapped[it.key] = binderWrapped
-                bindersToStateWrapped[binderWrapped.wrappedBinderType] = binderWrapped
+    }
+
+    private fun listAssetFiles(context: Context): List<String> {
+        try {
+            return context.assets?.list("recycli")?.toList() ?: emptyList()
+        } catch (e: IOException) {
+            return emptyList()
+        }
+    }
+
+    fun warmUpBinders(context: Context) {
+        if (!warmedUp) {
+            val kspBinders = listAssetFiles(context).map { packCamel ->
+                packCamel.replace("_",".")
+            }.map { pack ->
+                Class.forName("$pack.RecyclerBinderImpl")
+            }.map { clazz ->
+                clazz.newInstance() as RecyclerBinder
             }
-            i++
+
+
+            var i = 1
+            kspBinders.forEach { recyclerBinder ->
+                recyclerBinder.stateToIndexMap.forEach {
+                    val binderWrapped = BinderWrapped(
+                        bindersPosition = i,
+                        wrappedBinderType = i * 1000000 + it.value,
+                        binder = recyclerBinder,
+                        type = it.value
+                    )
+                    stateToBindersWrapped[it.key] = binderWrapped
+                    bindersToStateWrapped[binderWrapped.wrappedBinderType] = binderWrapped
+                }
+                i++
+            }
+            warmedUp = true
         }
     }
 
@@ -82,8 +107,4 @@ open class RecyclerBaseAdapter(
         val binder: RecyclerBinder,
         val type: Int
     )
-
-    companion object {
-        var staticBinders: Set<RecyclerBinder>? = null
-    }
 }

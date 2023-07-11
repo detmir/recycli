@@ -12,7 +12,6 @@ class RecycliPagingAdapter(placeHolderProvider: ((Int) -> RecyclerItem)?) :
     PagingDataAdapter<RecyclerItem, RecyclerView.ViewHolder>(RecyclerDiffItemCallback()) {
 
     private val recyclerBaseAdapter = RecyclerBaseAdapter(
-        binders = null,
         getRecyclerItem = { pos ->
             var item = getItem(pos)
             if (item == null) {
@@ -22,6 +21,11 @@ class RecycliPagingAdapter(placeHolderProvider: ((Int) -> RecyclerItem)?) :
             item
         }
     )
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        recyclerBaseAdapter.warmUpBinders(recyclerView.context)
+    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         recyclerBaseAdapter.onBindViewHolder(holder, position)

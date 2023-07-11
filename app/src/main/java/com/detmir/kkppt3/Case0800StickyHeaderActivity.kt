@@ -24,7 +24,6 @@ class Case0800StickyHeaderActivity : AppCompatActivity(), RecyclerAdapter.Callba
 
 
     private var recyclerAdapter = RecyclerAdapter(
-        binders = setOf(com.detmir.kkppt3.RecyclerBinderImpl(), com.detmir.ui.bottom.RecyclerBinderImpl()),
         infinityCallbacks = this,
         bottomLoading = BottomLoading()
     )

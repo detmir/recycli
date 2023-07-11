@@ -5,6 +5,7 @@ import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFile
+import java.io.File
 import java.io.OutputStream
 
 internal object RecyclerFileProviderKsp {
@@ -30,12 +31,40 @@ internal object RecyclerFileProviderKsp {
         if (completeMap.isNotEmpty()) {
 
 
+
+
+
+//            val generatedSourcesRoot: String =
+//                processingEnv.options[RecyclerProcessor.KAPT_KOTLIN_GENERATED_OPTION_NAME].orEmpty()
+
+//            val fileX = File(
+//                "/xxx/MYBinders.kt"
+//            ).also { file ->
+//                file.parentFile.mkdirs()
+//            }
+//            fileX.writeText("Privert")
+
+            //codeGenerator.createNewFileByPath(Dependencies(false), "META-INF/native-image/io.fabric8/kubernetes/resource-config", "json")
+            val packageNameCameled = packageName.replace(".", "_")
+            val fileB = codeGenerator.createNewFileByPath(Dependencies(false), "assets/recycli/$packageNameCameled", "")
+//            fileB += "$packageName/RecyclerBinderImpl.kt"
+//            fileB.flush()
+//            fileB.close()
+            val fileY: OutputStream = codeGenerator.createNewFileByPath(
+                dependencies = Dependencies(true, *filesInvolved.toTypedArray()),
+                path = "/xxxx/MYBinders",
+
+            )
+            fileY += "class XX"
+            fileY.flush()
+            fileY.close()
+
             val file: OutputStream = codeGenerator.createNewFile(
                 // Make sure to associate the generated file with sources to keep/maintain it across incremental builds.
                 // Learn more about incremental processing in KSP from the official docs:
                 // https://kotlinlang.org/docs/ksp-incremental.html
                 //dependencies = Dependencies(false, *resolver.getAllFiles().toList().toTypedArray()),
-                dependencies = Dependencies(false, *filesInvolved.toTypedArray()),
+                dependencies = Dependencies(true, *filesInvolved.toTypedArray()),
                 packageName = packageName,
                 fileName = "RecyclerBinderImpl"
             )

@@ -30,7 +30,7 @@ class SimpleContainerItemView @JvmOverloads constructor(
             300
         )
         
-        recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
+        recyclerAdapter = RecyclerAdapter()
         recycler = view.findViewById(R.id.simple_recycler_container_recycler)
 
         recycler.run {

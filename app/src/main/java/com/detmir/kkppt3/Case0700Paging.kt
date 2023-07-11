@@ -31,10 +31,6 @@ class Case0700Paging : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val cs = CoroutineScope(Dispatchers.Default)
-        RecyclerBaseAdapter.staticBinders = setOf(
-            com.detmir.ui.bottom.RecyclerBinderImpl(),
-            RecyclerBinderImpl()
-        )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_case_0700)
         recyclerView = findViewById(R.id.activity_case_0700_recycler)

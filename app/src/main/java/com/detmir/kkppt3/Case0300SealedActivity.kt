@@ -16,7 +16,7 @@ class Case0300SealedActivity : AppCompatActivity() {
         setContentView(R.layout.activity_case_0300)
         val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0300_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerAdapter = RecyclerAdapter(setOf(RecyclerBinderImpl()))
+        recyclerAdapter = RecyclerAdapter()
         recyclerView.adapter = recyclerAdapter
 
         updateState()
