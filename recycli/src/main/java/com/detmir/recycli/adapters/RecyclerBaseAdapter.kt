@@ -10,31 +10,31 @@ open class RecyclerBaseAdapter(
 ) {
     companion object {
         var warmedUp = false
-        var kspBinders: Set<RecyclerBinder>? = null
         val stateToBindersWrapped: HashMap<String, BinderWrapped> = HashMap()
         val bindersToStateWrapped: HashMap<Int, BinderWrapped> = HashMap()
     }
 
-    init {
-
-    }
-
     private fun listAssetFiles(context: Context): List<String> {
-        try {
-            return context.assets?.list("recycli")?.toList() ?: emptyList()
+        return try {
+            context.assets?.list("recycli")?.toList() ?: emptyList()
         } catch (e: IOException) {
-            return emptyList()
+            emptyList()
         }
     }
 
     fun warmUpBinders(context: Context) {
         if (!warmedUp) {
-            val kspBinders = listAssetFiles(context).map { packCamel ->
-                packCamel.replace("_",".")
-            }.map { pack ->
-                Class.forName("$pack.RecyclerBinderImpl")
-            }.map { clazz ->
-                clazz.newInstance() as RecyclerBinder
+
+            val kspBinders = mutableListOf<RecyclerBinder>()
+            listAssetFiles(context).forEach { packCamel ->
+                val pack = packCamel.replace("_", ".")
+                try {
+                    val clazz = Class.forName("$pack.RecyclerBinderImpl")
+                    val binder = clazz.newInstance() as RecyclerBinder
+                    kspBinders.add(binder)
+                } catch (e: Throwable) {
+                    // log here
+                }
             }
 
 

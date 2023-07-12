@@ -2,10 +2,10 @@ package com.detmir.recycli.adapters
 
 import androidx.recyclerview.widget.DiffUtil
 
-class RecyclerDiffCallback(
-    private val old: MutableList<RecyclerItem>,
-    private val aNew: MutableList<RecyclerItem>
-) : DiffUtil.Callback() {
+class RecyclerDiffCallback : DiffUtil.Callback() {
+
+    lateinit var old: MutableList<RecyclerItem>
+    lateinit var aNew: MutableList<RecyclerItem>
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return old[oldItemPosition].provideId() == aNew[newItemPosition].provideId()

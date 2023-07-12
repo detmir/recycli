@@ -1,14 +1,12 @@
 package com.detmir.recycli.adapters
 
-import android.content.Context
-import android.util.Log
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
-import java.io.IOException
 
 open class RecyclerAdapter(
     private val infinityCallbacks: Callbacks? = null,
@@ -24,7 +22,7 @@ open class RecyclerAdapter(
     private val items = mutableListOf<RecyclerItem>()
     private val itemsAtTop = mutableListOf<RecyclerItem>()
     private val itemsAtBottom = mutableListOf<RecyclerItem>()
-    private val combinedItems = mutableListOf<RecyclerItem>()
+
 
     private var scrollChecker: Runnable = Runnable { checkNeedLoad() }
     private var infinityState: InfinityState? = null
@@ -33,7 +31,7 @@ open class RecyclerAdapter(
     init {
         recyclerBaseAdapter = RecyclerBaseAdapter(
             getRecyclerItem = { pos ->
-                combinedItems[pos]
+                getCurrentList()[pos]
             }
         )
     }
@@ -59,7 +57,7 @@ open class RecyclerAdapter(
     fun bindAction(action: RecyclerAction?) {
         when (action) {
             is RecyclerAction.ScrollToItem -> {
-                val pos = this.combinedItems.indexOf(action.recyclerItem)
+                val pos = this.getCurrentList().indexOf(action.recyclerItem)
                 scrollToPos(pos)
             }
             is RecyclerAction.ScrollToTop -> {
@@ -69,6 +67,10 @@ open class RecyclerAdapter(
         }
     }
 
+    private val recyclerDiffCallback = RecyclerDiffCallback()
+    private val recyclerDiffItemCallback = RecyclerDiffItemCallback()
+    private val differ = AsyncListDiffer(this, recyclerDiffItemCallback)
+    private val combinedItems = mutableListOf<RecyclerItem>()
 
     private fun bindRecyclerItems(items: List<RecyclerItem>) {
         val oldCombined = mutableListOf<RecyclerItem>().apply { addAll(combinedItems) }
@@ -79,10 +81,21 @@ open class RecyclerAdapter(
 
         postProcess()
 
-        commitItems()
-        val diffResult =
-            DiffUtil.calculateDiff(RecyclerDiffCallback(oldCombined, combinedItems))
-        diffResult.dispatchUpdatesTo(this)
+        if (RecyclerGlobalConfig.useAsyncDiffer) {
+            differ.submitList(itemsAtTop + items + itemsAtBottom)
+        } else {
+            combinedItems.clear()
+            combinedItems.addAll(itemsAtTop)
+            combinedItems.addAll(items)
+            combinedItems.addAll(itemsAtBottom)
+
+            recyclerDiffCallback.old = oldCombined
+            recyclerDiffCallback.aNew = combinedItems
+
+            val diffResult =
+                DiffUtil.calculateDiff(recyclerDiffCallback)
+            diffResult.dispatchUpdatesTo(this)
+        }
 
         if (recyclerView?.adapter == null) {
             recyclerView?.adapter = this
@@ -101,9 +114,9 @@ open class RecyclerAdapter(
 
     override fun getItemViewType(position: Int): Int = recyclerBaseAdapter.getItemViewType(position)
 
-    fun getItem(position: Int): RecyclerItem = combinedItems[position]
+    fun getItem(position: Int): RecyclerItem = getCurrentList()[position]
 
-    override fun getItemCount(): Int = combinedItems.size
+    override fun getItemCount(): Int = getCurrentList().size
 
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder,
@@ -136,20 +149,21 @@ open class RecyclerAdapter(
         super.onViewAttachedToWindow(holder)
     }
 
-    private fun getId(holder: RecyclerView.ViewHolder): String? {
-        val pos = recyclerView?.getChildAdapterPosition(holder.itemView) ?: 0
-        return if (pos >= 0 && pos < combinedItems.size) {
-            combinedItems[pos].provideId()
+    private fun getCurrentList(): List<RecyclerItem> {
+        return if (RecyclerGlobalConfig.useAsyncDiffer) {
+            differ.currentList
         } else {
-            null
+            combinedItems
         }
     }
 
-    private fun commitItems() {
-        combinedItems.clear()
-        combinedItems.addAll(itemsAtTop)
-        combinedItems.addAll(items)
-        combinedItems.addAll(itemsAtBottom)
+    private fun getId(holder: RecyclerView.ViewHolder): String? {
+        val pos = recyclerView?.getChildAdapterPosition(holder.itemView) ?: 0
+        return if (pos >= 0 && pos < getCurrentList().size) {
+            getCurrentList()[pos].provideId()
+        } else {
+            null
+        }
     }
 
     private fun getScroller(pos: Int): SmoothScroller {
@@ -191,6 +205,7 @@ open class RecyclerAdapter(
                     }
                 }
             } catch (e: Exception) {
+                // maybe log
             }
         }
     }
@@ -333,17 +348,9 @@ open class RecyclerAdapter(
         fun onFirstAppearance(recyclerItem: RecyclerItem)
     }
 
-    data class BinderWrapped(
-        val wrappedBinderType: Int,
-        val bindersPosition: Int,
-        val binder: RecyclerBinder,
-        val type: Int
-    )
-
     interface Callbacks {
         fun loadRange(curPage: Int)
     }
-
 
     enum class InfinityType {
         SCROLL, BUTTON
