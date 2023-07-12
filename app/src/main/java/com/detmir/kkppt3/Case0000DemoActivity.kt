@@ -4,11 +4,14 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.detmir.kkppt3.views.*
+import com.detmir.kkppt3.views.BigTaskItem
+import com.detmir.kkppt3.views.HeaderItem
+import com.detmir.kkppt3.views.KeepPosContainerItem
+import com.detmir.kkppt3.views.SubTaskItem
+import com.detmir.kkppt3.views.UserItem
 import com.detmir.recycli.adapters.RecyclerAdapter
-import com.detmir.recycli.adapters.RecyclerBaseAdapter
 import com.detmir.recycli.adapters.RecyclerItem
-import com.detmir.ui.bottom.RecyclerBinderImpl
+import com.detmir.ui.badge.BadgeItem
 
 class Case0000DemoActivity : AppCompatActivity() {
 
@@ -54,6 +57,13 @@ class Case0000DemoActivity : AppCompatActivity() {
 
     private fun updateRecycler() {
         val recyclerItems = mutableListOf<RecyclerItem>()
+
+        recyclerItems.add(
+            BadgeItem(
+                id = "BADGE",
+                message = "I'm badge"
+            )
+        )
 
         recyclerItems.add(
             HeaderItem(
