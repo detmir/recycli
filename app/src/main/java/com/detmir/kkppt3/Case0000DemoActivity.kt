@@ -12,6 +12,7 @@ import com.detmir.kkppt3.views.UserItem
 import com.detmir.recycli.adapters.RecyclerAdapter
 import com.detmir.recycli.adapters.RecyclerItem
 import com.detmir.ui.badge.BadgeItem
+import com.detmir.ui.toast.ToastView
 
 class Case0000DemoActivity : AppCompatActivity() {
 
@@ -57,6 +58,13 @@ class Case0000DemoActivity : AppCompatActivity() {
 
     private fun updateRecycler() {
         val recyclerItems = mutableListOf<RecyclerItem>()
+
+        recyclerItems.add(
+            ToastView.State(
+                id = "TOAST",
+                message = "I'm toast"
+            )
+        )
 
         recyclerItems.add(
             BadgeItem(
