@@ -18,7 +18,7 @@ class Case0500HorizontalActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_case_0500)
-        recyclerView = findViewById<RecyclerView>(R.id.activity_case_0500_recycler)
+        recyclerView = findViewById(R.id.activity_case_0500_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
         handleState()
     }

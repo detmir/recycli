@@ -10,7 +10,6 @@ fun RecyclerView.bindState(items: List<RecyclerItem>) {
     (this.adapter as? RecyclerAdapter)?.bindState(items)
 }
 
-
 fun RecyclerView.bindState(infinityState: InfinityState) {
     if (this.adapter == null) {
         val recyclerAdapterRegular = RecyclerAdapter()

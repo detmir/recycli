@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.detmir.kkppt3.R
 import com.detmir.kkppt3.RecyclerBinderImpl
 import com.detmir.recycli.adapters.RecyclerAdapter
+import com.detmir.recycli.adapters.bindState
 import com.detmir.recycli.annotations.RecyclerItemStateBinder
 import com.detmir.recycli.annotations.RecyclerItemView
 
@@ -19,8 +20,7 @@ import com.detmir.recycli.annotations.RecyclerItemView
 class SimpleContainerItemView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
-    private val recycler: RecyclerView
-    private val recyclerAdapter: RecyclerAdapter
+    private val recyclerView: RecyclerView
 
     init {
         val view =
@@ -29,18 +29,14 @@ class SimpleContainerItemView @JvmOverloads constructor(
             ViewGroup.LayoutParams.MATCH_PARENT,
             300
         )
-        
-        recyclerAdapter = RecyclerAdapter()
-        recycler = view.findViewById(R.id.simple_recycler_container_recycler)
 
-        recycler.run {
-            layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-            adapter = recyclerAdapter
-        }
+        recyclerView = view.findViewById(R.id.simple_recycler_container_recycler)
+
+        recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
     }
 
     @RecyclerItemStateBinder
     fun bindState(state: SimpleContainerItem) {
-        recyclerAdapter.bindState(state.recyclerState)
+        recyclerView.bindState(state.recyclerState)
     }
 }
