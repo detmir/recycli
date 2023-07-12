@@ -22,23 +22,30 @@ fun RecyclerView.bindState(infinityState: InfinityState) {
 fun RecyclerView.setInfinityCallbacks(callbacks: RecyclerAdapter.Callbacks) {
     if (this.adapter == null) {
         val recyclerAdapterRegular = RecyclerAdapter()
+        recyclerAdapterRegular.infinityCallbacks = callbacks
         this.adapter = recyclerAdapterRegular
+    } else {
+        (this.adapter as? RecyclerAdapter)?.infinityCallbacks = callbacks
     }
-    (this.adapter as? RecyclerAdapter)?.infinityCallbacks = callbacks
 }
 
 fun RecyclerView.setBottomLoading(recyclerBottomLoading: RecyclerBottomLoading) {
     if (this.adapter == null) {
         val recyclerAdapterRegular = RecyclerAdapter()
+        recyclerAdapterRegular.bottomLoading = recyclerBottomLoading
         this.adapter = recyclerAdapterRegular
+    } else {
+        (this.adapter as? RecyclerAdapter)?.bottomLoading = recyclerBottomLoading
     }
-    (this.adapter as? RecyclerAdapter)?.bottomLoading = recyclerBottomLoading
+
 }
 
 fun RecyclerView.setInfinityType(infinityType: RecyclerAdapter.InfinityType) {
     if (this.adapter == null) {
         val recyclerAdapterRegular = RecyclerAdapter()
+        recyclerAdapterRegular.infinityType = infinityType
         this.adapter = recyclerAdapterRegular
+    } else {
+        (this.adapter as? RecyclerAdapter)?.infinityType = infinityType
     }
-    (this.adapter as? RecyclerAdapter)?.infinityType = infinityType
 }

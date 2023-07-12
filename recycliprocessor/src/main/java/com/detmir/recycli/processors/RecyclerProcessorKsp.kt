@@ -37,8 +37,6 @@ class RecyclerProcessorKsp(
 
         // STATE CLASSES
         val stateSymbols = resolver
-
-            //.getSymbolsWithAnnotation("com.detmir.recycli.annotations.RecyclerItemState")
             .getSymbolsWithAnnotation(RecyclerItemState::class.java.canonicalName)
             .filterIsInstance<KSClassDeclaration>()
 
@@ -47,7 +45,6 @@ class RecyclerProcessorKsp(
 
         // VIEWS CLASSES
         val viewSymbols = resolver
-            //.getSymbolsWithAnnotation("com.detmir.recycli.annotations.RecyclerItemView")
             .getSymbolsWithAnnotation(RecyclerItemView::class.java.canonicalName)
             .filterIsInstance<KSClassDeclaration>().iterator()
 
@@ -56,7 +53,6 @@ class RecyclerProcessorKsp(
 
         // VIEWHOLDER CLASSES
         val viewHolderSymbols = resolver
-            //.getSymbolsWithAnnotation("com.detmir.recycli.annotations.RecyclerItemViewHolder")
             .getSymbolsWithAnnotation(RecyclerItemViewHolder::class.java.canonicalName)
             .filterIsInstance<KSClassDeclaration>().iterator()
 
@@ -274,18 +270,15 @@ class RecyclerProcessorKsp(
 
 
             if (isRecyclerItemViewBinderAnnotation != null) {
-                //logger.info("jksps KSP binderFunction ${binderFunction.qualifiedName?.asString()}")
                 if (binderFunction.parameters.size == 1) {
                     binderFunction.parameters.forEach { binderParameter ->
                         val currentStateClass: String? =
                             binderParameter.type.resolve().declaration.qualifiedName?.asString()
-                        //logger.info("jksps KSP currentStateClass $currentStateClass")
                         if (currentStateClass == null) {
                             logger.error("jksps KSP binder function must be one arhument function with state ${binderFunction.qualifiedName?.asString()} in ${viewElement.qualifiedName?.asString()}")
                         }
                         val viewElementqualifiedName = viewElement.qualifiedName?.asString()
                         if (stateToIndexMap.containsKey(currentStateClass) && viewElementqualifiedName != null) {
-//                            logger.info("jksps KSP PUT TO stateToViewMap currentStateClass $currentStateClass")
                             val viewProps = ViewProps(
                                 index = 0,
                                 viewCreatorClassName = viewCreatorClassName,
@@ -306,7 +299,6 @@ class RecyclerProcessorKsp(
                 }
 
             }
-            //logger.info("jksps KSP isRecyclerItemViewBinder = $isRecyclerItemViewBinder declFunction=$")
         }
 
         var i = 0

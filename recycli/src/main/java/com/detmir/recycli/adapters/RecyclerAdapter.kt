@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 
-open class RecyclerAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+open class RecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var infinityCallbacks: Callbacks? = null
     var bottomLoading: RecyclerBottomLoading? = null
