@@ -50,8 +50,7 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.0.8'
     implementation project(path: ':recycli')
     compileOnly project(':recycliannotation')
-    //kapt project(':recycliprocessor')
-    ksp project(":recycliprocessorksp")
+    ksp project(":recycliprocessor")
 
     implementation project(path: ':ui')
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"

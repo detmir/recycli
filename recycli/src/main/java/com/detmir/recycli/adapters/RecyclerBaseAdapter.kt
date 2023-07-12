@@ -12,11 +12,12 @@ open class RecyclerBaseAdapter(
         var warmedUp = false
         val stateToBindersWrapped: HashMap<String, BinderWrapped> = HashMap()
         val bindersToStateWrapped: HashMap<Int, BinderWrapped> = HashMap()
+        private const val RECYCLI_ASSETS_PATH = "recycli"
     }
 
     private fun listAssetFiles(context: Context): List<String> {
         return try {
-            context.assets?.list("recycli")?.toList() ?: emptyList()
+            context.assets?.list(RECYCLI_ASSETS_PATH)?.toList() ?: emptyList()
         } catch (e: IOException) {
             emptyList()
         }
@@ -24,7 +25,6 @@ open class RecyclerBaseAdapter(
 
     fun warmUpBinders(context: Context) {
         if (!warmedUp) {
-
             val kspBinders = mutableListOf<RecyclerBinder>()
             listAssetFiles(context).forEach { packCamel ->
                 val pack = packCamel.replace("_", ".")
@@ -36,7 +36,6 @@ open class RecyclerBaseAdapter(
                     // log here
                 }
             }
-
 
             var i = 1
             kspBinders.forEach { recyclerBinder ->

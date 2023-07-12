@@ -31,5 +31,6 @@ mavenPublish {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly project(':recycliannotation')
+    implementation project(':recycliannotation')
+    implementation "com.google.devtools.ksp:symbol-processing-api:1.8.20-1.0.11"
 }

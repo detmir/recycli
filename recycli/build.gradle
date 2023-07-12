@@ -54,5 +54,4 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "androidx.recyclerview:recyclerview:1.0.0"
-    api project(':recycliannotation')
 }

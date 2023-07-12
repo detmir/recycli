@@ -1,30 +1,37 @@
 package com.detmir.recycli.processors
 
-import java.io.File
-import java.io.OutputStreamWriter
-import java.io.Writer
-import javax.annotation.processing.Filer
-import javax.annotation.processing.ProcessingEnvironment
-import javax.lang.model.element.Element
+import com.google.devtools.ksp.processing.CodeGenerator
+import com.google.devtools.ksp.processing.Dependencies
+import com.google.devtools.ksp.symbol.KSFile
+import java.io.OutputStream
 
-internal object RecyclerFileProviderold {
+internal object RecyclerFileProviderKsp {
+
+    operator fun OutputStream.plusAssign(str: String) {
+        this.write(str.toByteArray())
+    }
 
     fun generateBinderClass(
+        filesInvolved: List<KSFile>,
         packageName: String?,
-        processingEnv: ProcessingEnvironment,
-        completeMap: Map<String, RecyclerProcessor.ViewProps>,
-        allElementsInvolved: Set<Element>,
-        filer: Filer
+        codeGenerator: CodeGenerator,
+        completeMap: Map<String, RecyclerProcessorKsp.ViewProps>,
     ) {
-
         if (packageName == null) return
-
-
-
 
         if (completeMap.isNotEmpty()) {
 
+            val packageNameCameled = packageName.replace(".", "_")
+            codeGenerator.createNewFileByPath(Dependencies(false), "assets/recycli/$packageNameCameled", "")
 
+            val file: OutputStream = codeGenerator.createNewFile(
+                // Make sure to associate the generated file with sources to keep/maintain it across incremental builds.
+                // Learn more about incremental processing in KSP from the official docs:
+                // https://kotlinlang.org/docs/ksp-incremental.html
+                dependencies = Dependencies(true, *filesInvolved.toTypedArray()),
+                packageName = packageName,
+                fileName = "RecyclerBinderImpl"
+            )
 
 
             val sbStateToIndexMap = StringBuilder("")
@@ -39,24 +46,11 @@ internal object RecyclerFileProviderold {
                 r++
             }
 
-            val generatedSourcesRoot: String =
-                processingEnv.options[RecyclerProcessor.KAPT_KOTLIN_GENERATED_OPTION_NAME].orEmpty()
-
-            val file = File(
-                "$generatedSourcesRoot/${
-                    packageName.replace(
-                        ".",
-                        "/"
-                    )
-                }/RecyclerBinderImpl.kt"
-            ).also { file ->
-                file.parentFile.mkdirs()
-            }
-
             val sb = StringBuilder("")
             sb.append("package $packageName\n")
             getImports(sb = sb)
-            sb.append("public class RecyclerBinderImpl : RecyclerBinder {\n")
+            sb.append("\n@RecyclerBinderAdapter")
+            sb.append("\npublic class RecyclerBinderImpl : RecyclerBinder {\n")
             getStateToIndex(sb = sb, completeMap = completeMap)
             getOnCreateView(sb = sb, completeMap = completeMap)
             getOnBindView(sb = sb, completeMap = completeMap)
@@ -64,7 +58,9 @@ internal object RecyclerFileProviderold {
             sb.append("}\n")
 
 
-            file.writeText(sb.toString())
+            file += sb.toString()
+            file.flush()
+            file.close()
         }
     }
 
@@ -81,7 +77,7 @@ internal object RecyclerFileProviderold {
 
     private fun getOnBindView(
         sb: StringBuilder,
-        completeMap: Map<String, RecyclerProcessor.ViewProps>
+        completeMap: Map<String, RecyclerProcessorKsp.ViewProps>
     ) {
         sb.append(
             """
@@ -100,7 +96,7 @@ internal object RecyclerFileProviderold {
         completeMap.forEach { (state, viewProps) ->
             val stateClass = state.split("#")[0]
             when (viewProps.type) {
-                RecyclerProcessor.Type.VIEW -> {
+                RecyclerProcessorKsp.Type.VIEW -> {
                     sb.append(
                         """
                         "$state" -> {
@@ -109,7 +105,7 @@ internal object RecyclerFileProviderold {
                         """
                     )
                 }
-                RecyclerProcessor.Type.VIEW_HOLDER -> {
+                RecyclerProcessorKsp.Type.VIEW_HOLDER -> {
                     sb.append(
                         """
                         "$state" -> {
@@ -142,6 +138,7 @@ internal object RecyclerFileProviderold {
             import androidx.recyclerview.widget.RecyclerView.ViewHolder
             import com.detmir.recycli.adapters.RecyclerBinder
             import com.detmir.recycli.adapters.RecyclerItem
+            import com.detmir.recycli.annotations.RecyclerBinderAdapter
             import java.util.HashMap
             import kotlin.Int
             import kotlin.String
@@ -152,7 +149,7 @@ internal object RecyclerFileProviderold {
 
     private fun getStateToIndex(
         sb: StringBuilder,
-        completeMap: Map<String, RecyclerProcessor.ViewProps>
+        completeMap: Map<String, RecyclerProcessorKsp.ViewProps>
     ) {
         sb.append("public override val stateToIndexMap: java.util.HashMap<String, Int> = hashMapOf<String,Int>(\n")
         var r = 0
@@ -169,7 +166,7 @@ internal object RecyclerFileProviderold {
     }
 
     private fun getOnCreateView(
-        completeMap: Map<String, RecyclerProcessor.ViewProps>,
+        completeMap: Map<String, RecyclerProcessorKsp.ViewProps>,
         sb: StringBuilder
     ) {
         sb.append(
@@ -183,7 +180,7 @@ internal object RecyclerFileProviderold {
         )
         sb.append("\n")
 
-        val reversedMap = mutableMapOf<RecyclerProcessor.ViewProps, ArrayList<String>>()
+        val reversedMap = mutableMapOf<RecyclerProcessorKsp.ViewProps, ArrayList<String>>()
 
         completeMap.forEach { (state, viewProp) ->
             val states = reversedMap.getOrPut(viewProp) {
@@ -195,14 +192,14 @@ internal object RecyclerFileProviderold {
 
         reversedMap.forEach { (viewProps, _) ->
             when (viewProps.type) {
-                RecyclerProcessor.Type.VIEW_HOLDER -> {
+                RecyclerProcessorKsp.Type.VIEW_HOLDER -> {
                     sb.append(
                         """
                         ${viewProps.index} -> {vh = ${viewProps.viewCreatorClassName}(parent.context)}
                         """.trimIndent()
                     ).append("\n")
                 }
-                RecyclerProcessor.Type.VIEW -> {
+                RecyclerProcessorKsp.Type.VIEW -> {
                     sb.append(
                         """
                         ${viewProps.index} -> {v = ${viewProps.viewCreatorClassName}(parent.context)}
@@ -226,7 +223,5 @@ internal object RecyclerFileProviderold {
             """.trimIndent()
         )
         sb.append("\n")
-
     }
-
 }

@@ -35,8 +35,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     compileOnly project(':recycliannotation')
-    //kapt project(':recycliprocessor')
-    ksp project(":recycliprocessorksp")
+    ksp project(":recycliprocessor")
 
     implementation project(path: ':recycli')
 
