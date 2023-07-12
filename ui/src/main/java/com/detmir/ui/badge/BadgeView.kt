@@ -3,15 +3,13 @@ package com.detmir.ui.badge
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import com.detmir.recycli.annotations.RecyclerItemStateBinder
 import com.detmir.recycli.annotations.RecyclerItemView
 import com.detmir.ui.R
+import toPx
 
 @RecyclerItemView
 class BadgeView @JvmOverloads constructor(
@@ -27,6 +25,7 @@ class BadgeView @JvmOverloads constructor(
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         inflater.inflate(R.layout.badge_view, this, true)
+        setPadding(24.toPx, 32.toPx, 24.toPx, 8.toPx)
         message = findViewById(R.id.badge_message)
     }
 
