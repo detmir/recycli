@@ -5,16 +5,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.detmir.kkppt3.views.*
-import com.detmir.recycli.adapters.RecyclerAdapter
+import com.detmir.kkppt3.views.HeaderItem
+import com.detmir.kkppt3.views.UserItem
 import com.detmir.recycli.adapters.RecyclerItem
+import com.detmir.recycli.adapters.bindState
 
 class Case0200ClickAndStateActivity : AppCompatActivity() {
-
-
     lateinit var recyclerView: RecyclerView
-
-    lateinit var recyclerAdapter: RecyclerAdapter
     private val onlineUserNames = mutableListOf("James","Mary","Robert","Patricia")
     private val offlineUserNames = mutableListOf("Michael","Linda","William","Elizabeth","David")
 
@@ -23,8 +20,6 @@ class Case0200ClickAndStateActivity : AppCompatActivity() {
         setContentView(R.layout.activity_case_0200)
         recyclerView = findViewById(R.id.activity_case_0200_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerAdapter = RecyclerAdapter()
-        recyclerView.adapter = recyclerAdapter
         updateRecycler()
     }
 
@@ -70,7 +65,7 @@ class Case0200ClickAndStateActivity : AppCompatActivity() {
             )
         }
 
-        recyclerAdapter.bindState(recyclerItems)
+        recyclerView.bindState(recyclerItems)
     }
 
     private fun cardClicked(name: String) {

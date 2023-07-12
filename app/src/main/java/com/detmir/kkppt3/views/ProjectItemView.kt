@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -25,6 +26,10 @@ class ProjectItemView @JvmOverloads constructor(
     init {
         Log.d("gunit", "ProjectItemView create")
         LayoutInflater.from(context).inflate(R.layout.project_item_view, this)
+        layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         projectTitle = findViewById(R.id.project_item_title)
         projectDescription = findViewById(R.id.project_item_description)
         projectToNew = findViewById(R.id.project_item_to_new)

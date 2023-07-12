@@ -7,23 +7,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.detmir.kkppt3.views.ProjectItem
 import com.detmir.recycli.adapters.RecyclerAdapter
+import com.detmir.recycli.adapters.bindState
 
 class Case0300SealedActivity : AppCompatActivity() {
     var toNew = false
-    lateinit var recyclerAdapter: RecyclerAdapter
+
+    lateinit var recyclerView: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_case_0300)
-        val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0300_recycler)
+        recyclerView = findViewById<RecyclerView>(R.id.activity_case_0300_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerAdapter = RecyclerAdapter()
-        recyclerView.adapter = recyclerAdapter
-
         updateState()
     }
 
-    fun updateState() {
-        recyclerAdapter.bindState(
+    private fun updateState() {
+        recyclerView.bindState(
             listOf(
                 ProjectItem.Failed(
                     id = "FAILED",
@@ -31,11 +31,6 @@ class Case0300SealedActivity : AppCompatActivity() {
                     why = "",
                     toNew = ::toNew
                 ),
-                /*ProjectItem.New(
-                    id = "NEW",
-                    title = "New project",
-                    toNew = ::toNew
-                ),*/
                 ProjectItem.Done.BeforeDeadline(
                     id = "BEFORE_DEAD_LINE",
                     title = "Done before deadline project",

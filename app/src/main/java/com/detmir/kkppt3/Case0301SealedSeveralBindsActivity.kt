@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.detmir.kkppt3.views.PipeLineItem
 import com.detmir.recycli.adapters.RecyclerAdapter
+import com.detmir.recycli.adapters.bindState
 
 class Case0301SealedSeveralBindsActivity : AppCompatActivity() {
 
@@ -14,10 +15,8 @@ class Case0301SealedSeveralBindsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_case_0301)
         val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0301_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val recyclerAdapter = RecyclerAdapter()
-        recyclerView.adapter = recyclerAdapter
 
-        recyclerAdapter.bindState(
+        recyclerView.bindState(
             listOf(
                 PipeLineItem.Output(
                     id = "OUTPUT",

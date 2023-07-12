@@ -8,6 +8,9 @@ import com.detmir.kkppt3.views.UserItem
 import com.detmir.recycli.adapters.InfinityState
 import com.detmir.recycli.adapters.RecyclerAdapter
 import com.detmir.recycli.adapters.RecyclerItem
+import com.detmir.recycli.adapters.bindState
+import com.detmir.recycli.adapters.setBottomLoading
+import com.detmir.recycli.adapters.setInfinityCallbacks
 import com.detmir.ui.bottom.BottomLoading
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
@@ -20,14 +23,6 @@ class Case0600InfinityActivity : AppCompatActivity(), RecyclerAdapter.Callbacks 
     private val items = mutableListOf<RecyclerItem>()
     private var infiniteItemsErrorThrown = false
 
-
-    private var recyclerAdapter = RecyclerAdapter(
-        infinityCallbacks = this,
-        bottomLoading = BottomLoading()
-    )
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_case_0600)
@@ -35,13 +30,14 @@ class Case0600InfinityActivity : AppCompatActivity(), RecyclerAdapter.Callbacks 
         recyclerView.layoutManager = LinearLayoutManager(this).apply {
             reverseLayout = false
         }
-        recyclerView.adapter = recyclerAdapter
+        recyclerView.setInfinityCallbacks(this)
+        recyclerView.setBottomLoading(BottomLoading())
         loadRange(0)
     }
 
     override fun loadRange(curPage: Int) {
         val delay = if (curPage == 0) 0L else 2000L
-        Single.timer(delay, TimeUnit.MILLISECONDS)
+        val d = Single.timer(delay, TimeUnit.MILLISECONDS)
             .flatMap {
                 Single.just((curPage * PAGE_SIZE until (curPage * PAGE_SIZE + PAGE_SIZE)).map {
                     UserItem(
@@ -61,7 +57,7 @@ class Case0600InfinityActivity : AppCompatActivity(), RecyclerAdapter.Callbacks 
                 it
             }
             .doOnSubscribe {
-                recyclerAdapter.bindState(
+                recyclerView.bindState(
                     InfinityState(
                         requestState = InfinityState.Request.LOADING,
                         items = items,
@@ -71,7 +67,7 @@ class Case0600InfinityActivity : AppCompatActivity(), RecyclerAdapter.Callbacks 
                 )
             }
             .doOnError {
-                recyclerAdapter.bindState(
+                recyclerView.bindState(
                     InfinityState(
                         requestState = InfinityState.Request.ERROR,
                         items = items,
@@ -84,7 +80,7 @@ class Case0600InfinityActivity : AppCompatActivity(), RecyclerAdapter.Callbacks 
                 if (curPage == 0) items.clear()
                 items.addAll(it)
 
-                recyclerAdapter.bindState(
+                recyclerView.bindState(
                     InfinityState(
                         requestState = InfinityState.Request.IDLE,
                         items = items,

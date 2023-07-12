@@ -9,30 +9,23 @@ import com.detmir.kkppt3.views.HeaderItem
 import com.detmir.kkppt3.views.SimpleContainerItem
 import com.detmir.kkppt3.views.SubTaskItem
 import com.detmir.recycli.adapters.RecyclerAdapter
+import com.detmir.recycli.adapters.bindState
 
 class Case0500HorizontalActivity : AppCompatActivity() {
 
-    lateinit var recyclerAdapter: RecyclerAdapter
+    var i = 0
     lateinit var recyclerView: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_case_0500)
         recyclerView = findViewById<RecyclerView>(R.id.activity_case_0500_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerAdapter = RecyclerAdapter()
-        recyclerView.adapter = recyclerAdapter
-
-        bi()
-
-
+        handleState()
     }
 
-    var i = 0
-
-    fun bi() {
+    private fun handleState() {
         i++
-        val r = 10 - i
-        recyclerAdapter.bindState(
+        recyclerView.bindState(
             listOf(
                 HeaderItem(
                     id = "HEADER_SUB_TASKS",
@@ -56,7 +49,7 @@ class Case0500HorizontalActivity : AppCompatActivity() {
             )
         )
         recyclerView.postDelayed({
-            bi()
+            handleState()
         }, 5000)
     }
 }

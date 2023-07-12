@@ -11,6 +11,7 @@ import com.detmir.kkppt3.views.SubTaskItem
 import com.detmir.kkppt3.views.UserItem
 import com.detmir.recycli.adapters.RecyclerAdapter
 import com.detmir.recycli.adapters.RecyclerItem
+import com.detmir.recycli.adapters.bindState
 import com.detmir.ui.badge.BadgeItem
 import com.detmir.ui.toast.ToastView
 
@@ -38,18 +39,10 @@ class Case0000DemoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        RecyclerAdapter.staticBinders = setOf(
-//            com.detmir.ui.bottom.RecyclerBinderImpl(),
-//            com.detmir.kkppt3.RecyclerBinderImpl()
-//        )
         setContentView(R.layout.activity_case_0000)
 
-
-        // Common recycler initialization
         recyclerView = findViewById(R.id.activity_case_0000_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerAdapterRegular = RecyclerAdapter()
-        recyclerView.adapter = recyclerAdapterRegular
 
         //Create Recycli state and populate RecyclerView
         updateRecycler()
@@ -164,6 +157,6 @@ class Case0000DemoActivity : AppCompatActivity() {
             )
         }
 
-        recyclerAdapterRegular.bindState(recyclerItems)
+        recyclerView.bindState(recyclerItems)
     }
 }

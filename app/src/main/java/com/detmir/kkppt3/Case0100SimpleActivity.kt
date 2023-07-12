@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.detmir.kkppt3.views.*
 import com.detmir.recycli.adapters.RecyclerAdapter
+import com.detmir.recycli.adapters.bindState
 
 class Case0100SimpleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,10 +14,8 @@ class Case0100SimpleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_case_0100)
         val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0100_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val recyclerAdapter = RecyclerAdapter()
-        recyclerView.adapter = recyclerAdapter
 
-        recyclerAdapter.bindState(
+        recyclerView.bindState(
             listOf(
                 HeaderItem(
                     id = "HEADER_USERS",

@@ -10,6 +10,7 @@ import com.detmir.kkppt3.views.CloudAzureItemView
 import com.detmir.kkppt3.views.CloudGoogleItemView
 import com.detmir.kkppt3.views.CloudItem
 import com.detmir.recycli.adapters.RecyclerAdapter
+import com.detmir.recycli.adapters.bindState
 
 class Case0400IntoViewActivity : AppCompatActivity() {
     
@@ -18,10 +19,7 @@ class Case0400IntoViewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_case_0400)
         val recyclerView = findViewById<RecyclerView>(R.id.activity_case_0400_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val recyclerAdapter = RecyclerAdapter()
-        recyclerView.adapter = recyclerAdapter
-
-        recyclerAdapter.bindState(
+        recyclerView.bindState(
             listOf(
                 CloudItem(
                     id = "GOOGLE",
