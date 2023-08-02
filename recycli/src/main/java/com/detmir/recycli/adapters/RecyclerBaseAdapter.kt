@@ -2,9 +2,11 @@ package com.detmir.recycli.adapters
 
 import android.content.Context
 import android.view.ViewGroup
+import androidx.annotation.Keep
 import androidx.recyclerview.widget.RecyclerView
 import java.io.IOException
 
+@Keep
 open class RecyclerBaseAdapter(
     val getRecyclerItem: (pos: Int) -> RecyclerItem
 ) {

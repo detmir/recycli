@@ -1,5 +1,8 @@
 package com.detmir.recycli.adapters
 
+import androidx.annotation.Keep
+
+@Keep
 data class ScrollKeeper(
     var pos: Int? = null,
     var offset: Int? = null

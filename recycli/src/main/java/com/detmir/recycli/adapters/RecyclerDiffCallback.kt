@@ -1,7 +1,9 @@
 package com.detmir.recycli.adapters
 
+import androidx.annotation.Keep
 import androidx.recyclerview.widget.DiffUtil
 
+@Keep
 class RecyclerDiffCallback : DiffUtil.Callback() {
 
     lateinit var old: MutableList<RecyclerItem>

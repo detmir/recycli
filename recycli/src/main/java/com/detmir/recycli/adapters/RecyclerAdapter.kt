@@ -1,6 +1,7 @@
 package com.detmir.recycli.adapters
 
 import android.view.ViewGroup
+import androidx.annotation.Keep
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 
+@Keep
 open class RecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var infinityCallbacks: Callbacks? = null

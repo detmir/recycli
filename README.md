@@ -39,9 +39,9 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies the creatio
     apply plugin: 'com.google.devtools.ksp'
 
     dependencies {
-        implementation 'com.detmir.recycli:adapters:2.0.0'
-        compileOnly 'com.detmir.recycli:annotations:2.0.0'
-        ksp 'com.detmir.recycli:processors:2.0.0'
+        implementation 'com.detmir.recycli:adapters:2.1.0'
+        compileOnly 'com.detmir.recycli:annotations:2.1.0'
+        ksp 'com.detmir.recycli:processors:2.1.0'
     }
 
     ```

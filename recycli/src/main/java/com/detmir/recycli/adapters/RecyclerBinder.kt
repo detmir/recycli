@@ -1,9 +1,11 @@
 package com.detmir.recycli.adapters
 
 import android.view.ViewGroup
+import androidx.annotation.Keep
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
+@Keep
 interface RecyclerBinder {
 
     val stateToIndexMap: HashMap<String, Int>

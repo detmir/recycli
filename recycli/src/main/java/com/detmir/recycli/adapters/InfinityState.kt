@@ -1,5 +1,8 @@
 package com.detmir.recycli.adapters
 
+import androidx.annotation.Keep
+
+@Keep
 data class InfinityState (
     val items: List<RecyclerItem> = listOf(),
     val page: Int = 0,

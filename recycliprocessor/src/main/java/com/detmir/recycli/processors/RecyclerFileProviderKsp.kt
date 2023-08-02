@@ -49,6 +49,7 @@ internal object RecyclerFileProviderKsp {
             val sb = StringBuilder("")
             sb.append("package $packageName\n")
             getImports(sb = sb)
+            sb.append("\n@Keep")
             sb.append("\n@RecyclerBinderAdapter")
             sb.append("\npublic class RecyclerBinderImpl : RecyclerBinder {\n")
             getStateToIndex(sb = sb, completeMap = completeMap)
@@ -140,6 +141,7 @@ internal object RecyclerFileProviderKsp {
             import com.detmir.recycli.adapters.RecyclerItem
             import com.detmir.recycli.annotations.RecyclerBinderAdapter
             import java.util.HashMap
+            import androidx.annotation.Keep
             import kotlin.Int
             import kotlin.String
             import kotlin.Unit           
