@@ -34,7 +34,13 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies the creatio
         }
     }
     ```
-2. Add the Kapt plugin and Recycli dependencies to your 'build.gradle' at the module level:
+2. Add the Kapt plugin to plugins section to your 'build.gradle' at the project level. Select kapt version that match you Kotlin version. Minimum supported version of Kotlin  is 1.8.xx. If your version is lower, please use 1.9.0 version of Recycli, that works with any Kotlin version using KAPT instead of KSP. See the documentation [https://github.com/detmir/recycli/tree/kapt](https://github.com/detmir/recycli/tree/kapt) 
+   ```gradle 
+   plugins {
+       id 'com.google.devtools.ksp' version '1.8.22-1.0.11'
+   }
+    ```
+3. Add the Kapt plugin and Recycli dependencies to your 'build.gradle' at the module level:
     ```gradle
     apply plugin: 'com.google.devtools.ksp'
 
