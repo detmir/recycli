@@ -25,7 +25,7 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies the creatio
 <a name="installation"/>
 
 # Installation
-1. Add Maven Central to you repositories in the 'build.gradle' file at the project or module level:
+1. Add Maven Central to you repositories in the `build.gradle` file at the project or module level:
 
     ```gradle
     allprojects {
@@ -34,7 +34,7 @@ Recycli is a Kotlin library for Android RecyclerView that simplifies the creatio
         }
     }
     ```
-2. Add KSP plugin to plugins section of your 'build.gradle' at the project level. Select KSP version that matches your Kotlin version (1.8.22 is the version of Kotlin the plugin matches). Minimum supported version of Kotlin is 1.8.xx. If your version is lower, please use 1.9.0 version of Recycli, that works with any Kotlin version using KAPT instead of KSP. See the documentation [https://github.com/detmir/recycli/tree/kapt](https://github.com/detmir/recycli/tree/kapt) 
+2. Add KSP plugin to plugins section of your `build.gradle` at the project level. Select KSP version that matches your Kotlin version (`1.8.22` is the version of Kotlin the plugin matches). Minimum supported version of Kotlin is `1.8.xx`. If your version is lower, please use 1.9.0 version of Recycli, that works with any Kotlin version using KAPT instead of KSP. See the documentation [https://github.com/detmir/recycli/tree/kapt](https://github.com/detmir/recycli/tree/kapt) 
    ```gradle 
    plugins {
        id 'com.google.devtools.ksp' version '1.8.22-1.0.11'
