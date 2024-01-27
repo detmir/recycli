@@ -2,15 +2,15 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
-      <module name="KKppt3.app" target="11" />
-      <module name="KKppt3.recycli" target="11" />
-      <module name="KKppt3.recycliprocessor" target="11" />
-      <module name="KKppt3.recycliprocessor.main" target="11" />
-      <module name="KKppt3.recycliprocessor.test" target="11" />
+      <module name="KKppt3.app" target="17" />
+      <module name="KKppt3.recycli" target="17" />
+      <module name="KKppt3.recycliprocessor" target="17" />
+      <module name="KKppt3.recycliprocessor.main" target="17" />
+      <module name="KKppt3.recycliprocessor.test" target="17" />
       <module name="KKppt3.recycliprocessorksp" target="11" />
       <module name="KKppt3.recycliprocessorksp.main" target="11" />
       <module name="KKppt3.recycliprocessorksp.test" target="11" />
-      <module name="KKppt3.ui" target="11" />
+      <module name="KKppt3.ui" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

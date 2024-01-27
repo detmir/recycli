@@ -22,7 +22,10 @@ internal object RecyclerFileProviderKsp {
         if (completeMap.isNotEmpty()) {
 
             val packageNameCameled = packageName.replace(".", "_")
-            codeGenerator.createNewFileByPath(Dependencies(false), "assets/recycli/$packageNameCameled", "")
+            val assetsFile = codeGenerator.createNewFileByPath(Dependencies(false), "assets/recycli/$packageNameCameled", "")
+            assetsFile += "x"
+            assetsFile.flush()
+            assetsFile.close()
 
             val file: OutputStream = codeGenerator.createNewFile(
                 // Make sure to associate the generated file with sources to keep/maintain it across incremental builds.

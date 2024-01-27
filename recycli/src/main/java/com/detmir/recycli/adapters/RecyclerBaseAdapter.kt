@@ -28,7 +28,7 @@ open class RecyclerBaseAdapter(
     fun warmUpBinders(context: Context) {
         if (!warmedUp) {
             val kspBinders = mutableListOf<RecyclerBinder>()
-            listAssetFiles(context).forEach { packCamel ->
+            for (packCamel in listAssetFiles(context)) {
                 val pack = packCamel.replace("_", ".")
                 try {
                     val clazz = Class.forName("$pack.RecyclerBinderImpl")
@@ -40,15 +40,15 @@ open class RecyclerBaseAdapter(
             }
 
             var i = 1
-            kspBinders.forEach { recyclerBinder ->
-                recyclerBinder.stateToIndexMap.forEach {
+            for (recyclerBinder in kspBinders) {
+                for (entr in recyclerBinder.stateToIndexMap) {
                     val binderWrapped = BinderWrapped(
                         bindersPosition = i,
-                        wrappedBinderType = i * 1000000 + it.value,
+                        wrappedBinderType = i * 1000000 + entr.value,
                         binder = recyclerBinder,
-                        type = it.value
+                        type = entr.value
                     )
-                    stateToBindersWrapped[it.key] = binderWrapped
+                    stateToBindersWrapped[entr.key] = binderWrapped
                     bindersToStateWrapped[binderWrapped.wrappedBinderType] = binderWrapped
                 }
                 i++
