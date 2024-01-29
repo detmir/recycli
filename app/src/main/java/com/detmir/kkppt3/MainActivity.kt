@@ -4,12 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.detmir.recycli.adapters.RecyclerConfig
 
 class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        RecyclerConfig.adapterBinders = mutableListOf(
+            com.detmir.ui.RecyclerBinderImpl::class.java,
+            com.detmir.kkppt3.RecyclerBinderImpl::class.java
+        )
+        RecyclerConfig.allowAssetsScan = false
         setContentView(R.layout.activity_main)
         val case0000Button = findViewById<Button>(R.id.activity_main_0000)
         val case0100Button = findViewById<Button>(R.id.activity_main_0100)

@@ -27,16 +27,33 @@ open class RecyclerBaseAdapter(
 
     fun warmUpBinders(context: Context) {
         if (!warmedUp) {
-            val kspBinders = mutableListOf<RecyclerBinder>()
-            for (packCamel in listAssetFiles(context)) {
-                val pack = packCamel.replace("_", ".")
-                try {
-                    val clazz = Class.forName("$pack.RecyclerBinderImpl")
-                    val binder = clazz.newInstance() as RecyclerBinder
-                    kspBinders.add(binder)
-                } catch (e: Throwable) {
-                    // log here
+            val kspBindersClasses = mutableSetOf<Class<*>>()
+            if (RecyclerConfig.allowAssetsScan) {
+
+                for (packCamel in listAssetFiles(context)) {
+                    val pack = packCamel.replace("_", ".")
+                    try {
+                        val binderName = "$pack.RecyclerBinderImpl"
+                        //kspBindersClassesNames.add()
+                        val clazz = Class.forName(binderName)
+                        kspBindersClasses.add(clazz)
+
+                    } catch (e: Throwable) {
+                        // log here
+                    }
                 }
+            }
+
+            if (RecyclerConfig.allowStaticAdaptersScan) {
+                RecyclerConfig.adapterBinders.forEach {
+                    kspBindersClasses.add(it)
+                }
+            }
+
+            val kspBinders = mutableListOf<RecyclerBinder>()
+            kspBindersClasses.forEach { clazz ->
+                val binder = clazz.newInstance() as RecyclerBinder
+                kspBinders.add(binder)
             }
 
             var i = 1

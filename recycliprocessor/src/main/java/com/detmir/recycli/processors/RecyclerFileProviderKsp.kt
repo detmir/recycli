@@ -23,7 +23,6 @@ internal object RecyclerFileProviderKsp {
 
             val packageNameCameled = packageName.replace(".", "_")
             val assetsFile = codeGenerator.createNewFileByPath(Dependencies(false), "assets/recycli/$packageNameCameled", "")
-            assetsFile += "x"
             assetsFile.flush()
             assetsFile.close()
 
